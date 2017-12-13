@@ -1,0 +1,194 @@
+#------------------------------------------------------------------------------
+# pbpk_woman.in
+#
+# arbitrary molecule, inhaled.
+#
+# Copyright (c) 1993-2016 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+OutputFile ("pbpk_woman.out");
+
+
+# Nominal parameter values
+# ========================
+# Units:
+# Volumes:          L
+# Time:             min
+# Flows:            L/min
+# Concentrations:   mM (ie mmol/L)
+# Vmax:             mM/min
+# Km:               mM
+# Masses:           kg
+# Height:           m
+# Perfusion rates:  L/min/kg of tissue
+
+# Physiological and pharmacokinetic parameters
+# --------------------------------------------
+
+F_dead_space = 0.67;
+
+# Tissue volumic weight are assumed to be equal to 1
+# excepted for adipose tissue (cf Brown et al. 97 p.433)
+density_adip = 0.9;
+density_bone = 2.0;
+
+# Scaling factors for the Volume of the organs
+# Unit = L/meter of height
+# sc_V_ have been calculated for a standard woman : 1.63m 63kg
+# and using the organ weights given by the ICRP. 2001
+# density for the organs is supposed equal to 1 excepted for
+# adipose tissues (0.9) and bones (2)
+
+sc_V_adrenal   = 8.0e-3;
+sc_V_bone      = 1.564;
+sc_V_brain     = 0.798;
+sc_V_gut       = 0.589;
+sc_V_gut_lumen = 0.331;   
+sc_V_heart     = 0.153;
+sc_V_kidney    = 0.169;
+sc_V_liver     = 0.859;
+sc_V_lung      = 0.215;
+sc_V_marrow    = 1.656;  # yellow + red
+sc_V_muscle    = 11.043;   
+sc_V_other     = 4.012;
+sc_V_pancreas  = 0.052;
+sc_V_skin      = 1.530;
+sc_V_spleen    = 0.092;
+sc_V_stomach   = 0.086;
+sc_V_stom_lumen= 0.098;    
+sc_V_thyroid   = 0.010;
+sc_V_uterus    = 0.049;
+
+
+# Perfusion per unit mass of organ.
+# These have been calculated as follows:
+# sc_F_organ = %blood_flow_rate * Card_output / organ_weight
+# the values have been taken from ICRP 2001
+# Organ weight : Table R8 p2-5,
+# Cardiac output : Table R26 p2-23
+# Blood_flow : Table R15 & R17 p7-11 or William & Leggett
+#              Table R31 p2-26 for perfusion of breast and uterus
+# Unit: L/min/kg of tissue
+
+sc_F_adip    = 0.03;
+sc_F_adrenal = 1.68;
+sc_F_brain   = 0.49;
+sc_F_breast  = 0.27;
+sc_F_eport   = 0.25;
+sc_F_gut     = 0.95;
+sc_F_heart   = 1.08;
+sc_F_kidney  = 4.41;
+sc_F_marrow  = 0.10;
+sc_F_muscle  = 0.04;
+sc_F_pancreas= 0.60;
+sc_F_skin    = 0.29;
+sc_F_spleen  = 1.07;
+sc_F_stomach = 0.52;
+sc_F_thyroid = 4.72;
+sc_F_uterus  = 1.095;
+sc_F_other   = 0.027;
+
+# Transits; Unit L/min
+Fl_stom_lumen = 0.0034;
+Fl_gut_lumen  = 0.00008;
+
+# Parameters indicating the fraction of fat in each organ
+# comming from Fiserova-Bergerova  1983
+# or references found in Van der Mollen 1996
+frac_fat_blood      = 0.0052;     # Papke et al 89.
+
+frac_fat_adip       = 0.859;      # Beck 90, Duarte-Davidson 93, Patterson 86
+                                  # Ryan 86 Ryan 85b Schecter 85
+                                  # refs in Van der Molen 96
+frac_fat_adrenal    = 0.049;      # Default value corresponding to
+                                  # "Remaining organs de Van der Molen"
+frac_fat_brain      = 0.11;       # Fiserova-Bergerova  1983
+frac_fat_breast     = 0.049;      # Default value
+frac_fat_gut        = 0.065;      # Fiserova-Bergerova  1983
+frac_fat_gut_lumen  = 0.049;      # Default value
+frac_fat_heart      = 0.083;      # Fiserova-Bergerova  1983
+frac_fat_kidney     = 0.052;      # Fiserova-Bergerova  1983
+frac_fat_liver      = 0.049;      # Lenter 81, ref in Van der Molen 96
+frac_fat_lung       = 0.017;      # Fiserova-Bergerova  1983
+frac_fat_marrow     = 0.186;      # Clarys & Martin 85, ref in Van der Molen 96
+frac_fat_muscle     = 0.064;      # Lenter 81 & Ryan 85,
+                                  # ref in Van der Molen 96
+frac_fat_other      = 0.049;      # Default value
+frac_fat_pancreas   = 0.105;      # Fiserova-Bergerova  1983
+frac_fat_skin       = 0.150;      # Fiserova-Bergerova  1983
+frac_fat_spleen     = 0.030;      # Fiserova-Bergerova  1983
+frac_fat_stomach    = 0.049;      # Default value
+frac_fat_stom_lumen = 0.049;      # Default value
+frac_fat_thymus     = 0.859;      # =frac_fat_adip, discussion avec Rene ???
+frac_fat_thyroid    = 0.049;      # Default value
+frac_fat_uterus     = 0.049;      # Default value
+
+
+# Parameters specific of the chemical studied
+# -------------------------------------------
+
+# Transferts depending on the agent; Unit: 1/min
+Ka_stomach    = 0.1;   # Absorption rate constant for stomach
+Ka_gut        = 0.1;   # Absorption rate constant for gut
+Ke_bile       = 0.0;   # Biliary excretion rate constant for the mother
+
+# Lung/air PC
+PC_lung_over_air = 10;
+
+# Tissue over blood partition coefficents for adipose tissue
+PC_adip     = 187.6;
+
+# Maternal renal elimination rate constant
+Ke_renal   = 1E-6;
+
+# Maternal hepatic metabolic rate constant
+scKm_liver   = 8.45E-6;
+
+# Maternal gut metabolic rate constant
+scKm_gut     = 1E-8;
+
+# Maternal lung metabolic rate constant
+scKm_lung    = 1E-8;
+
+
+Experiment {
+
+# Q_ing_rate = 0.01;
+  C_inh = NDoses (2, 1, 0, 0, 60);
+
+  PrintStep(C_skin, 0, 300, 1);
+  PrintStep(C_brain, 0, 300, 1);
+  PrintStep(C_null, 0, 300, 1);
+  PrintStep(C_muscle, 0, 300, 1);
+  PrintStep(C_lung, 0, 300, 1);
+  PrintStep(C_heart, 0, 300, 1);
+  PrintStep(C_liver, 0, 300, 1);
+  PrintStep(C_kidney, 0, 300, 1);
+  PrintStep(C_stomach, 0, 300, 1);
+  PrintStep(C_gut, 0, 300, 1);
+  PrintStep(C_pancreas, 0, 300, 1);
+  PrintStep(C_adrenal, 0, 300, 1);
+  PrintStep(C_adip, 0, 300, 1);
+  PrintStep(C_art, 0, 300, 1);
+  PrintStep(C_ven, 0, 300, 1);
+  PrintStep(C_stom_lumen, 0, 300, 1);
+  PrintStep(C_marrow, 0, 300, 1);
+  PrintStep(C_thyroid, 0, 300, 1);
+  PrintStep(C_spleen, 0, 300, 1);
+  PrintStep(C_gut_lumen, 0, 300, 1);
+  PrintStep(C_other, 0, 300, 1);
+
+# PrintStep(C_exh, 0, 300, 1);
+# PrintStep(C_breast, 0, 300, 1);
+# PrintStep(C_uterus, 0, 300, 1);
+
+}
+
+
+
+
+
+
+
+
+

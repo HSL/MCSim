@@ -1,0 +1,93 @@
+#-------------------------------------------------------------------------------
+# Simulation file for six-compartment PBPK model with ACAT-like gut model v1
+# 
+# Oral dosing of drug X is simply simulated.
+#
+# Units: 
+# - time in hours
+# - volumes in liters
+# - masses of substances in micromoles
+# - concentrations of substances in microM
+#
+# Frederic Bois - Nov 2016
+#-------------------------------------------------------------------------------
+
+Integrate (Lsodes, 1e-6, 1e-6, 1);
+
+#-------------------------------------
+# Susbstance-specific parameters
+#-------------------------------------
+
+# Molecular mass (g/mol)
+MM   = 325.8;
+
+# Administration lagtime, if needed
+Tlag = 0;
+
+# Absorption on(1)/off(0) switches
+f_Abs_stom  = 0;
+f_Abs_duod  = 1;
+f_Abs_jeju  = 1;
+f_Abs_ileon = 1;
+f_Abs_cecum = 1;
+f_Abs_colon = 1;
+  
+# Effective permeability of g.i. tract epithelia
+Peff = 0.175;
+
+# Plasma / blood concentration ratio
+Ratio_BP = 0.824;
+
+# Tissue / blood partition coefficients
+PC_adip   = 303;
+PC_kid    = 171;
+PC_rpt    = 172;
+PC_ppt    =  52;
+PC_liver  = 158;
+PC_stom   = 158;
+PC_duod   = 158;
+PC_jeju   = 158;
+PC_ileon  = 158;
+PC_cecum  = 158;
+PC_colon  = 158;
+  
+# Fraction unbound in compartments
+Fu_adip     = 1.0;
+Fu_kid      = 1.0;
+Fu_ppt      = 1.0;
+Fu_rpt      = 1.0;
+Fu_blood    = 1.0;
+Fu_liver    = 1.0;
+Fu_portvein = 1.0;
+Fu_stom     = 1.0;
+Fu_duod     = 1.0;
+Fu_jeju     = 1.0;
+Fu_ileon    = 1.0;
+Fu_cecum    = 1.0;
+Fu_colon    = 1.0;
+Fu_plasma   = 0.016;
+
+# Michaelis-Menten Vmax (micromol/min/mg microsomal proteins)
+Vmax_vitro = 2.48;
+
+# Michaelis-Menten Km (microM)
+Km_vitro = 3.31;
+  
+# Renal elimination clearance (L/h)
+Kle_kid = 0.085;
+ 
+  
+Simulation { #
+  
+  BDM = 65;
+
+  # Dosing rate (micromoles / hours)
+  Oral_dose_rate = PerDose (10000, 1000, Tlag, 0.0125);
+  
+  PrintStep (C_plasma, C_liver, C_adip, C_rpt, C_ppt, Instant_Ka_gi,
+             0, 24, 0.1);
+
+}
+  
+End.
+

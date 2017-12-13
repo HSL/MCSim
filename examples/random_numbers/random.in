@@ -1,0 +1,43 @@
+#------------------------------------------------------------------------------
+# random.in
+#
+# Input file for testing random number generators and associated
+# functions.
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+MonteCarlo ("random.out", 10, 45776.43324);
+
+Distrib(x_beta,          Beta, 2, 2, 1, 5);
+Distrib(x_binomial,      Binomial, 0.5, 10);
+Distrib(x_binomialbeta,  BinomialBeta, 1, 2, 2);
+Distrib(x_cauchy,        Cauchy, 1);
+Distrib(x_chi2,          Chi2, 2);
+Distrib(x_exp,           Exponential, 1);
+Distrib(x_gamma,         Gamma, 2, 2);
+Distrib(x_genlognormal,  GenLogNormal, 1, 1, 2);
+Distrib(x_halfcauchy,    HalfCauchy, 1);
+Distrib(x_halfnorm,      HalfNormal, 1);
+Distrib(x_invgamma,      InvGamma, 2, 2);
+Distrib(x_lognorm,       LogNormal, 1, 2);
+Distrib(x_lognormv,      LogNormal_v, 1, 2);
+Distrib(x_logunif,       LogUniform, 1, 10);
+Distrib(x_norm,          Normal, 0, 1);
+Distrib(x_normv,         Normal_v, 0, 2);
+Distrib(x_piecewise,     Piecewise, 0, 1, 2, 3);
+Distrib(x_poisson,       Poisson, 1);
+Distrib(x_studentt,      StudentT, 2, 1, 2);
+Distrib(x_truncinvgamma, TruncInvGamma, 2, 2, 1, 10);
+Distrib(x_trunclognorm,  TruncLogNormal, 1, 2, 0.5, 10);
+Distrib(x_trunclognormv, TruncLogNormal_v, 1, 2, 0.5, 10);
+Distrib(x_truncnorm,     TruncNormal, 0, 2, -2, 2);
+Distrib(x_truncnormv,    TruncNormal_v, 0, 2, -2, 2);
+Distrib(x_unif,          Uniform, 0, 1);
+
+
+Simulation {
+ Print (dummy, 1);
+}
+
+End.

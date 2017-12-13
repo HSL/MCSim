@@ -1,0 +1,39 @@
+#------------------------------------------------------------------------------
+# multistage.model
+#
+# The quadratic multistage model of cancer 
+# p = 1 - exp(-(q0 + q1*Dose + q2*Dose^2))
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+Outputs = {p}; # probability "p" of cancer
+
+Inputs = {current_dose};
+
+# Nominal values for parameters
+
+q0 = 0;
+q1 = 0;
+q2 = 0;
+
+Dose_0 = 0;
+Dose_1 = 0;
+Dose_2 = 0;
+Dose_3 = 0;
+
+CalcOutputs {
+
+  d = (current_dose < 0.5 ? 
+       Dose_0 : 
+       current_dose < 1.5 ? 
+         Dose_1 : 
+         current_dose < 2.5 ? 
+           Dose_2 : 
+           Dose_3);
+
+  p = 1 - exp(-(q0 + q1 * d + q2 * d * d));
+
+}
+
+End.

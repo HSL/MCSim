@@ -1,0 +1,5 @@
+#! /bin/sh
+MCSIM_HOME=$HOME/mcsim
+export MCSIM_HOME
+$MCSIM_HOME/xmcsim/xmcsim
+

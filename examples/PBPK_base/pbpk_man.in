@@ -1,0 +1,72 @@
+#------------------------------------------------------------------------------
+# pbpk_man.in
+# arbitrary molecule, inhaled.
+#
+# Copyright (c) 1993-2016 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+OutputFile ("pbpk_man.out");
+
+# Physiological and pharmacokinetic parameters
+# --------------------------------------------
+
+# Volume of dead space
+V_urt = 0.15; # (L), ref ICRP 2002.
+
+
+# Parameters specific of the chemical studied
+# -------------------------------------------
+
+# Transferts depending on the agent; Unit: 1/min
+Ka_stomach    = 0.1;   # Absorption rate constant for stomach
+Ka_gut        = 0.1;   # Absorption rate constant for gut
+Ke_bile       = 0.0;   # Biliary excretion rate constant 
+
+# Lung/air PC
+PC_lung_over_air = 10;
+
+# Pulmonary deadspace deposition
+PC_urt = 1;
+
+# Tissue over blood partition coefficents for adipose tissue
+PC_adip     = 187.6;
+
+# renal elimination rate constant
+Ke_renal   = 1E-6;
+
+# hepatic metabolic rate constant
+scKm_liver   = 8.45E-6;
+
+# gut metabolic rate constant
+scKm_gut     = 1E-8;
+
+# lung metabolic rate constant
+scKm_lung    = 1E-8;
+
+# Pulmonary mucociliary clearance (L/min)
+Cl_mc_lung   = 0.5; 
+
+
+Experiment {
+
+  C_inh = NDoses (2, 1, 0, 0, 0.25);
+
+  PrintStep (Q_inh,        0, 300, 1);
+  PrintStep (Q_brain,      0, 300, 1);
+  PrintStep (Q_muscle,     0, 300, 1);
+  PrintStep (Q_lung,       0, 300, 1);
+  PrintStep (Q_heart,      0, 300, 1);
+  PrintStep (Q_liver,      0, 300, 1);
+  PrintStep (Q_kidney,     0, 300, 1);
+  PrintStep (Q_pancreas,   0, 300, 1);
+  PrintStep (Q_art,        0, 300, 1);
+  PrintStep (Q_ven,        0, 300, 1);
+  PrintStep (Q_stom_lumen, 0, 300, 1);
+  PrintStep (Q_urine,      0, 300, 1);
+  PrintStep (Q_spleen,     0, 300, 1);
+  PrintStep (Q_gut_lumen,  0, 300, 1);
+  PrintStep (Q_urt,        0, 300, 1);
+  PrintStep (Q_gonads,     0, 300, 1);
+
+}
+

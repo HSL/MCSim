@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created by XMLPrettyPrinter on 12/25/2008 from JDesigner 2.1c -->
+<sbml xmlns = "http://www.sbml.org/sbml/level1" level = "1" version = "2">
+   <!--                     -->
+   <!--  Model Starts Here  -->
+   <!--                     -->
+   <model name = "YeastGlycolysisJDClean">
+      <notes>
+         <p xmlns = "http://www.w3.org/1999/xhtml">
+            <h1>
+                  YeastGlycolysisClean
+            </h1>
+            <p>
+                  This model together with
+               <em>
+                     YeastGlycolysis
+               </em>
+                  demonstrate the use of Alias Species. Aliases are used in order to removesome clutter from the network. As ATP is used all over this network, it is highly connected, aliases remove this problem by adding visual copies of ATP throughout the network, making the network easier to understand.
+            </p>
+         </p>
+      </notes>
+      <listOfCompartments>
+         <compartment name = "compartment" volume = "1"/>
+      </listOfCompartments>
+      <listOfSpecies>
+         <species name = "GLCi" boundaryCondition = "false" initialAmount = "0.097652231064563" compartment = "compartment"/>
+         <species name = "ATP" boundaryCondition = "false" initialAmount = "2.52512746499271" compartment = "compartment"/>
+         <species name = "G6P" boundaryCondition = "false" initialAmount = "2.52512746499271" compartment = "compartment"/>
+         <species name = "ADP" boundaryCondition = "false" initialAmount = "2.52512746499271" compartment = "compartment"/>
+         <species name = "F6P" boundaryCondition = "false" initialAmount = "2.52512746499271" compartment = "compartment"/>
+         <species name = "F16bP" boundaryCondition = "false" initialAmount = "2.52512746499271" compartment = "compartment"/>
+         <species name = "AMP" boundaryCondition = "false" initialAmount = "2.52512746499271" compartment = "compartment"/>
+         <species name = "DHAP" boundaryCondition = "false" initialAmount = "2.52512746499271" compartment = "compartment"/>
+         <species name = "GAP" boundaryCondition = "false" initialAmount = "2.52512746499271" compartment = "compartment"/>
+         <species name = "NAD" boundaryCondition = "false" initialAmount = "1.50329030201531" compartment = "compartment"/>
+         <species name = "BPG" boundaryCondition = "false" initialAmount = "1.50329030201531" compartment = "compartment"/>
+         <species name = "NADH" boundaryCondition = "false" initialAmount = "1.50329030201531" compartment = "compartment"/>
+         <species name = "P3G" boundaryCondition = "false" initialAmount = "0.885688538360659" compartment = "compartment"/>
+         <species name = "P2G" boundaryCondition = "false" initialAmount = "0.127695817386632" compartment = "compartment"/>
+         <species name = "PEP" boundaryCondition = "false" initialAmount = "0.0632352144936527" compartment = "compartment"/>
+         <species name = "PYR" boundaryCondition = "false" initialAmount = "1.81531251192736" compartment = "compartment"/>
+         <species name = "AcAld" boundaryCondition = "false" initialAmount = "0.178140579850657" compartment = "compartment"/>
+         <species name = "GLCo" boundaryCondition = "true" initialAmount = "2" compartment = "compartment"/>
+         <species name = "CO2" boundaryCondition = "true" initialAmount = "2" compartment = "compartment"/>
+         <species name = "EtOH" boundaryCondition = "true" initialAmount = "2" compartment = "compartment"/>
+         <species name = "Glycerol" boundaryCondition = "true" initialAmount = "2" compartment = "compartment"/>
+         <species name = "Glycogen" boundaryCondition = "true" initialAmount = "2" compartment = "compartment"/>
+         <species name = "Trehalose" boundaryCondition = "true" initialAmount = "2" compartment = "compartment"/>
+         <species name = "Succinate" boundaryCondition = "true" initialAmount = "2" compartment = "compartment"/>
+      </listOfSpecies>
+      <listOfParameters>
+         <parameter name = "J0_Vmax_1" value = "97.24"/>
+         <parameter name = "J0_Kglc_1" value = "1.1918"/>
+         <parameter name = "J0_Ki_1" value = "0.91"/>
+         <parameter name = "J1_Vmax_3" value = "1056"/>
+         <parameter name = "J1_Kg6p_3" value = "1.4"/>
+         <parameter name = "J1_Keq_3" value = "0.29"/>
+         <parameter name = "J1_Kf6p_3" value = "0.3"/>
+         <parameter name = "J2_Vmax_4" value = "110"/>
+         <parameter name = "J2_gR_4" value = "5.12"/>
+         <parameter name = "J2_Kf6p_4" value = "0.1"/>
+         <parameter name = "J2_Katp_4" value = "0.71"/>
+         <parameter name = "J2_L0_4" value = "0.66"/>
+         <parameter name = "J2_Ciatp_4" value = "100"/>
+         <parameter name = "J2_Kiatp_4" value = "0.65"/>
+         <parameter name = "J2_Camp_4" value = "0.0845"/>
+         <parameter name = "J2_Kamp_4" value = "0.0995"/>
+         <parameter name = "J2_Cf26_4" value = "0.0174"/>
+         <parameter name = "J2_Kf26_4" value = "0.000682"/>
+         <parameter name = "J2_Cf16_4" value = "0.397"/>
+         <parameter name = "J2_Kf16_4" value = "0.111"/>
+         <parameter name = "J2_Catp_4" value = "3"/>
+         <parameter name = "J2_F26bP" value = "0.02"/>
+         <parameter name = "J3_Vmax_5" value = "94.69"/>
+         <parameter name = "J3_Kf16bp_5" value = "0.3"/>
+         <parameter name = "J3_Keq_5" value = "0.069"/>
+         <parameter name = "J3_Kdhap_5" value = "2"/>
+         <parameter name = "J3_Kgap_5" value = "2.4"/>
+         <parameter name = "J3_Kigap_5" value = "10"/>
+         <parameter name = "J4_k1_6" value = "450000"/>
+         <parameter name = "J4_k2_6" value = "10000000"/>
+         <parameter name = "J5_C_7" value = "1"/>
+         <parameter name = "J5_Vmaxf_7" value = "1152"/>
+         <parameter name = "J5_Kgap_7" value = "0.21"/>
+         <parameter name = "J5_Knad_7" value = "0.09"/>
+         <parameter name = "J5_Vmaxr_7" value = "6719"/>
+         <parameter name = "J5_Kbpg_7" value = "0.0098"/>
+         <parameter name = "J5_Knadh_7" value = "0.06"/>
+         <parameter name = "J6_Vmax_9" value = "2585"/>
+         <parameter name = "J6_Kp3g_9" value = "1.2"/>
+         <parameter name = "J6_Keq_9" value = "0.19"/>
+         <parameter name = "J6_Kp2g_9" value = "0.08"/>
+         <parameter name = "J7_Vmax_10" value = "201.6"/>
+         <parameter name = "J7_Kp2g_10" value = "0.04"/>
+         <parameter name = "J7_Keq_10" value = "6.7"/>
+         <parameter name = "J7_Kpep_10" value = "0.5"/>
+         <parameter name = "J8_Vmax_12" value = "857.8"/>
+         <parameter name = "J8_Kpyr_12" value = "4.33"/>
+         <parameter name = "J8_nH_12" value = "1.9"/>
+         <parameter name = "J9_Vmax_13" value = "209.5"/>
+         <parameter name = "J9_Ketoh_13" value = "17"/>
+         <parameter name = "J9_Kinad_13" value = "0.92"/>
+         <parameter name = "J9_Keq_13" value = "6.9E-5"/>
+         <parameter name = "J9_Knad_13" value = "0.17"/>
+         <parameter name = "J9_Knadh_13" value = "0.11"/>
+         <parameter name = "J9_Kinadh_13" value = "0.031"/>
+         <parameter name = "J9_Kacald_13" value = "1.11"/>
+         <parameter name = "J9_Kiacald_13" value = "1.1"/>
+         <parameter name = "J9_Kietoh_13" value = "90"/>
+         <parameter name = "J10_Katpase_14" value = "39.5"/>
+         <parameter name = "J11_k1_15" value = "45"/>
+         <parameter name = "J11_k2_15" value = "100"/>
+         <parameter name = "J12_Vmax_16" value = "47.11"/>
+         <parameter name = "J12_Kdhap_16" value = "0.4"/>
+         <parameter name = "J12_Knadh_16" value = "0.023"/>
+         <parameter name = "J12_Keq_16" value = "4300"/>
+         <parameter name = "J12_Kglycerol_16" value = "1"/>
+         <parameter name = "J12_Knad_16" value = "0.93"/>
+         <parameter name = "J13_k_19" value = "21.4"/>
+         <parameter name = "J14_Vmax_8" value = "1288"/>
+         <parameter name = "J14_Keq_8" value = "3200"/>
+         <parameter name = "J14_Kp3g_8" value = "0.53"/>
+         <parameter name = "J14_Katp_8" value = "0.3"/>
+         <parameter name = "J14_Kbpg_8" value = "0.003"/>
+         <parameter name = "J14_Kadp_8" value = "0.2"/>
+         <parameter name = "J15_Ktrehalose_18" value = "2.4"/>
+         <parameter name = "J16_Vmax_2" value = "236.7"/>
+         <parameter name = "J16_Kglc_2" value = "0.08"/>
+         <parameter name = "J16_Katp_2" value = "0.15"/>
+         <parameter name = "J16_Keq_2" value = "2000"/>
+         <parameter name = "J16_Kg6p_2" value = "30"/>
+         <parameter name = "J16_Kadp_2" value = "0.23"/>
+         <parameter name = "J17_Vmax_11" value = "1000"/>
+         <parameter name = "J17_Kpep_11" value = "0.14"/>
+         <parameter name = "J17_Kadp_11" value = "0.53"/>
+         <parameter name = "J17_Keq_11" value = "6100"/>
+         <parameter name = "J17_Kpyr_11" value = "21"/>
+         <parameter name = "J17_Katp_11" value = "1.5"/>
+         <parameter name = "J18_KGLYCOGEN_17" value = "6"/>
+      </listOfParameters>
+      <listOfReactions>
+         <reaction name = "J0" reversible = "true">
+            <listOfReactants>
+               <speciesReference species = "GLCo" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "GLCi" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J0_Vmax_1*(GLCo-GLCi)/J0_Kglc_1/(1+(GLCo+GLCi)/J0_Kglc_1+J0_Ki_1*GLCo*GLCi/pow(J0_Kglc_1,2))"/>
+         </reaction>
+         <reaction name = "J1" reversible = "true">
+            <listOfReactants>
+               <speciesReference species = "G6P" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "F6P" stoichiometry = "1"/>
+            </listOfProducts>
+            <listOfModifiers>
+               <modifierSpeciesReference species = "AMP"/>
+            </listOfModifiers>
+            <kineticLaw formula = "J1_Vmax_3*(G6P/J1_Kg6p_3-F6P/(J1_Kg6p_3*J1_Keq_3))/(1+G6P/J1_Kg6p_3+F6P/J1_Kf6p_3)"/>
+         </reaction>
+         <reaction name = "J2" reversible = "false">
+            <listOfReactants>
+               <speciesReference species = "ATP" stoichiometry = "1"/>
+               <speciesReference species = "F6P" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "ADP" stoichiometry = "1"/>
+               <speciesReference species = "F16bP" stoichiometry = "1"/>
+            </listOfProducts>
+            <listOfModifiers>
+               <modifierSpeciesReference species = "AMP"/>
+            </listOfModifiers>
+            <kineticLaw formula = "J2_Vmax_4*(J2_gR_4*(F6P/J2_Kf6p_4)*(ATP/J2_Katp_4)*(1+F6P/J2_Kf6p_4+ATP/J2_Katp_4+J2_gR_4*F6P/J2_Kf6p_4*ATP/J2_Katp_4)/(pow(1+F6P/J2_Kf6p_4+ATP/J2_Katp_4+J2_gR_4*F6P/J2_Kf6p_4*ATP/J2_Katp_4,2)+J2_L0_4*pow((1+J2_Ciatp_4*ATP/J2_Kiatp_4)/(1+ATP/J2_Kiatp_4),2)*pow((1+J2_Camp_4*AMP/J2_Kamp_4)/(1+AMP/J2_Kamp_4),2)*pow((1+J2_Cf26_4*J2_F26bP/J2_Kf26_4+J2_Cf16_4*F16bP/J2_Kf16_4)/(1+J2_F26bP/J2_Kf26_4+F16bP/J2_Kf16_4),2)*pow(1+J2_Catp_4*ATP/J2_Katp_4,2)))"/>
+         </reaction>
+         <reaction name = "J3" reversible = "true">
+            <listOfReactants>
+               <speciesReference species = "F16bP" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "DHAP" stoichiometry = "1"/>
+               <speciesReference species = "GAP" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J3_Vmax_5*(F16bP/J3_Kf16bp_5-DHAP*GAP/(J3_Kf16bp_5*J3_Keq_5))/(1+F16bP/J3_Kf16bp_5+DHAP/J3_Kdhap_5+GAP/J3_Kgap_5+F16bP*GAP/(J3_Kf16bp_5*J3_Kigap_5)+DHAP*GAP/(J3_Kdhap_5*J3_Kgap_5))"/>
+         </reaction>
+         <reaction name = "J4" reversible = "true">
+            <listOfReactants>
+               <speciesReference species = "DHAP" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "GAP" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J4_k1_6*DHAP-J4_k2_6*GAP"/>
+         </reaction>
+         <reaction name = "J5" reversible = "true">
+            <listOfReactants>
+               <speciesReference species = "GAP" stoichiometry = "1"/>
+               <speciesReference species = "NAD" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "BPG" stoichiometry = "1"/>
+               <speciesReference species = "NADH" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J5_C_7*(J5_Vmaxf_7*GAP*NAD/(J5_Kgap_7*J5_Knad_7)-J5_Vmaxr_7*BPG*NADH/(J5_Kbpg_7*J5_Knadh_7))/((1+GAP/J5_Kgap_7+BPG/J5_Kbpg_7)*(1+NAD/J5_Knad_7+NADH/J5_Knadh_7))"/>
+         </reaction>
+         <reaction name = "J6" reversible = "true">
+            <listOfReactants>
+               <speciesReference species = "P3G" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "P2G" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J6_Vmax_9*(P3G/J6_Kp3g_9-P2G/(J6_Kp3g_9*J6_Keq_9))/(1+P3G/J6_Kp3g_9+P2G/J6_Kp2g_9)"/>
+         </reaction>
+         <reaction name = "J7" reversible = "true">
+            <listOfReactants>
+               <speciesReference species = "P2G" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "PEP" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J7_Vmax_10*(P2G/J7_Kp2g_10-PEP/(J7_Kp2g_10*J7_Keq_10))/(1+P2G/J7_Kp2g_10+PEP/J7_Kpep_10)"/>
+         </reaction>
+         <reaction name = "J8" reversible = "false">
+            <listOfReactants>
+               <speciesReference species = "PYR" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "AcAld" stoichiometry = "1"/>
+               <speciesReference species = "CO2" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J8_Vmax_12*pow(PYR/J8_Kpyr_12,J8_nH_12)/(1+pow(PYR/J8_Kpyr_12,J8_nH_12))"/>
+         </reaction>
+         <reaction name = "J9" reversible = "true">
+            <listOfReactants>
+               <speciesReference species = "NAD" stoichiometry = "1"/>
+               <speciesReference species = "EtOH" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "NADH" stoichiometry = "1"/>
+               <speciesReference species = "AcAld" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J9_Vmax_13*(EtOH*NAD/(J9_Ketoh_13*J9_Kinad_13)-AcAld*NADH/(J9_Ketoh_13*J9_Kinad_13*J9_Keq_13))/(1+NAD/J9_Kinad_13+EtOH*J9_Knad_13/(J9_Kinad_13*J9_Ketoh_13)+AcAld*J9_Knadh_13/(J9_Kinadh_13*J9_Kacald_13)+NADH/J9_Kinadh_13+EtOH*NAD/(J9_Kinad_13*J9_Ketoh_13)+NAD*AcAld*J9_Knadh_13/(J9_Kinad_13*J9_Kinadh_13*J9_Kacald_13)+EtOH*NADH*J9_Knad_13/(J9_Kinad_13*J9_Kinadh_13*J9_Ketoh_13)+AcAld*NADH/(J9_Kacald_13*J9_Kinadh_13)+EtOH*NAD*AcAld/(J9_Kinad_13*J9_Kiacald_13*J9_Ketoh_13)+EtOH*AcAld*NADH/(J9_Kietoh_13*J9_Kinadh_13*J9_Kacald_13))"/>
+         </reaction>
+         <reaction name = "J10" reversible = "false">
+            <listOfReactants>
+               <speciesReference species = "ATP" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "ADP" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J10_Katpase_14*ATP"/>
+         </reaction>
+         <reaction name = "J11" reversible = "true">
+            <listOfReactants>
+               <speciesReference species = "ADP" stoichiometry = "2"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "ATP" stoichiometry = "1"/>
+               <speciesReference species = "AMP" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J11_k1_15*ADP*ADP-J11_k2_15*ATP*AMP"/>
+         </reaction>
+         <reaction name = "J12" reversible = "false">
+            <listOfReactants>
+               <speciesReference species = "DHAP" stoichiometry = "1"/>
+               <speciesReference species = "NADH" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "NAD" stoichiometry = "1"/>
+               <speciesReference species = "Glycerol" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J12_Vmax_16*(DHAP/J12_Kdhap_16*(NADH/J12_Knadh_16)-Glycerol/J12_Kdhap_16*(NAD/J12_Knadh_16)*(1/J12_Keq_16))/((1+DHAP/J12_Kdhap_16+Glycerol/J12_Kglycerol_16)*(1+NADH/J12_Knadh_16+NAD/J12_Knad_16))"/>
+         </reaction>
+         <reaction name = "J13" reversible = "false">
+            <listOfReactants>
+               <speciesReference species = "NAD" stoichiometry = "3"/>
+               <speciesReference species = "AcAld" stoichiometry = "2"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "NADH" stoichiometry = "3"/>
+               <speciesReference species = "Succinate" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J13_k_19*AcAld"/>
+         </reaction>
+         <reaction name = "J14" reversible = "false">
+            <listOfReactants>
+               <speciesReference species = "BPG" stoichiometry = "1"/>
+               <speciesReference species = "ADP" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "P3G" stoichiometry = "1"/>
+               <speciesReference species = "ATP" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J14_Vmax_8*((J14_Keq_8*BPG*ADP-P3G*ATP)/(J14_Kp3g_8*J14_Katp_8))/((1+BPG/J14_Kbpg_8+P3G/J14_Kp3g_8)*(1+ADP/J14_Kadp_8+ATP/J14_Katp_8))"/>
+         </reaction>
+         <reaction name = "J15" reversible = "false">
+            <listOfReactants>
+               <speciesReference species = "G6P" stoichiometry = "1"/>
+               <speciesReference species = "ATP" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "ADP" stoichiometry = "1"/>
+               <speciesReference species = "Trehalose" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J15_Ktrehalose_18"/>
+         </reaction>
+         <reaction name = "J16" reversible = "false">
+            <listOfReactants>
+               <speciesReference species = "ATP" stoichiometry = "1"/>
+               <speciesReference species = "GLCi" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "ADP" stoichiometry = "1"/>
+               <speciesReference species = "G6P" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J16_Vmax_2*(GLCi*ATP/(J16_Kglc_2*J16_Katp_2)-G6P*ADP/(J16_Kglc_2*J16_Katp_2*J16_Keq_2))/((1+GLCi/J16_Kglc_2+G6P/J16_Kg6p_2)*(1+ATP/J16_Katp_2+ADP/J16_Kadp_2))"/>
+         </reaction>
+         <reaction name = "J17" reversible = "false">
+            <listOfReactants>
+               <speciesReference species = "ADP" stoichiometry = "1"/>
+               <speciesReference species = "PEP" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "PYR" stoichiometry = "1"/>
+               <speciesReference species = "ATP" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J17_Vmax_11*(PEP*ADP/(J17_Kpep_11*J17_Kadp_11)-PYR*ATP/(J17_Kpep_11*J17_Kadp_11*J17_Keq_11))/((1+PEP/J17_Kpep_11+PYR/J17_Kpyr_11)*(1+ADP/J17_Kadp_11+ATP/J17_Katp_11))"/>
+         </reaction>
+         <reaction name = "J18" reversible = "false">
+            <listOfReactants>
+               <speciesReference species = "G6P" stoichiometry = "1"/>
+               <speciesReference species = "ATP" stoichiometry = "1"/>
+            </listOfReactants>
+            <listOfProducts>
+               <speciesReference species = "Glycogen" stoichiometry = "1"/>
+               <speciesReference species = "ADP" stoichiometry = "1"/>
+            </listOfProducts>
+            <kineticLaw formula = "J18_KGLYCOGEN_17"/>
+         </reaction>
+      </listOfReactions>
+   </model>
+</sbml>

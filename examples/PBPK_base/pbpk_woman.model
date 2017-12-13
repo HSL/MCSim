@@ -1,0 +1,632 @@
+#------------------------------------------------------------------------------
+# woman.model
+# A PK model for woman, based on Luecke et al. 1994
+#
+# May 2002 - Sandrine Micallef - various modifications for
+# correction of Luecke's model,about human life gestation.
+# Jul 2002 - Frederic Bois - various corrections
+# Sep 2002 - Sandrine Micallef - checking against ICRP ref parameter values
+# Dec 2002 - Frederic Bois - introduction of renal elimination, inhalation
+# input, and rewriting of several comments. Changing the fetal weights 
+# to kg for consistency, and the list of ouputs. Correction of the
+# fetal liver weight parameters and biliary output for mother and fetus. 
+# Reintroduction of placental metabolism. Introduction of gut and lung
+# metabolism for the mother. Modification of gestational age. Modifications
+# to allow simulation before pregnancy. Introduction of several variables
+# for mass balance checking. Correction of fetal blood concentrations.
+# Nov 2003 - Frederic Bois added life time evolution of the mother and
+# multiple pregnancies.
+# Feb 2005 - El Hadji Kone - deletion of the gestation.
+# Mar 2005 - F. Bois: introduction of a null output (set at zero)
+#
+# Units:
+# Volumes:          L
+# Time:             min
+# Flows:            L/min
+# Concentrations:   mM (ie mmol/L)
+# Vmax:             mM/min
+# Km:               mM
+# Masses:           kg
+# Height:           m
+# Perfusion rates:  L/min/kg of tissue
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#
+#------------------------------------------------------------------------------
+
+States  = {Q_adip,       #   Quantity of chemical in body adipose (mmol)
+           Q_adrenal,    #   ...   in  adrenal (mmol)
+           Q_art,        #   ...   in  arterial blood (mmol)
+           Q_brain,      #   ...   in  brain (mmol)
+           Q_breast,     #   ...   in  breast(mmol)
+           Q_gut,        #   ...   in  gut (mmol)
+           Q_gut_lumen,  #   ...   in  gut lumen (mmol)
+           Q_heart,      #   ...   in  heart (mmol)
+           Q_kidney,     #   ...   in  kidney (mmol)
+           Q_liver,      #   ...   in  liver (mmol)
+           Q_lung,       #   ...   in  lung (mmol)
+           Q_marrow,     #   ...   in  bone marrow + perf bone (mmol)
+           Q_muscle,     #   ...   in  muscle (mmol)
+           Q_other,      #   ...   in  other (mmol)
+           Q_pancreas,   #   ...   in  pancreas (mmol)
+           Q_skin,       #   ...   in  skin (mmol)
+           Q_spleen,     #   ...   in  spleen (mmol)
+           Q_stomach,    #   ...   in  stomach (mmol)
+           Q_stom_lumen, #   ...   in  stomach lumen (mmol)
+           Q_thyroid,    #   ...   in  thyroid (mmol)
+           Q_uterus,     #   ...   in  uterus (mmol)
+           Q_ven,        #   ...   in  venous blood (mmol)
+           Q_met_liver,  #   ...   metabolized in  liver (mmol)
+           Q_met_lung,   #   ...   metabolized in  lung (mmol)
+           Q_met_gut,    #   ...   metabolized in  gut (mmol)
+           Q_ing,        #   ...   ingested by the woman (mmol)
+           Q_inh,        #   ...   inhaled by the woman (mmol)
+           Q_exhaled,    #   ...   exhaled by the woman (mmol)
+           Q_feces,      #   ...   fecally excreted by the woman (mmol)
+           Q_urine};     #   ...   renally excreted by the woman (mmol)
+
+
+Outputs = {C_exh,        # Concentration of chemical in exhaled air (mM)
+           C_adip,       #   ...   in  adipose (mM)
+           C_adrenal,    #   ...   in  adrenal (mM)
+           C_art,        #   ...   in  arterial blood (mM)
+           C_brain,      #   ...   in  brain (mM)
+           C_breast,     #   ...   in  breast(mM)
+           C_gut,        #   ...   in  gut (mM)
+           C_gut_lumen,  #   ...   in  gut lumen (mM)
+           C_heart,      #   ...   in  heart (mM)
+           C_kidney,     #   ...   in  kidney (mM)
+           C_liver,      #   ...   in  liver (mM)
+           C_lung,       #   ...   in  lung (mM)
+           C_marrow,     #   ...   in  bone marrow (mM)
+           C_muscle,     #   ...   in  muscle (mM)
+           C_other,      #   ...   in  other (mM)
+           C_pancreas,   #   ...   in  pancreas (mM)
+           C_skin,       #   ...   in  skin (mM)
+           C_spleen,     #   ...   in  spleen (mM)
+           C_stomach,    #   ...   in  stomach (mM)
+           C_stom_lumen, #   ...   in  stomach lumen (mM)
+           C_thyroid,    #   ...   in  venous thyroid (mM)
+           C_uterus,     #   ...   in  uterus (mM)
+           C_ven,        #   ...   in  venous blood (mM)
+           C_null,       #   Null output, e.g. bone or gas (set to zero)
+
+           Q_total};     #   Total quantity in body and excreted (mmol)
+
+Inputs  = {C_inh,        # Concentration inhaled (mM)
+           Q_ing_rate};  # Ingestion rate (mmol/min)
+
+
+
+# Nominal parameter values
+# ========================
+
+# Physiological and pharmacokinetic parameters
+# --------------------------------------------
+
+# Fraction of dead space in lung
+F_dead_space = 0.67;
+
+# Age in years
+Age = 30; 
+
+# Fraction of arterial blood
+# Calculated from Filser 2000 p.43
+Fr_art_blood = 0.0178 / (0.0178 + 0.0533);
+
+# Tissue volumic weight are assumed to be equal to 1
+# excepted for adipose tissue (cf Brown et al. 97 p.433)
+density_adip = 0.9;
+density_bone = 2.0;
+
+# Scaling factors for the volume of the organs
+# Unit = L/meter of height
+# sc_V_ have been calculated for a standard woman : 1.63m 63kg
+# and using the organ weights given by the ICRP. 2001
+# density for the organs is supposed equal to 1 excepted for
+# adipose tissues (0.9) and bones (2)
+
+sc_V_adrenal   = 8.0E-3;
+sc_V_bone      = 1.564;
+sc_V_brain     = 0.798;
+sc_V_gut       = 0.589;
+sc_V_gut_lumen = 0.331;   
+sc_V_heart     = 0.153;
+sc_V_kidney    = 0.169;
+sc_V_liver     = 0.859;
+sc_V_lung      = 0.215;
+sc_V_marrow    = 1.656;  # yellow + red
+sc_V_muscle    = 11.043;   
+sc_V_other     = 4.012;
+sc_V_pancreas  = 0.052;
+sc_V_skin      = 1.530;
+sc_V_spleen    = 0.092;
+sc_V_stomach   = 0.086;
+sc_V_stom_lumen= 0.098;    
+sc_V_thyroid   = 0.010;
+sc_V_uterus    = 0.049;
+
+
+# Perfusion per unit mass of organ.
+# These have been calculated as follows:
+# sc_F_organ = %blood_flow_rate * Card_output / organ_weight
+# the values have been taken from ICRP 2001
+# Organ weight : Table R8 p2-5,
+# Cardiac output : Table R26 p2-23
+# Blood_flow : Table R15 & R17 p7-11 or William & Leggett
+#              Table R31 p2-26 for perfusion of breast and uterus assuming
+#              a factor 10 growth of uterus mass during pregnancy
+# Unit: L/min/kg of tissue
+
+sc_F_adip    = 0.03;
+sc_F_adrenal = 1.68;
+sc_F_brain   = 0.49;
+sc_F_breast  = 0.27;
+sc_F_eport   = 0.25;
+sc_F_gut     = 0.95;
+sc_F_heart   = 1.08;
+sc_F_kidney  = 4.41;
+sc_F_marrow  = 0.10;
+sc_F_muscle  = 0.04;
+sc_F_pancreas= 0.60;
+sc_F_skin    = 0.29;
+sc_F_spleen  = 1.07;
+sc_F_stomach = 0.52;
+sc_F_thyroid = 4.72;
+sc_F_uterus  = 1.095;
+sc_F_other   = 0.027;
+
+
+# Transits; Unit: L/min
+Fl_stom_lumen = 0.208 / 60.0; # Intestinal transit for stomach -> gut
+                               # ICRP R8 and R23 p. 6-15
+Fl_gut_lumen  = 0.005 / 60.0; # Intestinal transit for gut (feces)
+                               # ICRP R8 and R23 p. 6-15
+
+
+
+# Parameters indicating the fraction of fat in each organ
+# comming from Fiserova-Bergerova  1983
+# or references found in Van der Mollen 1996
+frac_fat_blood      = 0.0052;     # Papke et al 89.
+
+frac_fat_adip       = 0.859;      # Beck 90, Duarte-Davidson 93, Patterson 86
+                                  # Ryan 86 Ryan 85b Schecter 85
+                                  # refs in Van der Molen 96
+frac_fat_adrenal    = 0.049;      # Default value corresponding to
+                                  # "Remaining organs de Van der Molen"
+frac_fat_brain      = 0.11;       # Fiserova-Bergerova  1983
+frac_fat_breast     = 0.049;      # Default value
+frac_fat_gut        = 0.065;      # Fiserova-Bergerova  1983
+frac_fat_gut_lumen  = 0.049;      # Default value
+frac_fat_heart      = 0.083;      # Fiserova-Bergerova  1983
+frac_fat_kidney     = 0.052;      # Fiserova-Bergerova  1983
+frac_fat_liver      = 0.049;      # Lenter 81, ref in Van der Molen 96
+frac_fat_lung       = 0.017;      # Fiserova-Bergerova  1983
+frac_fat_marrow     = 0.186;      # Clarys & Martin 85,ref in Van der Molen 96
+frac_fat_muscle     = 0.064;      # Lenter 81 & Ryan 85,
+                                  # ref in Van der Molen 96
+frac_fat_other      = 0.049;      # Default value
+frac_fat_pancreas   = 0.105;      # Fiserova-Bergerova  1983
+frac_fat_skin       = 0.150;      # Fiserova-Bergerova  1983
+frac_fat_spleen     = 0.030;      # Fiserova-Bergerova  1983
+frac_fat_stomach    = 0.049;      # Default value
+frac_fat_stom_lumen = 0.049;      # Default value
+frac_fat_thymus     = 0.049;      # Default value
+frac_fat_thyroid    = 0.049;      # Default value
+frac_fat_uterus     = 0.049;      # Default value
+
+
+# Parameters specific of the chemical studied
+# -------------------------------------------
+
+# Transferts depending on the agent; Unit: L/min
+Ka_stomach    = 0.1;   # Absorption rate constant for stomach
+Ka_gut        = 0.1;   # Absorption rate constant for gut
+Ke_bile       = 0.0;   # Biliary excretion rate constant for the woman
+
+# Lung/air PC
+PC_lung_over_air = 1;
+
+# Adipose tissue over blood partition coefficent
+PC_adip     = 1;
+
+#  renal elimination flow rate (L/min)
+Ke_renal   = 1E-3;
+
+#  hepatic metabolic rate constant scaling factor ((kg^0.25)/min)
+# Scaling to the 0.25 is supported by Hattis et al. and used by Gentry et al.
+scKm_liver   = 0;
+
+#  gut metabolic rate constant scaling factor ((kg^0.25)/min)
+scKm_gut     = 0;
+
+#  lung metabolic rate constant scaling factor ((kg^0.25)/min)
+scKm_lung    = 0;
+
+
+# Other parameters that will be computed in Initialize
+
+PC_fat;
+PC_adrenal;
+PC_brain;
+PC_breast;
+PC_gut;
+PC_heart;
+PC_kidney;
+PC_liver;
+PC_lung;
+PC_marrow;
+PC_muscle;
+PC_other;
+PC_pancreas;
+PC_skin;
+PC_spleen;
+PC_stomach;
+PC_thymus;
+PC_thyroid;
+PC_uterus;
+
+#  Parameters changing with time.
+height;
+dtmp;
+Km_liver;
+Km_gut;
+Km_lung;
+        
+W_lean;
+W_total;      # Total weight of the woman, bone 
+V_blood;
+V_adip;
+V_adrenal;
+V_art;
+V_ven;
+V_bone;
+V_brain;
+V_breast;
+V_gut;
+V_gut_lumen;
+V_heart;
+V_kidney;
+V_liver;
+V_lung;
+V_marrow;
+V_muscle;
+V_other;
+V_pancreas;
+V_skin;
+V_spleen;
+V_stomach;
+V_stom_lumen;
+V_thyroid;
+V_uterus;
+
+F_adip;
+F_adrenal;
+F_alv;
+F_brain;
+F_breast;
+F_eport;
+F_gut;
+F_heart;
+F_kidney;
+F_marrow;
+F_muscle;
+F_other;
+F_pancreas;
+F_pul;
+F_skin;
+F_spleen;
+F_stomach;
+F_thyroid;
+F_uterus;
+F_liver;
+F_blood;
+
+Initialize {
+
+
+  # Pure fat /blood partition coef.
+
+  PC_fat      = PC_adip / frac_fat_adip;
+
+  # Tissue over blood partition coefficients
+
+  PC_adrenal  = frac_fat_adrenal  * PC_fat;
+  PC_brain    = frac_fat_brain    * PC_fat;
+  PC_breast   = frac_fat_breast   * PC_fat;
+  PC_gut      = frac_fat_gut      * PC_fat;
+  PC_heart    = frac_fat_heart    * PC_fat;
+  PC_kidney   = frac_fat_kidney   * PC_fat;
+  PC_liver    = frac_fat_liver    * PC_fat;
+  PC_lung     = frac_fat_lung     * PC_fat;
+  PC_marrow   = frac_fat_marrow   * PC_fat;
+  PC_muscle   = frac_fat_muscle   * PC_fat;
+  PC_other    = frac_fat_other    * PC_fat;
+  PC_pancreas = frac_fat_pancreas * PC_fat;
+  PC_skin     = frac_fat_skin     * PC_fat;
+  PC_spleen   = frac_fat_spleen   * PC_fat;
+  PC_stomach  = frac_fat_stomach  * PC_fat;
+  PC_thymus   = frac_fat_thymus   * PC_fat;
+  PC_thyroid  = frac_fat_thyroid  * PC_fat;
+  PC_uterus   = frac_fat_uterus   * PC_fat;
+
+  #  tissue volumes (L) are supposed to be proportionnal to the
+  # Woman height, excepted for the adipose tissue
+
+  height = (Age < 1 ? 51 + Age * (76-51) :
+              (Age < 5 ? 76 + (Age-1) * (109-76) / 4.0 :
+                (Age < 10 ? 109 + (Age-5) * (138-109) / 5.0 :
+                  (Age < 15 ? 138 + (Age-10) * (161-138) / 5.0 :
+                    (Age < 20 ? 161 + (Age-15) * (163-161) / 5.0 :
+                     163))))) * 0.01;
+
+  V_adrenal    = sc_V_adrenal   * height;
+  V_bone       = sc_V_bone      * height;
+  V_brain      = sc_V_brain     * height;
+  V_gut        = sc_V_gut       * height;
+  V_gut_lumen  = sc_V_gut_lumen * height; 
+  V_heart      = sc_V_heart     * height;
+  V_kidney     = sc_V_kidney    * height;
+  V_liver      = sc_V_liver     * height;
+  V_lung       = sc_V_lung      * height;
+  V_marrow     = sc_V_marrow    * height;
+  V_muscle     = sc_V_muscle    * height;
+  V_other      = sc_V_other     * height;
+  V_pancreas   = sc_V_pancreas  * height;
+  V_skin       = sc_V_skin      * height;
+  V_spleen     = sc_V_spleen    * height;
+  V_stomach    = sc_V_stomach   * height;
+  V_stom_lumen = sc_V_stom_lumen* height;   
+  V_thyroid    = sc_V_thyroid   * height;
+
+
+
+  # Volumes of the organs changing with the time,
+  # computed with the equations from Luecke 94 and from ICRP data and Van 
+  # Molen model after age 14
+
+  V_adip = (Age < 1 ? 0.37 + Age * (2.3-0.37) :
+              (Age < 5 ? 2.3 + (Age-1) * (3.6-2.3) / 4.0 :
+                (Age < 10 ? 3.6 + (Age-5) * (6-3.6) / 5.0 :
+                  (Age < 15 ? 6.0 + (Age-10) * (14-6) / 5.0 :
+                     14 + (Age-15) * 17 / 55.0)))) / density_adip;
+
+  V_blood = (Age < 1 ? 0.27 + Age * (0.5-0.27) :
+               (Age < 5 ? 0.5 + (Age-1) * (1.4-0.5) / 4.0 :
+                 (Age < 10 ? 1.4 + (Age-5) * (2.4-1.4) / 5.0 :
+                   (Age < 15 ? 2.4 + (Age-10) * (3.3-2.4) / 5.0 :
+                     (Age < 20 ? 3.3 + (Age-15) * (3.9-3.3) / 5.0 :
+                      3.9)))));
+
+  V_art    = V_blood * Fr_art_blood;   
+  V_ven    = V_blood - V_art;
+
+  V_breast = (Age < 10 ? 0.01 :
+                (Age < 15 ? 0.01 + (Age-10) * (0.25-0.01) / 5.0 :
+                  (Age < 20 ? 0.25 + (Age-15) * (0.5-0.25) / 5.0 : 0.5)));
+
+  V_uterus = sc_V_uterus * height;
+
+  W_lean  = V_adrenal + V_blood  +
+             V_bone * density_bone     + V_brain   + V_breast +
+             V_gut     + V_gut_lumen  + V_heart   + V_kidney +
+             V_liver   + V_lung       + V_marrow  + V_muscle +
+             V_other   + V_pancreas   + V_skin    + V_spleen +
+             V_stomach + V_stom_lumen + V_thyroid + V_uterus;
+
+  W_total = W_lean + V_adip * density_adip;
+
+  # Scale metabolism to body masses
+
+  dtmp = pow(W_lean, 0.25);
+  Km_liver   = scKm_liver / dtmp;
+  Km_gut     = scKm_gut / dtmp;
+  Km_lung    = scKm_lung / dtmp;
+ 
+  # Compute actual blood flows
+  # Unit: L/min
+
+  F_adip     = sc_F_adip     * V_adip;
+  F_adrenal  = sc_F_adrenal  * V_adrenal;
+  F_brain    = sc_F_brain    * V_brain;
+  F_breast   = sc_F_breast   * V_breast;
+  F_eport    = sc_F_eport    * V_liver;
+  F_gut      = sc_F_gut      * V_gut;
+  F_heart    = sc_F_heart    * V_heart;
+  F_kidney   = sc_F_kidney   * V_kidney;
+  F_marrow   = sc_F_marrow   * V_marrow;
+  F_muscle   = sc_F_muscle   * V_muscle;
+  F_other    = sc_F_other    * V_other ;
+  F_pancreas = sc_F_pancreas * V_pancreas;
+  F_skin     = sc_F_skin     * V_skin;
+  F_spleen   = sc_F_spleen   * V_spleen;
+  F_stomach  = sc_F_stomach  * V_stomach;
+  F_thyroid  = sc_F_thyroid  * V_thyroid;
+  F_uterus   = sc_F_uterus   * V_uterus;
+
+  F_liver    = F_eport + F_spleen + F_pancreas + F_gut + F_stomach;
+
+  F_blood    = F_adip  + F_adrenal + F_brain   + F_breast +
+               F_heart + F_kidney  + F_liver   + F_marrow + F_muscle +
+               F_other + F_skin    + F_thyroid + F_uterus;
+
+ 
+ 
+  # Note: lung is irrigated by a bifurcation and does not enter in the
+  # formula above.
+  # Pulmonary Flow rate (L/min) (ref ICRP Pub 89, p 99).
+ 
+  F_pul = (Age < 1 ? 1.5 + Age * (3.7-1.5) :
+               (Age < 5 ? 3.7 + (Age-1) * (5.3-3.7) / 4.0 :
+                 (Age < 10 ? 5.3 + (Age-5) * (6.3-5.3) / 5.0 :
+                   (Age < 15 ? 6.3 + (Age-10) * (6.7-6.3) / 5.0 :
+                     (Age < 20 ? 6.7 + (Age-15) * (6.5-6.7) / 5.0 :
+                      6.7)))));
+
+  # Alveolar flow rate
+  F_alv = F_pul * F_dead_space;
+
+} # End of initialize
+
+
+Dynamics {
+
+  # Concentrations in venous blood at the organ exit and in tissues
+
+  C_adip       = Q_adip     / V_adip;
+  C_adip_v     = C_adip     / PC_adip;
+
+  C_adrenal    = Q_adrenal  / V_adrenal;
+  C_adrenal_v  = C_adrenal  / PC_adrenal;
+
+  C_brain      = Q_brain    / V_brain;
+  C_brain_v    = C_brain    / PC_brain;
+
+  C_breast     = Q_breast   / V_breast;
+  C_breast_v   = C_breast   / PC_breast;
+
+  C_gut        = Q_gut      / V_gut;
+  C_gut_v      = C_gut      / PC_gut;
+
+  C_heart      = Q_heart    / V_heart;
+  C_heart_v    = C_heart    / PC_heart;
+
+  C_kidney     = Q_kidney   / V_kidney;
+  C_kidney_v   = C_kidney   / PC_kidney;
+
+  C_liver      = Q_liver    / V_liver;
+  C_liver_v    = C_liver    / PC_liver;
+
+  C_lung       = Q_lung     / V_lung;
+  C_lung_v     = C_lung     / PC_lung;
+
+  C_marrow     = Q_marrow   / V_marrow;
+  C_marrow_v   = C_marrow   / PC_marrow;
+
+  C_muscle     = Q_muscle   / V_muscle;
+  C_muscle_v   = C_muscle   / PC_muscle;
+
+  C_other      = Q_other    / V_other;
+  C_other_v    = C_other    / PC_other;
+
+  C_pancreas   = Q_pancreas / V_pancreas;
+  C_pancreas_v = C_pancreas / PC_pancreas;
+
+  C_skin       = Q_skin     / V_skin;
+  C_skin_v     = C_skin     / PC_skin;
+
+  C_spleen     = Q_spleen   / V_spleen;
+  C_spleen_v   = C_spleen   / PC_spleen;
+
+  C_stomach    = Q_stomach  / V_stomach;
+  C_stomach_v  = C_stomach  / PC_stomach;
+
+  C_thyroid    = Q_thyroid  / V_thyroid;
+  C_thyroid_v  = C_thyroid  / PC_thyroid;
+
+  C_uterus     = Q_uterus   / V_uterus;
+  C_uterus_v   = C_uterus   / PC_uterus;
+
+ 
+ 
+ 
+
+  # other compartment concentrations for which PC_ is not needed
+  # because equal to 1 (PC_ven and PC_art) or because
+  # they are not directly irrigated by blood (diffusion)
+
+  C_gut_lumen  = Q_gut_lumen  / V_gut_lumen;
+  C_stom_lumen = Q_stom_lumen / V_stom_lumen;
+  C_art        = Q_art        / V_art;
+  C_ven        = Q_ven        / V_ven;
+
+ 
+  # Differentials 
+
+  dt(Q_ing) = Q_ing_rate;
+
+  dt(Q_stom_lumen) = Q_ing_rate - 
+                      (Fl_stom_lumen + Ka_stomach) * C_stom_lumen;
+
+  dt(Q_stomach )   = Ka_stomach * C_stom_lumen +
+                      F_stomach * (C_art - C_stomach_v);
+
+  dt(Q_feces)      = Fl_gut_lumen * C_gut_lumen;
+
+  dt(Q_gut_lumen)  = Fl_stom_lumen * C_stom_lumen + Ke_bile * C_liver -
+                      Ka_gut * C_gut_lumen - dt(Q_feces);
+
+  dt(Q_met_gut)    = Km_gut * Q_gut;
+
+  dt(Q_gut)        = Ka_gut * C_gut_lumen +
+                      F_gut * (C_art - C_gut_v) - dt(Q_met_gut);
+
+  dt(Q_met_liver)  = Km_liver * Q_liver;
+
+  dt(Q_liver)   = F_eport    * C_art        + F_spleen * C_spleen_v +
+                   F_pancreas * C_pancreas_v + F_gut    * C_gut_v +
+                   F_stomach  * C_stomach_v  - F_liver  * C_liver_v -
+                   Ke_bile    * C_liver      - dt(Q_met_liver);
+
+  dt(Q_adip)     = F_adip     * (C_art - C_adip_v);
+  dt(Q_adrenal)  = F_adrenal  * (C_art - C_adrenal_v);
+  dt(Q_brain)    = F_brain    * (C_art - C_brain_v);
+  dt(Q_breast)   = F_breast   * (C_art - C_breast_v);
+  dt(Q_heart)     = F_heart    * (C_art - C_heart_v);
+
+  dt(Q_inh)       = F_alv      * C_inh;
+
+  dt(Q_exhaled)   = F_alv      * (C_lung / PC_lung_over_air);
+
+  dt(Q_met_lung)  = Km_lung    *  Q_lung;
+
+  dt(Q_lung)      = F_blood    * (C_ven - C_lung_v) + dt(Q_inh) -
+                    dt(Q_exhaled) - dt(Q_met_lung);
+
+  dt(Q_urine)     = Ke_renal   * C_kidney;
+
+  dt(Q_kidney)    = F_kidney   * (C_art - C_kidney_v) - dt(Q_urine);
+
+  dt(Q_marrow)    = F_marrow   * (C_art - C_marrow_v);
+  dt(Q_muscle)   = F_muscle   * (C_art - C_muscle_v);
+  dt(Q_other)    = F_other    * (C_art - C_other_v);
+  dt(Q_pancreas) = F_pancreas * (C_art - C_pancreas_v);
+  dt(Q_skin)     = F_skin     * (C_art - C_skin_v);
+  dt(Q_spleen)   = F_spleen   * (C_art - C_spleen_v);
+  dt(Q_thyroid)  = F_thyroid  * (C_art - C_thyroid_v);
+
+  dt(Q_art)      = F_blood * (C_lung_v - C_art);
+
+  dt(Q_ven)      = C_skin_v    * F_skin    + C_heart_v   * F_heart +
+                   C_other_v   * F_other   + C_liver_v   * F_liver +
+                   C_adip_v    * F_adip    + C_adrenal_v * F_adrenal +
+                   C_marrow_v  * F_marrow  + C_breast_v  * F_breast +
+                   C_muscle_v  * F_muscle  + C_brain_v   * F_brain +
+                   C_thyroid_v * F_thyroid + C_uterus_v  * F_uterus +
+                   C_kidney_v  * F_kidney  - F_blood * C_ven; 
+
+  dt(Q_uterus)  = F_uterus   * (C_art - C_uterus_v);
+
+  # Mass balance check
+
+  Q_total = Q_adip + Q_adrenal + Q_art + Q_brain + Q_breast + Q_gut + 
+            Q_gut_lumen + Q_heart + Q_kidney + Q_liver + Q_lung + 
+            Q_marrow + Q_muscle + Q_other + Q_pancreas + Q_skin + 
+            Q_spleen + Q_stomach + Q_stom_lumen + Q_thyroid + Q_uterus + 
+            Q_ven + Q_met_liver + Q_met_lung + Q_met_gut + Q_exhaled + 
+            Q_feces + Q_urine;
+
+} # End of Dynamics
+
+
+CalcOutputs {
+
+  # Exhaled air concentration (mM)
+  C_exh  = 0.7 * C_ven + 0.3 * C_inh;
+
+  C_null = 0;
+
+} # End of CalcOutputs
+
+End.

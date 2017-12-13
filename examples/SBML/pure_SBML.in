@@ -1,0 +1,9 @@
+#------------------------------------------------------------------------------
+# SBML_List.in
+# Defines a list of SBML model files to read and, if needed, a PK template 
+# to use for the circulating species.
+#------------------------------------------------------------------------------
+
+SBMLModels = {"Yeast.xml.txt"};
+
+End.

@@ -1,0 +1,6 @@
+# this file should be executed as tclsh ./make_index
+# tclsh script to make an index of the tcl routines 
+# for the desktop library
+#
+auto_mkindex . *.tcl
+

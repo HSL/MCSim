@@ -1,0 +1,38 @@
+#------------------------------------------------------------------------------
+# 1cpt_no_noise.in
+#
+# Simulation file for a one compartment model
+# First order input and output
+# Single dosing with 2 different doses
+# No noise added to the output concentrations
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+# Parameter settings:
+
+ka = 0.1;      # absorption rate constant
+ke = 0.05;     # elimination rate constant
+F  = 0.75;     # bioavailability (fraction absorbed)
+V  = 1;        # volume of distribution
+
+CV_C_cen_true = 0;
+CV_AUC_true   = 0;
+
+Simulation {
+
+  Dose = 1;
+
+  Print (C_central, AUC, 1, 5, 10, 15, 20, 40, 60, 100, 140);
+  Print (ln_C_central, ln_AUC, 1, 5, 10, 15, 20, 40, 60, 100, 140);
+}
+
+Simulation {
+
+  Dose = 10;
+
+  Print (C_central, AUC, 1, 2, 3, 5, 10, 20, 40, 50, 100, 120, 140);
+  Print (ln_C_central, ln_AUC, 1, 2, 3, 5, 10, 20, 40, 50, 100, 120, 140);
+}
+
+END.

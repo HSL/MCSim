@@ -1,0 +1,18 @@
+#------------------------------------------------------------------------------
+# event.model
+#
+# A two state variables with constant decay model
+#
+# Copyright (c) 2015 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+States = {v1, v2};
+
+Inputs = {events_v1, events_v2};
+
+Dynamics {
+  dt(v1) = -0.1 * v1; 
+  dt(v2) = -0.1 * v2; 
+}
+
+End.

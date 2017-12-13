@@ -1,0 +1,91 @@
+#------------------------------------------------------------------------------
+# linear.H.MCMC4.in
+#
+# Linear model - with hierarchical statistical model.
+# Uses a restart file and vector MCMC sampling
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+MCMC ("linear.H.MCMC4.out",  # output file
+      "linear.H.MCMC4.rst",  # name of restart file
+      "",                    # name of data file
+      1200, 2,               # iterations, print predictions flag,
+      20, 1000,              # printing frequency, iters to print
+      434563.1961);          # random seed
+
+Level {
+
+  Distrib (A, Normal, 0, 10); # exact mean
+  Distrib (B, Normal, 1, 10); # exact mean
+
+  Likelihood (Data (y), Normal, Prediction(y), 0.05); # exact SD
+
+  Level {
+
+    Distrib(A, Normal, A, 0.1); # exact sd
+    Distrib(B, Normal, B, 0.2); # exact sd
+
+    Simulation {
+      PrintStep (y, 0, 10, 1);
+      Data  (y, -0.0289654, 1.15968, 2.32502, 3.33289, 4.61105, 5.6818, 
+                 6.89044, 8.13242, 9.27033, 10.4522, 11.6703);
+    }
+
+    Simulation {
+      PrintStep (y, 0, 10, 1);
+      Data  (y, 0.206736, 1.62363, 2.99466, 4.45524, 5.82479, 7.399, 
+                8.83554, 10.1972, 11.6101, 13.0017, 14.4828);
+    }
+    
+    Simulation {
+      PrintStep (y, 0, 10, 1);
+      Data  (y, -0.161957, 1.02337, 2.22477, 3.16424, 4.33978, 5.51955, 
+                 6.55163, 7.65898, 8.73141, 9.886, 11.0299);
+    }
+
+    Simulation {
+      PrintStep (y, 0, 10, 1);
+      Data  (y, 0.273275, 1.53654, 2.88819, 4.06074, 5.34282, 6.64205, 
+                7.84683, 9.26832, 10.5592, 11.823, 13.1987);
+    }
+
+    Simulation {
+      PrintStep (y, 0, 10, 1);
+      Data  (y, 0.0574323, 1.12813, 2.30768, 3.39417, 4.56236, 5.73035,
+                6.79274, 8.01933, 9.00732, 10.1521, 11.3971);
+    }
+ 
+    Simulation {
+      PrintStep (y, 0, 10, 1);
+      Data  (y, -0.0490026, 1.1069, 2.35073, 3.45157, 4.60029, 5.78555, 
+                 6.91613, 8.04021, 9.27462, 10.3597, 11.467);
+    }
+
+    Simulation {
+      PrintStep (y, 0, 10, 1);
+      Data  (y, -0.0611812, 0.881003, 1.70955, 2.87582, 3.66105, 4.60691, 
+                 5.54883, 6.57964, 7.56341, 8.36853, 9.31566);
+    }
+    
+    Simulation {
+      PrintStep (y, 0, 10, 1);
+      Data  (y, -0.230372, 0.959354, 1.9551, 2.95323, 4.02194, 5.22346, 
+                 6.25444, 7.24072, 8.42794, 9.36709, 10.4741);
+    }
+
+    Simulation {
+      PrintStep (y, 0, 10, 1);
+      Data  (y, 0.181999, 1.3792, 2.68779, 3.92719, 5.30783, 6.58663, 
+                7.78922, 9.21338, 10.4933, 11.7726, 13.0247);
+    }
+    
+    Simulation {
+      PrintStep (y, 0, 10, 1);
+      Data  (y, -0.0143451, 1.33543, 2.52422, 3.92271, 5.15664, 6.2847, 
+                 7.65199, 8.85981, 10.0816, 11.4262, 12.71);
+    }
+  }
+}
+
+END.

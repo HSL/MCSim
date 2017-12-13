@@ -1,0 +1,50 @@
+# Butadiene - Human model
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#
+#==============================================================================
+
+OptimalDesign ("butadiene.opt.out",    # output file
+               "butadiene.pop.sample", # sample param file
+               1000,             # size of the param sample file
+               25198563.1961,    # random seed
+               Forward,          # style (Forward or Backward)
+               sc_V_cen, K_cen_hid, PC_htoc_by_V, K_elim, PC_ctoa, sc_K_in, 
+               BDW, SD_exh);
+
+# Section A --------------------------
+# Put the experiments to optimize at the beginning. They must specify at least 
+# one output (prediction). The output times you specify define an array of
+# observation time values: the optimization will provide a ranking of these
+# times by order of the estimated variance reduction they permit for variables 
+# or parameters you will specify later (in section B). There must also be 
+# one Data statement per output specified (the data values are 
+# arbitrary). A likelihood function must be specified for each data variable.
+# This likelihood will be used to simulate new dataset and to evaluate their
+# expected likelihood. 
+
+Likelihood (C_exh, LogNormal, Prediction(C_exh), SD_exh);
+
+Simulation { # this is an experiment to optimize, it specifies data
+
+  C_inh = NDoses (2, 2, 0, 0, 20);  # 20 minutes exposure to 2 ppm
+
+  Print (C_exh, 2, 5, 10, 15, 19, 21, 22, 24, 26, 28, 32, 38, 44, 50, 54);
+
+  # arbitrary data, one per time point
+  Data  (C_exh, 2, 5, 10, 15, 19, 21, 22, 24, 26, 28, 32, 38, 44, 50, 54);
+
+}
+
+# Section B --------------------------
+# Put the pure prediction experiments at the end, without Data statements.
+# They must specify output variables or parameter whose estimation variance 
+# will be minimized.
+
+Simulation {
+
+  Print (K_elim, 2); # when a parameter is targeted no inputs are needed
+
+}
+
+End.

@@ -1,0 +1,126 @@
+# Butadiene - 2-cpt model
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#==============================================================================
+
+States =  {Q_hid,  # quantity of butadiene in hidden
+           Q_cen}; #                          central compartment
+
+Outputs = {C_cen,  # concentration of butadiene in central (mM/L)
+           C_exh,  # ...                           exhaled air (ppm)
+           PC_ctoa_obs,  # observed blood/air partition coefficient
+           sc_K_in_obs}; # observed scaling coef. of pulmonary ventilation
+
+Inputs =  {C_inh}; # butadiene inhaled concentration (ppm)
+
+
+# Covariates
+# ==========
+
+# Bodyweight (kg)
+BDW = 73; # standard value
+
+
+# Model Parameters
+# ================
+
+# Fraction of BDW as central volume
+sc_V_cen = 0.7;
+
+# Scaling coefficient of the ventilation rate (multiplies BDW^0.7)
+sc_K_in = 0.42; # standard value
+
+# Central over air partition coefficient
+PC_ctoa = 1.2;
+
+# Distribution rate constant from central to hidden (1/min)
+K_cen_hid = 1.0;
+
+# Hidden over central partition coefficient divided by V_hidden
+PC_htoc_by_V = 1.0;
+
+# Elimination rate constant (1/min)
+K_elim = 1.0;
+
+
+# Model Parameters computed by scaling from the above
+# ===================================================
+
+# Volume of the central compartment (L)
+V_cen = 1.0;
+
+# Ventilation input rate constant (L/min)
+K_in = 1.0;
+
+# Ventilation output rate constant (L/min)
+K_out = 1.0;
+
+
+# Constants
+# =========
+
+# Modecular weights
+MW_bu  =  54.0914;
+
+# Conversions between ppm and mM (under normal conditions):
+ppm_per_mM = 24450;
+
+# Statistical parameters
+# ======================
+
+Vr_V_cen   = 0.039; # 20% CV
+Vr_K_cen   = 0.039;
+Vr_PC_htoc = 0.039;
+Vr_K_elim  = 0.693; # factor 2
+Vr_PC_ctoa = 0.039; # 20% CV
+Vr_K_in    = 0.039; # 20% CV
+
+SD_exh = 1.1;
+
+
+# Dynamics
+# ========
+Dynamics {
+
+# Concentrations
+C_cen = Q_cen / V_cen;
+
+# Central compartment quantity: in from air and hidden,
+# out to air, hidden and elimination
+dt (Q_cen) = K_in * C_inh / ppm_per_mM + K_cen_hid * Q_hid / PC_htoc_by_V - 
+            (K_cen_hid + K_out) * C_cen - K_elim * Q_cen;
+
+# Hidden compartment quantity
+dt (Q_hid) = K_cen_hid * (C_cen - Q_hid / PC_htoc_by_V);
+
+} # End of dynamics
+
+
+# Scaling
+# =======
+Scale {
+
+# Central volume is function of BDW
+V_cen = sc_V_cen * BDW;
+
+# Ventilation in is function of BDW
+K_in = sc_K_in * pow (BDW, 0.70);
+
+# Ventilation out is function of K_in
+K_out = K_in / PC_ctoa;
+
+} # End of model scaling
+
+
+# Calculate Outputs
+# =================
+CalcOutputs {
+
+C_cen = (Q_cen > 0 ? Q_cen / V_cen : 10e-30);
+C_exh = 0.7 * C_cen * ppm_per_mM / PC_ctoa + 0.3 * C_inh;
+PC_ctoa_obs = PC_ctoa;
+sc_K_in_obs = sc_K_in;
+
+} # End of output calculations
+
+End.

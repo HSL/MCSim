@@ -1,0 +1,81 @@
+#------------------------------------------------------------------------------
+# test_transit_input.in
+#
+# Simulation input file for the test_transit_input.model.
+# Both the full differential solution (flag parameter isOnTr = 0) and the 
+# analytic solution provided by the PerTransit input function 
+# (flag isOnTr = 1) are simulated in various scenarios.
+#
+# Note that dosing every 2 hours is too frequent (given the parameter values 
+# used) for the analytical solution to be correct because quantities left 
+# over in the transit chain are forgotten at the time of new dosing (while 
+# they should not be forgotten). 
+# The differential solution is still correct in that case.
+#
+# Copyright (c) 1993-2016 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+OutputFile("test_transit_input.out");
+
+Dose = 10;
+
+ka = 0.1;
+CL = 3.0;
+V  = 20.;
+
+ktr = 4.0;
+
+
+Simulation { # differential model, dosing every 24 hours
+  isOnTr = 0;
+  freqD  = 24;
+
+  u = PerDose(1, freqD, 0, Delta);
+
+  PrintStep(qtr, qa, C_central, 0, 120, 0.1);
+}
+
+
+Simulation { # analytical model, dosing every 24 hours
+  isOnTr = 1;
+  freqD = 24;
+  ntr   = 5;
+
+  u = PerTransit(1, freqD, 0, ktr, ntr);
+
+  PrintStep(qtr, qa, C_central, 0, 120, 0.1);
+}
+
+
+Simulation { # differential model, dosing every 2 hours
+  isOnTr = 0;
+  freqD  = 2;
+
+  u = PerDose(1, freqD, 0, Delta);
+
+  PrintStep(qtr, qa, C_central, 0, 120, 0.1);
+}
+
+
+Simulation { # analytical model, dosing every 2 hours
+  isOnTr = 1;
+  freqD  = 2;
+  ntr    = 5;
+
+  u = PerTransit(1, freqD, 0, ktr, ntr);
+
+  PrintStep(qtr, qa, C_central, 0, 120, 0.1);
+}
+
+
+Simulation { # analytical model, dosing every 24 hours, longer delay
+  isOnTr = 1;
+  freqD  = 24;
+  ntr    = 17.375;
+
+  u = PerTransit(1, freqD, 0, ktr, ntr);
+
+  PrintStep(qtr, qa, C_central, 0, 120, 0.1);
+}
+
+End.

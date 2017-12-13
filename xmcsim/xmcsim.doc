@@ -1,0 +1,52 @@
+﻿Introduction
+------------
+
+
+XMCSim is an interface to the MCSim program built using Tcl/TK.
+
+
+
+Select a model
+--------------
+
+
+You can select your model in the "File" menu with "Select Model..." 
+button or in the "Compile menu" too.
+
+
+Compile a Model
+---------------
+
+
+To compile a model, click on "Compile" and after "Compile MCSim" 
+buttons. During the compilation, the model generator, mod, creates 
+a C file, called "model.c". And when you click on "Compile MCSim" 
+button, an executable simulation program 'mcsim' is created, specific
+of the particular model you have designed.
+
+
+Run menu
+--------
+
+
+To run your model with the mcsim program, you have to specify the 
+executable program which has been created during the compilation  
+and the file which describe the kind of simulation to run.
+So click on the "run" menu then click on the "run" button and enter
+the specification files. You can design the output file but it's not 
+necessary.
+The button "Stop" stop the simulation which run.
+The button "Run with gdb"
+
+
+To plot
+-------
+
+
+To plot click on "Plot" menu and "Start plot" button which open a
+window. This window is an interface to the Gnuplot program and you 
+may select different options for your graph.
+
+
+
+

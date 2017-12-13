@@ -1,0 +1,24 @@
+#------------------------------------------------------------------------------
+# discrete.in
+#
+# Input file for simulating a discrete-time model. 
+# Euler is used to simply define the time step for the simulation.
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+OutputFile ("discrete.out");
+
+Integrate (Euler, 1, 0, 0);
+
+Simulation {
+
+  z = 1;
+  x1_init = 1;
+
+  PrintStep (x1, 140, 150, 1); 
+  PrintStep (x2, 140, 150, 1);
+  PrintStep (x3, 140, 150, 1);
+}
+
+END.

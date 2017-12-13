@@ -1,0 +1,64 @@
+Introduction
+------------
+
+This interface to gnuplot was developed on the basis of Xgnuplot using
+Tcl and Tk. It provides a convenient means to set gnuplot options 
+using a point and click approach. Since the application is written 
+entirely in the scripting language Tcl using the Tk toolkit, it is 
+extensible and users can easily add additional functionality.
+
+It should be possible for anyone with a passing knowledge of gnuplot 
+to use this interface.
+
+
+Plotting a data file
+--------------------
+
+To plot a data file simply enter the file name in the first entry 
+field or search your file with the button "Browse". The format of 
+the file must conform to that specified normally for gnuplot 
+(click on further information for more details). You may select 
+the columns of the file to plot by entering appropriate numbers or 
+the variable names in the columns fields. You can select the columns
+by the variable names with the buttons Browse. You have to click on 
+the buttons OK in order to update the numbers of the columns and the 
+variable names. When the file and the columns are selected, click on 
+"Plot" in the main command bar; the graphic will be displayed in a 
+gnuplot X11 window. By default the key will be set to the text 
+representing the plotted file, you can override this by entering text 
+in the entry field to the right of the "Title:" check button, for
+example enter the text "First line" and click on plot again --
+your function will be re-displayed with a different entry in the
+key.
+
+To replot you should click on the "Overlay" check button in the
+right of the window and then on "Plot" in the main command bar.
+
+If the data file is a function of two coordinates, you should select 
+a 3D plot by clicking on the Radio button in the bottom of the window 
+to select a 3D plot option.
+
+Line and symbol styles used to display the data are selected from 
+the "Style:" "Line:" and "Point:" menus n the third row of the line 
+entry panel.
+
+
+Options
+-------
+
+A full range of options may be specified for the plots. The options 
+appropriate to each line are set in the line panels themselves 
+(i.e. type line-style, columns to plot, overlay, etc.). Options for 
+the complete plot can be set by selecting an appropriate entry from 
+the Options menu. In each case a new window will appear in which 
+options can be set :
+
+ Main...       Titles, axes and data range, data sampling etc.
+ 3D...         3D plot options, orientation, style, contour options...
+ Polar...      Options for polar plots
+ Command Line  Options for entering your own command line in gnuplot
+
+For more details on exactly what the options mean consult the gnuplot 
+manual for details of the options that you may which to set and then 
+select these from the appropriate menus. Alternatively just give it 
+a try and see what happens.

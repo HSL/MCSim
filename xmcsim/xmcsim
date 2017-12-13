@@ -1,0 +1,894 @@
+#!/bin/sh
+# the next line restarts using wish \
+exec wish "$0" "$@"
+
+# XMCsim
+#
+# Copyright (c) 2001-2011 Free Software Foundation, Inc. 
+#
+# This file is part of GNU MCSim.
+#
+# GNU MCSim is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 3
+# of the License, or (at your option) any later version.
+#
+# GNU MCSim is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with GNU MCSim; if not, see <http://www.gnu.org/licenses/>
+#
+# -- Revisions -----
+#  Logfile:  %F%
+# Revision:  %I%
+#     Date:  %G%
+#  Modtime:  %U%
+#   Author:  @a
+# ------------------
+#
+# This file contains code to generate the intro window for MCSim
+# which invokes sub-windows.  
+
+
+#----------------------------------------------------------------
+#
+# procedure positionWindow
+# This procedure can be invoked to position a new window.
+# You can change the position as you wish
+#
+# Arguments:
+# w -		The name of the window to position.
+#
+#----------------------------------------------------------------
+
+proc positionWindow w {
+    wm geometry $w +100+100
+}
+
+#----------------------------------------------------------------
+
+
+#----------------------------------------------------------------
+#
+# procedure fileDialog
+# This procedure is invoked to select a file from a directory
+#
+# Arguments:
+# w -		Name of new window to create for display.
+# ent -         Entry field of the calling window (will be filled here)
+# operation -   Variable which should be set at "open"
+#
+#----------------------------------------------------------------
+
+proc fileDialog {w ent operation} {
+
+  #   Type names		Extension(s)	Mac File Type(s)
+  #
+  #---------------------------------------------------------
+
+  set types {
+    {"Model files"		{.mod*} 	TEXT}
+    {"Text files"		{.txt .doc}	}
+    {"Text files"		{}		TEXT}
+    {"Tcl Scripts"		{.tcl}		TEXT}
+    {"C Source Files"	{.c .h}		}
+    {"All Source Files"	{.tcl .c .h}	}
+    {"Image Files"		{.gif}		}
+    {"Image Files"		{.jpeg .jpg}	}
+    {"Image Files"		""		{GIFF JPEG}}
+    {"All files"		*}
+  }
+
+  if {$operation == "open"} {
+    set file [tk_getOpenFile -filetypes $types -parent $w]
+  } else {
+    set file [tk_getSaveFile -filetypes $types -parent $w \
+      -initialfile Untitled -defaultextension .txt]
+  }
+
+  if [string compare $file ""] {
+    $ent delete 0 end
+    $ent insert 0 $file
+  }
+}
+
+#----------------------------------------------------------------
+
+
+#----------------------------------------------------------------
+#
+# procedure showModelStatus
+#
+# Show the name of the current model in the status bar.
+# Called at the start and when the model is changed.
+#
+
+proc showModelStatus {} {
+  global tk_library selectedModel
+  .statusBar.lab config -text "$selectedModel"
+}
+
+#----------------------------------------------------------------
+
+
+#----------------------------------------------------------------
+#
+# procedure aboutBox
+#
+# Pops up a message box with an "about" message
+#
+
+proc aboutBox {} {
+  tk_messageBox -icon info -type ok -title "About MCSim" -message \
+    "MCSim version 5.0.0\nCopyright (c) 1993-2001\nF.Y. Bois & D. Maszle."
+}
+
+
+#----------------------------------------------------------------
+#
+# Main program
+# The code below creates the main window, consisting of a menu bar
+# and a text widget presenting MCSim
+#
+#----------------------------------------------------------------
+
+eval destroy [winfo child .]
+
+# Give a title to the main window and its icon
+wm title . "XMCSim"
+wm iconname . "XMCSim"
+set MCSim 1
+
+# Set global variables to store file names and modification flags
+global selectedFile selectedModel
+global selectedExec selectedInput selectedOutput
+
+# Set those to "", but they should be set to the last one defined
+# in the preceeding session [to do]
+set selectedModel ""
+set selectedFile ""
+set selectedExec ""
+set selectedInput ""
+set selectedOutput ""
+
+# Set global modification flags
+global modSelectFlag modCompilFlag
+
+# Init modSelectFlag to zero: no model selected
+set modSelectFlag 0
+
+# Init modCompilFlag to zero: selected model not compiled
+set modCompilFlag 0
+
+# Define a global field entry width to have uniform width
+global entryWidth
+set entryWidth 40
+
+# Define top menu bar
+menu .menuBar -relief flat -tearoff 0
+
+# Frederic Bois prefers the motif interface. You can comment this
+# out if you don't
+if ![string compare $tcl_platform(platform) unix] {
+  set tk_strictMotif 1
+}
+
+
+#----------------------------------------------------------------
+
+# Add a "file" menu to the menu bar
+.menuBar add cascade -menu .menuBar.file -label "File" -underline 0 
+
+# Install that menu item without tearoff
+menu .menuBar.file -tearoff 0 -relief raised -borderwidth 1
+
+# The first command in the file menu request for a model to peruse
+.menuBar.file add command -label "Select model..." \
+  -command {
+    set w .filebox
+    catch {destroy $w}
+    toplevel $w
+    wm title $w "Select model file..."
+    wm geometry $w +180+210
+
+    set f [frame $w.open]
+    label $f.lab -text "Select a model file: " -anchor e  \
+	-foreground blue
+
+    entry $f.ent -width $entryWidth -background white
+    $f.ent insert 0 $selectedModel
+    focus $f.ent
+
+    button $f.but -text "Browse ..." -foreground brown -relief raised \
+        -borderwidth 1 -command "fileDialog $w $f.ent open" 
+
+    pack $f.lab -side left
+    pack $f.ent -side left -expand yes -fill x
+    pack $f.but -side left -padx 5
+    pack $f -fill x -padx 1c -pady 3
+
+    frame $w.buttons
+    pack $w.buttons -side bottom -fill x -pady 2m
+
+    button $w.buttons.ok -text "OK" -default active -relief groove \
+	-command {
+	    set selectedModel [$f.ent get]
+	    showModelStatus
+	    set modSelectFlag 1
+	    set modCompilFlag 0
+	    destroy $w
+	}
+
+    bind $w <Return> "tkButtonInvoke $w.buttons.ok"
+
+    button $w.buttons.cancel -text "Cancel" -command "destroy $w"\
+       -relief raised -borderwidth 1
+    pack $w.buttons.cancel $w.buttons.ok -side left -expand 1
+
+  } \
+  -underline 0
+
+
+# Add a separation line in the file menu
+.menuBar.file add sep
+
+
+# Add a "quit" command to the file menu
+.menuBar.file add command -label "Quit" -command "exit" -underline 0 \
+  -accelerator "Control-q"
+
+
+# Put all the commands up
+. configure -menu .menuBar
+
+
+# F1 key will call the "about MCSim" box and Ctrl-q will quit
+bind . <F1> aboutBox
+bind . <Control-q> {exit}
+
+
+
+#----------------------------------------------------------------
+
+# add an "edit" menu to the menu bar
+.menuBar add cascade -menu .menuBar.edit -label "Edit" -underline 0
+
+
+# Install that menu item without tearoff
+menu .menuBar.edit -tearoff 0 -relief raised -borderwidth 1
+
+
+# Add a "edit file" command to the edit menu
+
+.menuBar.edit add command -label "Edit file..." \
+    -command {
+	set w .filebox
+	catch {destroy $w}
+	toplevel $w
+	wm title $w "Edit file..."
+	wm geometry $w +180+210
+
+	set f [frame $w.open]
+	label $f.lab -text "Select a file to open: " -anchor e \
+	    -foreground blue
+
+	entry $f.ent -width $entryWidth -background white 
+	$f.ent insert 0 $selectedFile
+	focus $f.ent
+
+	button $f.but -text "Browse ..." \
+	    -command "fileDialog $w $f.ent open" \
+	    -foreground brown -relief raised -borderwidth 1
+
+	pack $f.lab -side left
+	pack $f.ent -side left -expand yes -fill x
+	pack $f.but -side left -padx 5
+	pack $f -fill x -padx 1c -pady 3
+
+	frame $w.buttons
+	pack $w.buttons -side bottom -fill x -pady 2m
+	button $w.buttons.ok -text "OK" -default active \
+	    -relief groove -command {
+
+	set selectedFile [$f.ent get]
+
+	if [info exists env(EDITOR)] {
+	    eval exec $env(EDITOR) $selectedFile &
+	} else {
+	    exec xemacs $selectedFile &
+	}
+	destroy $w
+    }
+
+    bind $w <Return> "tkButtonInvoke $w.buttons.ok"
+
+    button $w.buttons.cancel -text "Cancel" -command "destroy $w" \
+        -relief raised -borderwidth 1
+    pack $w.buttons.cancel $w.buttons.ok -side left -expand 1
+
+  } \
+  -underline 0
+
+
+
+#----------------------------------------------------------------
+
+
+# add a "compile" menu to the menu bar
+.menuBar add cascade -menu .menuBar.compile -label "Compile" -underline 0
+
+
+# Install that menu item without tearoff
+menu .menuBar.compile -tearoff 0 -relief raised -borderwidth 1
+
+
+# Add a "compile model" command to the compile menu
+
+.menuBar.compile add command -label "Compile model..." \
+    -command {
+	if {$modSelectFlag == 1} {
+
+	    # a model is already selected, compile it with the mod program
+	    exec mod $selectedModel
+	    # update the compilation flag
+	    set modCompilFlag 1
+
+	    set w .filebox
+	    catch {destroy $w}
+	    toplevel $w 
+	    wm title $w "Compile model..."
+	    wm geometry $w +180+180
+
+	    set f [frame $w.open]
+	    label $f.lab \
+	-text "\nModel compiled\n\nCreated model file 'model.c'\n" -anchor e \
+		-foreground blue 
+	
+	    pack $f.lab -side top
+	    pack $f -fill x -padx 1c -pady 3 
+      
+	} else {
+
+	    # no model is selected, so ask for one to use and remember it
+	    set w .filebox
+	    catch {destroy $w}
+	    toplevel $w
+	    wm title $w "Select model file..."
+	    wm geometry $w +180+210
+  
+	    set f [frame $w.open]
+	    label $f.lab -text "Select a model file: " -anchor e \
+		-foreground blue
+  
+	    entry $f.ent -width $entryWidth -background white
+	    $f.ent insert 0 $selectedModel
+	    focus $f.ent
+  
+	    button $f.but -text "Browse ..." \
+		-command "fileDialog $w $f.ent open"\
+		-foreground brown -relief raised -borderwidth 1
+  
+	    pack $f.lab -side left
+	    pack $f.ent -side left -expand yes -fill x
+	    pack $f.but -side left -padx 5
+	    pack $f -fill x -padx 1c -pady 3
+  
+	    frame $w.buttons
+	    pack $w.buttons -side bottom -fill x -pady 2m
+	    button $w.buttons.ok -text "OK" -default active \
+		-relief groove -command {
+		    set selectedModel [$f.ent get]
+		    # compile it with the mod program
+		    exec mod $selectedModel
+		    # update status box
+		    showModelStatus
+		    # update the global flags
+		    set modSelectFlag 1
+		    set modCompilFlag 1
+		    destroy $w
+
+		    set w .filebox
+		    catch {destroy $w}
+		    toplevel $w
+		    wm title $w "Compile model..."
+		    wm geometry $w +180+180
+
+		    set f [frame $w.open]
+		label $f.lab \
+    -text "\n Model compiled \n\n Created model file 'model.c'\n" -anchor e \
+		    -foreground blue
+	
+		    pack $f.lab -side top
+		    pack $f -fill x -padx 1c -pady 3
+
+		} 
+
+	    button $w.buttons.cancel -text "Cancel" -command "destroy $w" \
+		-relief raised -borderwidth 1
+	    pack $w.buttons.cancel $w.buttons.ok -side left -expand 1
+	}
+
+  } \
+  -underline 0
+
+
+
+# Add a "compile mcsim" command to the compile menu
+
+.menuBar.compile add command -label "Compile mcsim..." \
+    -command {
+
+	if {$modSelectFlag == 1} {
+	# a model is already selected, use it
+
+	    if {$modCompilFlag == 0} {
+    # the model has not been compile, use mod to generate a model.c file
+    
+		exec mod $selectedModel
+		# update the compilation flag
+		set modCompilFlag 1
+
+		set w .filebox
+		catch {destroy $w}
+		toplevel $w 
+		wm title $w "Compile mcsim..."
+		wm geometry $w +180+180
+
+		set f [frame $w.open]
+		label $f.lab -text \
+  "\nMCSim compiled\n\nCreated model file 'model.c'\n\nCreated:executable for model $selectedModel"\
+		    -anchor e -foreground blue 
+	
+		pack $f.lab -side top
+		pack $f -fill x -padx 1c -pady 3
+
+	    }
+  
+	    # compile mcsim with the shared library using make
+	    exec makemcsim MODEL=$selectedModel
+
+	    set w .filebox
+	    catch {destroy $w}
+	    toplevel $w 
+	    wm title $w "Compile MCSim..."
+	    wm geometry $w +180+180
+
+	    set f [frame $w.open]
+     
+	    label $f.lab -text \
+   "\n MCSim compiled \n\n Created: executable for model $selectedModel\n " -anchor e\
+	    -foreground blue 
+
+	    pack $f.lab -side top
+	    pack $f -fill x -padx 1c -pady 3
+
+	} else {
+
+	# no model selected, select one; this should be a procedure [to do]
+
+	    set w .filebox
+	    catch {destroy $w}
+	    toplevel $w
+	    wm title $w "Select model file..."
+	    wm geometry $w +180+210
+	
+	    set f [frame $w.open]
+	    label $f.lab -text "Select a model file: " -anchor e \
+		-foreground blue
+  
+	    entry $f.ent -width $entryWidth -background white
+	    $f.ent insert 0 $selectedModel
+	    focus $f.ent
+	    
+	    button $f.but -text "Browse ..." \
+		-command "fileDialog $w $f.ent open"\
+		-foreground brown -relief raised -borderwidth 1
+  
+	    pack $f.lab -side left
+	    pack $f.ent -side left -expand yes -fill x
+	    pack $f.but -side left -padx 5
+	    pack $f -fill x -padx 1c -pady 3
+  
+	    frame $w.buttons
+	    pack $w.buttons -side bottom -fill x -pady 2m
+	    button $w.buttons.ok -text "OK" -default active \
+		-relief groove -command {
+
+		    set selectedModel [$f.ent get]
+		    exec mod $selectedModel
+		    showModelStatus
+		    set modCompilFlag 1
+		    exec makemcsim MODEL=$selectedModel 
+		    set modSelectFlag 1
+		    destroy $w
+
+		    set w .filebox
+		    catch {destroy $w}
+		    toplevel $w 
+		    wm title $w "Compile model..."
+		    wm geometry $w +180+180
+
+		    set f [frame $w.open]
+		    label $f.lab \
+	-text "\n MCSim compiled \n\n Created model file 'model.c' \n" \
+		    -anchor e -foreground blue 
+	
+		    pack $f.lab -side top
+		    pack $f -fill x -padx 1c -pady 3
+		}
+
+	bind $w <Return> "tkButtonInvoke $w.buttons.ok"
+  
+	button $w.buttons.cancel -text "Cancel" -command "destroy $w"\
+	    -relief raised -borderwidth 1
+	pack $w.buttons.cancel $w.buttons.ok -side left -expand 1
+	}
+
+    } \
+    -underline 1
+
+
+#----------------------------------------------------------------
+
+
+# add a "run" menu to the menu bar
+.menuBar add cascade -menu .menuBar.run -label "Run" -underline 0
+
+
+# Install that menu item without tearoff
+menu .menuBar.run -tearoff 0 -relief raised -borderwidth 1
+
+
+# Add a "run" command to the run menu
+
+.menuBar.run add command -label "Run..." \
+    -command {
+
+	# get an executable, an input file name, and an optional output 
+	# file name
+
+	set w .filebox
+	catch {destroy $w}
+	toplevel $w
+	wm title $w "Run MCSim..."
+	wm geometry $w +180+170
+
+	foreach i {executable input output} {
+	    set f [frame $w.$i]
+	    label $f.lab -text "Select an $i: " -anchor e \
+		-foreground blue
+
+	    entry $f.ent -width $entryWidth -background white
+
+	    if {$i == "executable"} {
+		$f.ent insert 0 $selectedExec
+	    } else {
+		if {$i == "input"} {
+		    $f.ent insert 0 $selectedInput
+		} else {
+		$f.ent insert 0 $selectedOutput
+		}
+	    }
+
+	    if {$i == "output"} {
+
+        # for the output the "save" arg to fileDialog will prompt the 
+        # user if a file by the same name already exists. This is 
+        # operational only if the browser is used, otherwise to check
+        # is made (dangerous); this should be corrected [to do]
+
+		set fileOp save
+	    } else {
+		set fileOp open
+	    }
+
+	    button $f.but -text "Browse ..." \
+		-command "fileDialog $w $f.ent $fileOp"\
+		-foreground brown -relief raised -borderwidth 1
+
+	    pack $f.lab -side left
+	    pack $f.ent -side left -expand yes -fill x
+	    pack $f.but -side left -padx 5
+	    pack $f -fill x -padx 1c -pady 3
+	}
+	focus $w.executable.ent
+
+	frame $w.buttons
+	pack $w.buttons -side bottom -fill x -pady 2m
+	button $w.buttons.ok -text "OK" -default active \
+	    -relief groove -command {
+
+		set selectedExec [$w.executable.ent get]
+		set selectedInput [$w.input.ent get]
+		set selectedOutput [$w.output.ent get]
+
+		if {$selectedOutput == ""} {
+	    # execute mcsim in an xterm with no output name
+		    exec xterm -e $selectedExec $selectedInput &
+		} else {
+	    # execute mcsim in an xterm with imposed output name
+		    exec xterm -e $selectedExec $selectedInput \
+			$selectedOutput &
+		}
+		destroy $w
+
+	    }
+
+	bind $w <Return> "tkButtonInvoke $w.buttons.ok"
+	button $w.buttons.cancel -text "Cancel" -command "destroy $w"\
+	    -relief raised -borderwidth 1
+	pack $w.buttons.cancel $w.buttons.ok -side left -expand 1
+
+    } \
+    -underline 0
+
+
+
+# Add a "stop" command to the run menu
+# This is very primitive and calls a mckill bash script with look for 
+# an "mcsim." process to kill; this should be upgraded to kill exactly
+# the process launched above [to do]. Note that killing the xterm window
+# will kill the mcsim running in it though.
+
+
+.menuBar.run add command -label "Stop" \
+    -command {
+	exec bash /usr/share/mcsim/mckill
+    } \
+    -underline 0
+
+
+# Add a "run with debugger" command to the run menu
+# Simply compiles with debugging option and launch xemacs
+# It is up to the user to call gdb or another debugger.
+# I found no way to order xemacs to launch gdb automatically.
+# This needs all the .c files in the current directory to work.
+# It should be well documented [to do] because it is likely to fail. 
+
+
+.menuBar.run add command -label "Run with gdb..." \
+    -command {
+
+	if {$modSelectFlag == 1} {
+	# if a model is already selected...
+
+	    if {$modCompilFlag == 0} {
+	    # if that model is not already compiled into a model.c file
+		exec mod $selectedModel &	
+		set modCompilFlag 1
+	    }
+
+	    # make an mcsim executable with debugging symbols
+	    exec makemcsimd MODEL=$selectedModel
+	    # call xemacs; this should check that xemacs is available [to do]
+	    exec xemacs &
+	} else {
+	    # no model selected, get one
+
+	    set w .filebox
+	    catch {destroy $w}
+	    toplevel $w
+	    wm title $w "Select model file..."
+	    wm geometry $w +180+210
+  
+	    set f [frame $w.open]
+	    label $f.lab -text "Select a model file: " -anchor e \
+		-foreground blue
+  
+	    entry $f.ent -width $entryWidth -background white
+	    $f.ent insert 0 $selectedModel
+	    focus $f.ent
+
+	    button $f.but -text "Browse ..." \
+		-command "fileDialog $w $f.ent open"\
+		-foreground brown -relief raised -borderwidth 1
+  
+	    pack $f.lab -side left
+	    pack $f.ent -side left -expand yes -fill x
+	    pack $f.but -side left -padx 5
+	    pack $f -fill x -padx 1c -pady 3
+  
+	    frame $w.buttons
+	    pack $w.buttons -side bottom -fill x -pady 2m
+	    button $w.buttons.ok -text "OK" -default active \
+		-relief groove -command {
+
+		    set selectedModel [$f.ent get]
+		    showModelStatus
+		    set modSelectFlag 1
+		# compile the model to produce a model.c file
+		    exec mod $selectedModel &
+		    set modCompilFlag 1
+		# make an mcsim executable with debugging symbols
+	exec makemcsimd MODEL=$selectedModel
+		# launch xemacs if possible
+		    if ![catch {exec which xemacs}] {
+			exec xemacs &
+		    } else {
+			tk_dialog .dialog "File not found" \
+		    "Error: the xemacs program is not available to you." \
+			error 0 "OK"
+		    }
+		    destroy $w
+		}
+	    bind $w <Return> "tkButtonInvoke $w.buttons.ok"
+  
+	    button $w.buttons.cancel -text "Cancel" -command "destroy $w"\
+		-relief raised -borderwidth 1
+	    pack $w.buttons.cancel $w.buttons.ok -side left -expand 1
+	}
+    } \
+    -underline 1
+
+
+
+#----------------------------------------------------------------
+
+
+# add a "plot" menu to the menu bar
+.menuBar add cascade -menu .menuBar.plot -label "Plot" -underline 0
+   
+
+# Install that menu item without tearoff
+menu .menuBar.plot -tearoff 0 -relief raised -borderwidth 1
+
+
+# Add a "gnuplot" command to the "plot" menu
+# This checks that gnuplot is available
+# Gnuplot is executed in an xterm window
+
+.menuBar.plot add command -label "start plot..." -command {
+
+    exec $env(MCSIM_HOME)/xmcsim/xgpl &
+    
+}
+
+
+
+#----------------------------------------------------------------
+
+
+# add an "help" menu to the menu bar. [to finish]
+.menuBar add cascade -menu .menuBar.help -label "Help" -underline 0
+
+
+# Install that menu item WITH tearoff
+menu .menuBar.help -tearoff 1 -relief raised -borderwidth 1
+
+
+# On the Mac use the special .apple menu for the about item
+
+
+if {$tcl_platform(platform) == "macintosh"} {
+
+  .menuBar add cascade -menu .menuBar.apple
+  menu .menuBar.apple -tearoff 0
+  .menuBar.apple add command -label "About..." -command "aboutBox"
+
+} else {
+
+  .menuBar.help add command -label "About..." -command "aboutBox" \
+    -underline 0 -accelerator "<F1>"
+  .menuBar.help add sep
+}
+
+
+# 
+# create window to Help
+# help of MCSim and XMCSim
+#
+
+
+.menuBar.help add command -label "Basics..." -underline 0 -command {
+
+    set w .help
+    catch {destroy $w} ; toplevel $w
+    wm title $w "XMCSim Help"
+    wm iconname $w "XMCSim Help"
+
+    frame $w.t -relief groove -borderwidth 2
+    pack [scrollbar $w.t.scroll -width 3m -command "$w.t.text yview" \
+	      -relief sunken -borderwidth 2] -side right -fill y
+    pack [text $w.t.text -relief flat -width 70\
+	      -setgrid 1 -yscroll "$w.t.scroll set"] \
+        -side top -fill both -expand 1 -padx 5 -pady 5
+    pack $w.t -side top -padx 10 -pady 10 -expand 1 -fill both
+
+    frame $w.c -relief groove -borderwidth 2
+    pack [button $w.c.quit -text Quit -width 10 -relief raised\
+	      -borderwidth 1 -command "destroy $w"] \
+        -side left -anchor c -expand 1 -pady 10
+
+    pack [button $w.c.info -text "Further information about MCSim" \
+	 -width 30 -relief raised -borderwidth 1 -command {
+		if [file exists $env(MCSIM_HOME)/doc/mcsim.ps] {
+		    exec gv $env(MCSIM_HOME)/doc/mcsim.ps &
+		} else {
+		    if [file exists $env(MCSIM_HOME)/doc/mcsim.pdf] then {
+			exec gv $env(MCSIM_HOME)/doc/mcsim.pdf &
+		    } else {
+			if [file exists $env(MCSIM_HOME)/doc/mcsim.html] {
+			    exec netscape $env(MCSIM_HOME)/doc/mcsim.html &
+			} else {
+			    tk_dialog .dialog "File not found" \
+			    "Error: the manual is not available to you." \
+				error 0 "OK"
+			}
+		    }
+		}
+	    } ] \
+	-side left -anchor c -expand 1 -pady 10
+
+    pack $w.c -side top -fill x -padx 10 -pady 10
+
+    if [file exists $env(MCSIM_HOME)/xmcsim/xmcsim.doc] then {
+	set fid [open $env(MCSIM_HOME)/xmcsim/xmcsim.doc r]
+	$w.t.text insert 0.0 [read $fid]
+	close $fid
+    }
+
+    $w.t.text configure -state disabled
+
+}
+
+
+
+#----------------------------------------------------------------
+
+
+# define a status bar to go at the bottom of the main window
+
+
+frame .statusBar
+label .statusBar.lab -text "   " -relief flat -bd 1\
+    -font -*-Helvetica-Medium-R-Normal--*-120-*-*-*-*-*-* -anchor w
+label .statusBar.foo -width 8 -relief flat -bd 1\
+    -font -*-Helvetica-Medium-R-Normal--*-120-*-*-*-*-*-* -anchor w
+pack .statusBar.lab -side left -padx 2 -expand yes -fill both
+pack .statusBar.foo -side left -padx 2
+pack .statusBar -side bottom -fill x -pady 2
+
+
+#----------------------------------------------------------------
+
+
+# define a text frame to write stuff in the main window
+
+
+set font {Helvetica 10}
+frame .textFrame
+text .t -wrap word -width 60 -height 10 -font $font -setgrid 1 \
+    -foreground red -highlightthickness 0 -padx 4 -pady 2 \
+    -takefocus 0 -background white -relief groove
+pack .t -in .textFrame -expand y -fill both -padx 1
+pack  .textFrame -expand yes -fill both
+
+
+# Create text for the text frame.
+
+.t insert end "MCSim\n" title
+.t insert end {
+MCSim version 5.0.0
+Copyright (c) 1993-2001 by F.Y. Bois & D. Maszle.
+All rights reserved.
+
+MCSim comes with ABSOLUTELY NO WARRANTY;
+This is free software, and you are welcome to redistribute it
+under certain conditions; see the GNU General Public License.
+}
+
+
+# Prevent input in the main window (change "disabled" to "normal"
+# to allow input, but you will have to handle that input...)
+.t configure -state disabled
+
+# Position the main window nicely
+positionWindow .
+
+# Start by showing the current model
+showModelStatus
+
+# END.

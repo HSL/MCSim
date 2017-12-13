@@ -1,0 +1,60 @@
+#------------------------------------------------------------------------------
+# pde1.in
+#
+# Simulation file for a partial differential 
+# equation model, using the method of lines (simplistic).
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+OutputFile ("pde1.out");
+
+Integrate (Lsodes, 1e-6, 1e-6, 1);
+
+Simulation {
+
+  y_x_0 = 0.00;
+  y_x_1 = 0.19;
+  y_x_2 = 0.36;
+  y_x_3 = 0.51;
+  y_x_4 = 0.64;
+  y_x_5 = 0.75;
+  y_x_6 = 0.84;
+  y_x_7 = 0.91;
+  y_x_8 = 0.96;
+  y_x_9 = 0.99;
+  y_x_10 = 1.00;
+  y_x_11 = 0.99;
+  y_x_12 = 0.96;
+  y_x_13 = 0.91;
+  y_x_14 = 0.84;
+  y_x_15 = 0.75;
+  y_x_16 = 0.64;
+  y_x_17 = 0.51;
+  y_x_18 = 0.36;
+  y_x_19 = 0.19;
+
+  PrintStep(y_x_0, 0, 10, 0.5);
+  PrintStep(y_x_1, 0, 10, 0.5);
+  PrintStep(y_x_2, 0, 10, 0.5);
+  PrintStep(y_x_3, 0, 10, 0.5);
+  PrintStep(y_x_4, 0, 10, 0.5);
+  PrintStep(y_x_5, 0, 10, 0.5);
+  PrintStep(y_x_6, 0, 10, 0.5);
+  PrintStep(y_x_7, 0, 10, 0.5);
+  PrintStep(y_x_8, 0, 10, 0.5);
+  PrintStep(y_x_9, 0, 10, 0.5);
+  PrintStep(y_x_10, 0, 10, 0.5);
+  PrintStep(y_x_11, 0, 10, 0.5);
+  PrintStep(y_x_12, 0, 10, 0.5);
+  PrintStep(y_x_13, 0, 10, 0.5);
+  PrintStep(y_x_14, 0, 10, 0.5);
+  PrintStep(y_x_15, 0, 10, 0.5);
+  PrintStep(y_x_16, 0, 10, 0.5);
+  PrintStep(y_x_17, 0, 10, 0.5);
+  PrintStep(y_x_18, 0, 10, 0.5);
+  PrintStep(y_x_19, 0, 10, 0.5);
+
+}
+
+End.

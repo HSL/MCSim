@@ -1,0 +1,15 @@
+
+Testing directory is ./examples/perc
+
+Testing mod on perc.model
+-PASSED- model.c file created
+
+Testing makemcsim on perc.model
+Compiling mcsim.perc...
+-PASSED-
+
+Testing Lsodes with perc.lsodes.in ...
+-PASSED-
+
+Check that file examples/perc/sim.out contains reasonable output (compare to perc.lsodes.out, small rounding errors can be ignored)
+

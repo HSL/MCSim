@@ -1,0 +1,775 @@
+*******************************
+* PROGRAMMING NOTES FOR MCSIM *
+*******************************
+
+
+
+NOTES ON C PROGRAMMING STYLE 
+============================
+
+Many people do not like to program in C because they say that the code
+is hard to read and hard to debug.  It does not have to be.  The
+flexibility of the C language is one of its strongest points.
+Unfortunately for many this also causes the most problems.  An easy
+way to avoid a lot of problems that arise from syntactical mistakes is
+to use a consistent naming convention for variables, types, function
+names, etc.
+
+There are several advantages to using a consistent notation.  A
+convention takes part of the guessing out of naming, and induces you
+to provide objects with meaningful names.  Consistency enhances
+readability and hence increases the ease with which programs are
+debugged.  Also, it is much easier to understand a piece of a program
+that you have not looked at in a while if you always use the same
+naming convention.
+
+Above all, names should be descriptive of the function for which they
+are used.  When possible they should be complete English words.  For
+example, MakeBuffer() is a much better name than mbuf() for a function
+that creates a buffer; cLines tells us that the variable is a count of
+lines (see below) whereas a name like ctr2 tells us only part of the
+variable's function.
+
+
+
+Hungarian Naming Convention for Identifiers
+===========================================
+
+Hungarian notation named so after its inventor, Charles Simonyi, (a
+Hungarian computer scientist who created the convention while working
+on his doctoral disseration) is a naming convention for C identifier:
+types, variables, function names and macros.
+
+
+Variable Names
+--------------
+
+To use the notation each variable name, which describes the variable's
+function, is tagged with the type of the variable.  The tag is a lower
+case prefix to the actual name which is capitalized.  Examples are 'i'
+for integer, 'p' for a pointer, 'rg' for an array.  A more complete
+list is given in Table 1 with example names in Table 2.  A few quick
+examples of Hungarian names are iOffset, an integer offset; lReturn, a
+return value which is a long; pdTime, a pointer to a double signifying
+the time; and rgiOutputs, an array of integer outputs.  In this way
+the variable name contains both the type and function of the variable.
+
+
+
+Table 1: Commonly used Hungarian prefixes
+
+-------------------------------------------------------
+Prefix  Data Type Represented     C Data Type
+-------------------------------------------------------
+i       Integer                   int
+l       Long integer              long
+c       Count                     integer type
+x, lx   X coordinate              int, long
+y, ly   Y coordinate              int, long
+w       Word                      WORD
+dw      Double word               DWORD
+by      Byte                      BYTE
+b       Boolean                   BOOL (integer type)
+f       Bit flags                 unsigned integer type
+h       Handle                    HANDLE (integer type)
+p       Pointer                   *
+np      Near pointer              near *
+lp      Far pointer               far *
+d, e    Double (extended)         double
+r       Real                      float
+rg      Array                     *, []
+u       Union                     union
+v       Global variable           ---
+ch      Character                 char
+s       String                    char *
+sz      Zero terminated string    char *
+pch     Pointer to character      char *
+rgch    Array of characters       char
+-------------------------------------------------------
+
+
+
+Table 2:  Examples of variables using Hungarian notation
+
+------------------------------------------------------
+Variable    Type and Function
+------------------------------------------------------
+bDone       A boolean indicating something is finished
+hObject     A handle to an object
+iOffset     An integer offset
+lReturn     A long return value
+pdTime      A pointer to a double signifying the time
+rgiOutputs  An array of integer outputs
+rgszNames   An array of strings (pointer to character)
+rgpszNames  An array of pointers to strings
+vrgiCodes   A global array of integer codes
+------------------------------------------------------
+
+
+By using type tags as part of the variable name a syntanctic check can
+be done by merely glancing at the code.  Once you become accustomed to
+using the notation numerous errors can be avoiding simply through this
+methodology.  In particular pointer references become much easier to
+handle.  To dereference the pointer, all you need to do is to match
+*'s and p's, as in *piValue.
+
+It may be noted that several types of character pointers are shown in
+Table 1.  This distinction is one of benefits of Hungarian notation.
+Minor differences in function of an essentially equal "type" can be
+demonstrated by the notation.  For example, a pointer to a character,
+pch, is the address reference of a single character.  This differs
+from an array of characters, rgch, which is a list of individual
+characters.  These both differ from a string, sz, which is a sequence
+of characters that form a meaningful set.  In C, each of these types
+is char *.  The difference in the function is elucidated only through
+Hungarian notation.
+
+It is also useful to define a pointer to a type as a separate type,
+and to define a number of commonly used data types, such as booleans
+and character strings.  The header file "hungtype.h" does this for a
+number of standard types.  A few are shown here:
+
+  typedef int *PINT;          /* Pointer to an integer  */
+
+  typedef int BOOL;           /* A boolean type         */
+
+  typedef unsigned int WORD;  /* An unsigned word       */
+
+  typedef char *PSTR;         /* A string (ptr to char) */
+
+  typedef char far *LPSTR;    /* A far string pointer   */
+
+
+
+Table 3:  Commonly used prefixes or suffixes
+
+-------------------------------------------------------------------
+Pre/Suffix   Common Meaning
+-------------------------------------------------------------------
+Max, Min     The maximum or minimun value in a list, array or range
+Length       The length of a list or array
+First, Last  The first or last element in a group
+Next, Prev   The previous or next element in a list
+Pos          The position in a list or buffer
+Current      The current value of an object
+Old, New     An old or new value of an object
+Save         A value of an object to be saved
+-------------------------------------------------------------------
+
+
+Function Names, Macro Names, typedefs, and defines
+--------------------------------------------------
+
+Function names should normally be compound word that is a verb-noun
+combination where each word of the compound word is capitalized to
+enhance readability.  Some examples are DrawRectangle(),
+ReadNextWord() CorrectOffset(), and DoSomethingFun().
+
+User defined types, constants (preprocessor defines), and macros
+should be in uppercase.  This distinguishes user types from language
+defined types, constants from variables, and macros from functions.
+Underscores can be used to separate words in compound words, for
+example MAKE_BUFFER(), MAX_CHARACTERS, and DATA_RECORD.
+
+Macro naming should follow the verb-noun convention of functions where
+appropriate.  Constants can employ a number of common prefixes like
+MAX, MIN, DEFAULT, etc.  See also the list of prefixes/suffixes in
+Table 3.
+
+It is also extremely useful to name groups of constants with a unique
+identifying prefix.  For example if a KEYWORD_MAP is being used, then
+a group of define'd codes for use with the map might have the prefix
+KM_.  Similarly, if a function uses a number of define'd constants,
+the constants should be named to correspond to the function name.  A
+good example of this the Windows MessageBox() function which displays
+a message to the screen.  Constants defining formatting are prefixed
+with MB_, e.g. MB_FLUSHLEFT.
+
+
+
+General Style:  Formatting
+==========================
+
+For readability, some general style conventions should be used.  The
+most important attrbute of a good C style is consistency.  Programs
+written in an inconsistent style are difficult to read in any
+language.
+
+
+Comments
+--------
+
+Comments should be plentiful enough so that in conjunction with well
+named identifier, someone unfamiliar with the code can follow the
+sequence of what is happening.  In general each file should begin with
+a block comment describing the function of the file and any noteworthy
+or non-standard features.  Each function should also be preface by a
+block comment noting the purpose of the function, and anything which
+is non-standard.  A description of the function arguments should be
+included if they are not completely obvious.
+
+Line comments should be included if they give additional information.
+Line comments which simply repeat the obvious function of the code are
+more of a distraction than a help.  For example,
+
+  cChar++;  /* Add one to cChar */
+
+gives no new information, but merely describes the ++ operator which
+we can assume the average C programmer understands, whereas
+
+  cChar++;  /* Try next character */
+
+describes functionally what the line is doing.
+
+Line comments at the end of braced blocks help to clarify the limits
+of the block, and can be excellent debugging tools.  Short comments
+that only explain which block is being closed will be less obtrusive
+than longer descriptive ones.
+
+  for (i = 0; i < MAX; i++) {
+    if (bTest)
+      DoSomething();
+  } /* for */
+
+Finally line comments should always be included to describe any
+unclear code, or something which might look wrong.  For example a case
+that intentionally falls through.
+
+  switch(i) {
+    case 1:
+      DoCase1();
+                  /* Fall through! */
+
+    case 2;
+      DoCase2();  /* and finish case 1 */
+      break;
+
+  } /* switch */
+
+
+Indenting
+---------
+
+Like the general rule for style, indenting should above all else be
+consistent.  Arguments over the exact amount to indent have gone on
+for hours among more pedantic C programmers.  Most rational people
+agree that more than four spaces per level of nesting is too much, and
+that one space is not enough.  My personal preference is two, which
+seems sufficient.  The style shown in the examples above is two spaces
+per level.
+
+Placing braces in a particular way can also greatly increase the
+legibility of programs.  One major camp places opening block braces on
+the same line as in the for loop above.  The other places it on the
+next line thus giving an extra line of whitespace as demonstrated
+here.
+
+  for (i = 0; i < MAX; i++)
+  {
+    if (bTest)
+      DoSomething();
+  } /* for */
+
+Again, personal preference wins.  In both cases, the more important
+features are that the closing brace lines up with level of indentation
+of the block, and that the style is used consistently.
+
+
+Practice
+--------
+
+Of course the way to perfect any style is to practice it arduously.
+All of the formatting features can be implemented automatically in
+many editors.  Another option is using one of several programs that
+'pretty' your code files for you.  They usually take parameters such
+as the number of spaces for indent levels, and most of the other
+stylistic options talked about above.  I am sure that you will find
+the little extra time spent making your source files easier to read
+will be well worth the effort.
+
+Recommended reading for all beginning C programmers is C Traps and
+Pitfalls, by Andrew Koenig.  It describes additional techniques to
+make programming in C less of an accident waiting to happen.  The
+chapters on pointers, and comments for programmers coming from a
+Pascal background are particularly good.
+
+
+
+
+LEX - A GENERAL LEXICAL PARSER
+==============================
+
+This section describes the interface to a lexical parser library.
+
+Introduction to a lexical parser
+================================
+
+Both the model generator facility and the simulation program use a
+library of routines that could loosely be termed a general lexical
+parser.  The files "lex.c" and its header file "lex.h" provide a set
+of functions for parsing tokens and punctuation from an input buffer.
+Also provided is a facility for parsing a function type syntax and
+lists of lexical items.  The file "lexerr.c" provides error reporting.
+The lexical routines could easily be used to parse a different syntax,
+or to extend to syntax for sim and mod.
+
+The lex library functions read a file as a sequences of lexical
+tokens.  A token is one of integer, float, identifier, quoted-string
+or punctuation.  A program can use the routines from the library to
+parse a file in a number of ways.  A general method is to set up a
+loop that grabs the next token, or lexical element from an input
+buffer.  This token is processed and the loop continues until the end
+of the buffer is reached.  The model generator and simulation input
+both use this method, which is shown in pseudo-code here.
+
+  INPUTBUF ib;
+  LEXICALELEM lex;
+  InitBuffer (ib, filename);
+
+  while not eob (ib) { /* Continue until end of buffer */
+    NextLex (ib, lex);
+    if valid syntax (lex)
+      ProcessLex (ib, lex);
+    else
+      ReportError (ib, lex);
+  } /* end while */
+
+The ProcessLex procedure is essentially a large switch that changes
+the state of input process.  For example if lex is a keyword that
+defines a function, arguments to that function will be expected next.
+If lex is a variable, the variable definition is expected to follow.
+By breaking the input process up into sub-units, each state of the
+parser can be separated and more readily handled.  Also by isolating
+the processing, problems can be located more easily.
+
+
+
+Implementing Keywords
+=====================
+
+Keywords are most easily kept in a keyword map which maps a string of
+characters to an integer code.  Once a keyword is found, the integer
+code can be used for clean and quick processing with a switch
+statement, instead of constantly performing string comparisons.  The
+keyword codes should be define'd with pre-processor macros.  Since
+both the sim and mod program use string mapping extensively, a simple
+example of a global key map is shown here.
+
+  #define KM_NULL    0
+  #define KM_KEYWORD1  1
+  #define KM_KEYWORD2  2
+  typedef struct tagKEYMAPENTRY {
+    char *szName;
+    int  iCode;
+  } KEYMAPENTRY, *PKEYMAPENTRY;
+  static PKEYMAPENTRY vpkmGlobalKeyMap[] = {
+    {"Keyword 1", KM_KEYWORD1},
+    {"Keyword 2", KM_KEYWORD2},
+    ...
+    {"",          KM_NULL} /* End flag */
+  }; /* Global Keyword Map */
+
+A code is quickly found by incrementing a pointer through the list and
+doing a string comparison.  The end flag is included to let the
+mapping function know when it is out of keywords.  The value KM_NULL
+is automatically returned by the following mapping function.  Note
+that this function does not care how long the keyword map is, as long
+as the end flag is present.
+
+  int GetKeyCode (char *szName)
+  {
+    PKEYMAPENTRY pkm = vpkmGlobalKeyMap[0];
+
+    while (*pkm->szName  /* Test for end flag */
+           && !strcmp(pkm->szName, szName))
+      pkm++;
+    return (pkm->iCode); /* Return valid code or KM_NULL */
+  };
+
+
+
+The lexical parser interface
+============================
+
+This section describes the commands provided by the parser.
+
+The following lexical types are provided.
+
+  #define LX_NULL         0x0000
+
+  #define LX_IDENTIFIER   0x0001
+
+  #define LX_INTEGER      0x0002
+
+  #define LX_FLOAT        0x0004
+
+  #define LX_NUMBER       (LX_FLOAT | LX_INTEGER)
+
+  #define LX_PUNCT        0x0008
+
+  #define LX_STRING       0x0010
+
+Note by the definition of LX_NUMBER that the lexical types must be bit
+flags.  This is important to routines that do type checking.  This
+definition demonstrates how it is possible to specify a set of types
+that are valid to a given context.  For example many function
+arguments can take the type LX_IDENTIFIER | LX_NUMBER.
+
+Character definitions are provided for delimiters to avoid mis-matched delimiter confusions in an editor which does delimiter checking.
+
+  #define CH_LPAREN    ('(')
+
+  #define CH_RPAREN    (')')
+
+  #define CH_LBRACKET  ('[')
+
+  #define CH_RBRACKET  (']')
+
+  #define CH_LBRACE    ('{')
+
+  #define CH_RBRACE    ('}')
+
+Other characters are defined for convenience.
+
+  #define CH_EOLN      ('\n')  /* End of line character */
+
+  #define CH_COMMENT   ('#')   /* One line Comment Char */
+
+  #define CH_STRDELIM  ('\"')  /* String delimiter */
+
+  #define CH_STMTTERM  (';')   /* Statement terminator */
+
+To use the lexical routines an input buffer must initialized with the
+parsing routines.  A filename and a pointer to an INPUTBUF is
+submitted to the InitBuffer() function.  The buffer is initialized
+with the pertinent file information.  The input buffer will be used
+for all subsequent parser commands.
+
+  typedef struct tagINPUTBUF {
+    /* private definition */
+    PVOID  pInfo;      /* Pointer to user information */
+  } INPUTBUF, * PINPUTBUF;
+
+  BOOL InitBuffer (      /* Initialize input buffer */
+    PINPUTBUF pibIn,     /* Existing buffer pointer*/
+    PSTR szFullPathname  /* Filename */
+  );  /* Returns TRUE on success */
+
+The buffer will be initialized and filled with input.  The macro EOB()
+tells when the end of the buffer is reached.
+
+  BOOL EOB(PINPUTBUF pibIn);
+
+A temporary buffer can be made with all of the attributes of an
+existing buffer from a string for parsing input from a string.
+
+  void  MakeStringBuffer (
+    PINPUTBUF pBuf,     /* Existing buffer      */
+    PINPUTBUF pStrBuf,  /* Temp string buffer   */
+    PSTR sz             /* String to parse from */
+  );
+
+All of the parsing functions assume a character string of type PSTRLEX
+to be provided to copy the lexical item for return.
+
+  typedef char PSTRLEX[MAX_LEX];  /* A lexical element */
+
+The next token can be grabbed with NextLex().  All whitespace and
+comments will be skipped.
+
+  void  NextLex (
+    PINPUTBUF pibIn,  /* Input buffer */
+    PSTRLEX szLex,    /* Lexical item returned */
+    PINT    piType    /* Type of item returned */
+  );
+
+A lexical item can be tested to be a comment with the macro
+IsComment().
+
+  BOOL IsComment(PSTR szLex);
+
+Comments can be skipped (to the end of the line) with SkipComment().
+
+  void  SkipComment (PINPUTBUF);
+
+Punctuation can parsed with a number of commands.  The function
+GetPunct() attempts to grab the given punctuation mark after skipping
+whitespace and comments.  The function GetOptPunct() will accept
+whitespace instead of the specified punctuation mark.  EGetPunct() is
+the same as GetPunct(), but errors are reported.  Each returns TRUE if
+the punctuation is found.
+
+  int GetPunct (      /* Try to get punctuation */
+    PINPUTBUF pibIn,  /* Input buffer */
+    PSTR szLex,       /* Lexical item returned */
+    char chPunct      /* Punctuation to find */
+  );  /* Returns TRUE on success */
+
+  int EGetPunct (     /* Same as above-reports errors */
+    PINPUTBUF pibIn,
+    PSTR szLex,
+    char chPunct
+  );
+
+  int GetOptPunct (   /* Accepts whitespace for punct */
+    PINPUTBUF pibIn,
+    PSTR szLex,
+    char chPunct
+  );
+
+Function style arguments lists, and general lists of token can be
+parsed with two commands.  NextListItem () returns in szLex the next
+item in a list if it matches the types specified in iTypes, which
+should be a bit mask of the LX_ types provided.  If iItemNum is
+positive, a list separator is expected before the item.  The list
+closing delimiter chDelim not parsed.
+
+  int  NextListItem (
+    PINPUTBUF pibIn,  /* Input buffer */
+    PSTR szLex,       /* Lexical item returned */
+    int iTypes,       /* Valid lexical types */
+    int iItemNum,     /* >0 requires separator */
+    char chDelim      /* Closing delimiter */
+  ); /* Returns > 0 if ok, < 0 if invalid lex found, 0 at end of list */
+
+An function argument list can be found with GetFuncArgs ().  The
+number of arguments and an array of LX_ types is given.  The arguments
+are returned in an array of PSTRLEX strings.  Open and closing
+parentheses are parsed.  The function returns TRUE if all arguments
+are found and are valid.
+
+  BOOL  GetFuncArgs (
+    PINPUTBUF pibIn,   /* Input buffer */
+    int nArgs,         /* Number of args to find */
+    PINT pArgTypes,    /* Array of valid types */
+    PSTR pszlexArgs    /* Lexical items returned */
+  );
+
+If an error occurs, the current statement can be thrown away until the
+statement terminator.
+
+void EatStatement (PINPUTBUF pib);  /* Eat to terminator */
+
+Errors can be reported with ReportError().  The wCode should be one of
+the following RE_ error codes.
+
+  #define RE_FATAL  0x8000        /* Can be ORd to cause exit(1) */
+
+  #define RE_WARNING  0x4000      /* If ORd issues warning */
+
+  #define RE_UNKNOWN  0x0000      /* Unspecified error */
+
+  #define RE_INIT    0x0001       /* Initialization error */
+
+  #define RE_FILENOTFOUND 0x0002  /* Error opening file */
+
+  #define RE_CANNOTOPEN   0x0003  /* Cannot open file */
+
+  #define RE_OUTOFMEM  0x0004     /* Error allocating memory */
+
+  #define RE_UNEXPECTED  0x0011   /* Unexpected char in input */
+
+  #define RE_UNEXPNUMBER  0x0012  /* Unexpected number in input */
+
+  #define RE_EXPECTED  0x0013     /* Expected char szMsg[0] */
+
+  #define RE_LEXEXPECTED  0x0014  /* Expected lexical elem szMsg */
+
+
+/* User defined errors starting with 0x0100 */
+
+  #define RE_USERERROR  0x0100            /* User Error prefix */
+
+  #define RE_MYERROR  (RE_USERERROR + 1)  /* User errors */
+
+  void  ReportError (
+    PINPUTBUF pibIn,    /* Input buffer */
+    WORD wCode,         /* Error code */
+    PSTR szMsg,         /* Message */
+    PSTR szAltMsg       /* Alternative message */
+  );
+
+The number of errors are maintained for an input buffer and can be
+checked with ErrorsReported() or cleared with ClearErrors().
+
+  int ErrorsReported(PINPUTBUF pibIn);  /* Macros */
+
+void ClearErrors(PINPUTBUF pibIn);
+
+
+
+THE MODEL INTERFACE
+===================
+
+The model interface is defined by the model interface header file
+"modiface.h".  This file must be included in all files that wish to
+access routines defined in the model file created by mod, "model.c".
+This header also includes prototypes for a number of utility routines
+defined in "modelu.c".  The utility routines are a set of functions
+that provide information about the model, or provide a medium for
+exchanging information.
+
+Once "model.c" has been created, the simulation program must be linked
+with this file, and the utility file "modelu.c".  The equations for
+calculating derivatives, the Jacobian and scaling could be
+interpreted, but this would cause simulations to run much more slowly.
+Since these routines are called repeatedly in a tight loop by the
+integrator, the few seconds it takes to re-link is well worth the
+trouble.
+
+Following is a description of each of the interface routines.
+
+
+Calculation Routines
+====================
+
+A number of routines are available for doing calculations, including
+initializing the model, calculating the first derivative and Jacobian,
+scaling the model and updating the inputs.  It is the responsibility
+of the calling routines to assure that the inputs are updated.
+
+  void  InitModel (void);   /* Initialize model to nominal values */
+
+  void  ScaleModel (void);  /* Scale the model as defined */
+
+  int  CalcDeriv (          /* Calculate the derivative */
+    double rgModelVars[],   /* State vector */
+    double rgDerivs[],      /* Vector of derivatives */
+    PDOUBLE pdTime          /* Current time */
+  );
+
+  void  CalcJacob (         /* Calculate the Jacobian */
+    double rgModelVars[],   /* State vector */
+    double *rgdSave[],      /* Jacobian vectors */
+    PDOUBLE pdTime          /* Current time */
+  );
+
+  int  CalcOutputs (        /* Calculate output scaling */
+    double rgModelVars[],   /* State vector */
+    double rgDerivs[],      /* Vector of derivatives */
+    PDOUBLE pdTime          /* Current time */
+  );
+
+  void  CalcInputs (double dTime);  /* Calculate inputs at dTime */
+
+
+Querying Information
+====================
+
+Dimensions of the model and a vector of the model variables may be
+requested from the model.
+
+  PDOUBLE  GetModelVector (void);  /* Returns a pointer to a vector of 
+                                      model vars - states and outputs */
+
+  int GetNModelVars (void);  /* Returns the number of model variables-
+                                states and outputs - which is the 
+                                dimension of the model vector */
+
+  int GetNStates (void); /* Returns n, the number of states in the model.
+                            The first n elements of the model vector are
+                            the states. */
+
+  int ModelIndex (HVAR hvar); /* Returns the index into the model vector */
+
+All interactions with individual variables and parameters of the model
+are managed through the use of HANDLEs.  The variable name is
+submitted and a unique, identifying handle to the variable, HVAR, is
+returned. This handle can then be used to get the current value of the
+variable, or to set the value.  For inputs, GetVarValue() returns the
+current value of the input, as defined in the last calculation.
+
+  HVAR GetVarHandle(PSTR szName); /* Returns handle to  szName */
+
+  double GetVarValue (HVAR hVar); /* Returns value of variable hVar */
+
+Given a handle to a variable, you can query what type of variable it is.
+
+  BOOL IsState (HVAR hVar);    /* TRUE if hVar refers to a state */
+
+  BOOL IsOutput (HVAR hVar);   /* TRUE if hVar refers to an output  */
+
+  BOOL IsModelVar (HVAR hVar); /* TRUE if hVar refers to a state or
+                                  an output */
+
+  BOOL IsInput (HVAR hVar);    /* TRUE if hVar is an input */
+
+  BOOL IsParm (HVAR hVar);     /* TRUE if hVar is a parameter */
+
+
+Synchronizing Inputs with the Integrator
+========================================
+
+Since some of the input functions are discontinuous, a function is
+provided to tell the simulation when an input changes state abruptly.
+The simulation can use this information to prevent the Gear
+integration routine from integrating across an input transition.
+
+  void UpdateInputs (    /* Finds time of next input transition */
+    double dTime,        /* Current time */
+    PDOUBLE pdNextTime); /* Next time returned */
+
+The function UpdateInputs() updates the state of each input and
+returns the time of the next input state change.  At this time the
+simulation should stop and reset the model to values interpolated to
+the transition time.  Then UpdateInputs() can be called to get the
+next transition time and to update input states.  Integration can then
+proceed over the new time segment.
+
+At the start of the simulation this routine should be called with the
+starting time, after the model has been initialized, to find the first
+transition time.  Thereafter, it should be called after each
+transition time is reached to find the subsequent transition time.
+
+ScaleModel() is called in the first call to UpdateInputs(), after
+input dependencies on other model parameters are resolved.
+
+Since generalized input functions have replaced the old definition of
+inputs, this interface is provided to synchronize the inputs with the
+integrator.  This interface replaces the Switch module which
+controlled a simpler exposure scheduler.  In this version, for
+example, several periodic inputs can have different periods.  Also,
+the NDoses() input function provides a series of exposures at
+specified times.
+
+
+Setting Variables
+=================
+
+Individual parameters and model variables can be set with the
+SetVarValue() function, which takes a handle to the variable and the
+new value.  Note that inputs are defined by IFN function records and
+thus have a separate assignment routine which takes a pointer to the
+defining structure.  The record is copied to the input variable, and
+is assumed to be valid--no verification of parameters is performed.
+
+  BOOL SetInput (        /* Returns TRUE if assignment succeeds */
+    HVAR hVar,           /* Handle to a variable */
+    PIFN pInputFnRecord  /* Function description for hvar */
+  );
+
+  BOOL SetVar (          /* Returns TRUE if assignment succeeds */
+    HVAR hVar,           /* Handle to a variable */
+    double dVal          /* Value to be assigned */
+  );
+
+Finally, several macros are defined to interface to re-defined
+calculation routines called by the original code.  In this way a
+header is included into the old code, and no further changes need to
+be made to it.
+
+  #define calcDeriv(pparmRec, \
+  pdTime, pdStates, pcontrolRec, pdDeriv) \
+  CalcDeriv(pdStates, pdDeriv, pdTime)
+
+  #define scale(control, param) ScaleModel()
+
+  #define calcJacob(n, param, dTime, pdStates, pdSave) \
+  CalcJacob(pdStates, pdSave, &(dTime))
+
+Notice that the use of the parmRec and controlRec data structures is
+completely eliminated by the creation of a separate module to manage
+the model definition and calculations.
+
+
+

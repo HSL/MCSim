@@ -1,0 +1,72 @@
+#------------------------------------------------------------------------------
+# 1cpt.model
+#
+# One-compartment pharmacokinetic model with first order input and output.
+# Outputs are compartment's concentration and its integral (AUC)
+# Gaussian noise (with SD proportional to the concentration can be
+# added to the concentration to simulate actual data.
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+Inputs = {Dose};
+
+Outputs = {C_central, AUC, ln_C_central, ln_AUC, 
+           SD_C_computed, SD_A_computed};
+
+# Structural model parameters
+ka = 1;
+ke = 0.5;
+F  = 1;
+V  = 2;
+
+# Statistical model parameters
+SDb_ka = 0;
+SDw_ka = 0;
+SDb_ke = 0;
+SDw_ke = 0;
+SDb_V  = 0;
+min_F  = 0;
+max_F  = 0;
+SD_C_central = 0;
+SD_AUC = 0;
+CV_C_cen = 0;
+CV_AUC   = 0;
+CV_C_cen_true = 0;
+CV_AUC_true   = 0;
+
+
+CalcOutputs {
+
+  # temporaries
+  tmp1 = (ka != ke ?
+          (F * ka * Dose) / (V * (ka - ke)) :
+          (F * Dose) / V);
+  tmp2 = (ka != ke ?
+          1 - exp(-ke * t) :
+          exp(-ka * t));
+  tmp3 = (ka != ke ?
+          1 - exp(-ka * t) :
+          ka * t);
+
+  # algebraic equation for C_central, with random noise
+  C_central = (ka != ke ?
+               tmp1 * (tmp3 - tmp2) :
+               tmp1 * tmp2 * tmp3) + 
+              NormalRandom(0, C_central * CV_C_cen_true);
+
+  # algebraic equation for AUC, with random noise
+  AUC = (ka != ke ?
+         tmp1 * (tmp2 / ke - tmp3 / ka) :
+         tmp1 * (1 - (1 + tmp3) * tmp2) / ke) + 
+        NormalRandom(0, AUC * CV_AUC_true);
+
+  ln_C_central = (C_central > 0 ? log (C_central) : -100);
+  ln_AUC = (AUC > 0 ? log (AUC) : -100);
+
+  SD_C_computed = (C_central > 0 ? C_central * CV_C_cen : 1e-10);
+  SD_A_computed = (AUC > 0 ? AUC * CV_AUC : 1e-10);
+
+} # End of output calculations
+
+End.

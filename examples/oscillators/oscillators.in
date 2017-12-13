@@ -1,0 +1,22 @@
+#------------------------------------------------------------------------------
+# oscillators.in
+#
+# This is a simple test of the software based on the model studied in
+#  Skufca JD, 2004, Analysis still matters: a surprising instance of 
+#   failure of Runge-Kutta-Felberg ODE solvers
+#   SIMAM Review, 46(4):729-737.
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+OutputFile ("oscillators.out");
+
+Simulation { 
+  theta_1 = 3;
+  theta_2 = 0;
+
+  T0 = 0;
+  StartTime (T0);
+
+  PrintStep (theta_1, 0, 200, 0.2);
+  PrintStep (theta_2, 0, 200, 0.2);
+}

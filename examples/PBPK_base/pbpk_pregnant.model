@@ -1,0 +1,984 @@
+#------------------------------------------------------------------------------
+# PBPK_woman.model
+# A PBPK model for woman, over lifetime, with possible gestations and 
+# lactations, based on Luecke et al. 1994
+#
+# May 2002 - Sandrine Micallef - various modifications for
+# correction of Luecke's model.
+# Jul 2002 - Frederic Bois - various corrections
+# Sep 2002 - Sandrine Micallef - checking against ICRP ref parameter values
+# Dec 2002 - Frederic Bois - introduction of renal elimination, inhalation
+# input, and rewriting of several comments. Changing the fetal weights 
+# to kg for consistency, and the list of ouputs. Correction of the
+# fetal liver weight parameters and biliary output for mother and fetus. 
+# Reintroduction of placental metabolism. Introduction of gut and lung
+# metabolism for the mother. Modification of gestational age. Modifications
+# to allow simulation before pregnancy. Introduction of several variables
+# for mass balance checking. Correction of fetal blood concentrations.
+# Nov 2003 - Frederic Bois added life time evolution of the mother and
+# multiple pregnancies.
+#
+# Units:
+# Volumes:          L
+# Time:             min
+# Flows:            L/min
+# Concentrations:   mM (ie mmol/L)
+# Vmax:             mM/min
+# Km:               mM
+# Masses:           kg
+# Height:           m
+# Perfusion rates:  L/min/kg of tissue
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#
+#------------------------------------------------------------------------------
+
+States  = {MQ_adip,       #   Quantity of chemical in maternal adipose (mmol)
+           MQ_adrenal,    #   ...   in maternal adrenal (mmol)
+           MQ_art,        #   ...   in maternal arterial blood (mmol)
+           MQ_brain,      #   ...   in maternal brain (mmol)
+           MQ_breast,     #   ...   in maternal breast(mmol)
+           MQ_gut,        #   ...   in maternal gut (mmol)
+           MQ_gut_lumen,  #   ...   in maternal gut lumen (mmol)
+           MQ_heart,      #   ...   in maternal heart (mmol)
+           MQ_kidney,     #   ...   in maternal kidney (mmol)
+           MQ_liver,      #   ...   in maternal liver (mmol)
+           MQ_lung,       #   ...   in maternal lung (mmol)
+           MQ_marrow,     #   ...   in maternal bone marrow + perf bone (mmol)
+           MQ_muscle,     #   ...   in maternal muscle (mmol)
+           MQ_other,      #   ...   in maternal other (mmol)
+           MQ_pancreas,   #   ...   in maternal pancreas (mmol)
+           MQ_skin,       #   ...   in maternal skin (mmol)
+           MQ_spleen,     #   ...   in maternal spleen (mmol)
+           MQ_stomach,    #   ...   in maternal stomach (mmol)
+           MQ_stom_lumen, #   ...   in maternal stomach lumen (mmol)
+           MQ_thyroid,    #   ...   in maternal thyroid (mmol)
+           MQ_uterus,     #   ...   in maternal uterus (mmol)
+           MQ_ven,        #   ...   in maternal venous blood (mmol)
+           MQ_met_liver,  #   ...   metabolized in maternal liver (mmol)
+           MQ_met_lung,   #   ...   metabolized in maternal lung (mmol)
+           MQ_met_gut,    #   ...   metabolized in maternal gut (mmol)
+           MQ_ing,        #   ...   ingested by the mother (mmol)
+           MQ_inh,        #   ...   inhaled by the mother (mmol)
+           MQ_exhaled,    #   ...   exhaled by the mother (mmol)
+           MQ_feces,      #   ...   fecally excreted by the mother (mmol)
+           MQ_urine,      #   ...   renally excreted by the mother (mmol)
+
+           Q_amniot,      #   ...   in amniotic fluid (mmol)
+           Q_placenta,    #   ...   in placenta (mmol)
+           Q_met_placenta,#   ...   metabolized in placenta (mmol)
+
+           EQ_adip,       #   ...   in fetal adipose (mmol)
+           EQ_adrenal,    #   ...   in fetal adrenal (mmol)
+           EQ_brain,      #   ...   in fetal brain (mmol)
+           EQ_gut,        #   ...   in fetal gut (mmol)
+           EQ_heart,      #   ...   in fetal heart (mmol)
+           EQ_kidney,     #   ...   in fetal kidney (mmol)
+           EQ_liver,      #   ...   in fetal liver (mmol)
+           EQ_lung,       #   ...   in maternal lung (mmol)
+           EQ_marrow,     #   ...   in fetal bone marrow (mmol)
+           EQ_muscle,     #   ...   in fetal muscle (mmol)
+           EQ_other,      #   ...   in fetal extracellular water (mmol)
+           EQ_pancreas,   #   ...   in fetal pancreas (mmol)
+           EQ_skin,       #   ...   in fetal skin (mmol)
+           EQ_spleen,     #   ...   in fetal spleen (mmol)
+           EQ_thymus,     #   ...   in fetal thymus (mmol)
+           EQ_thyroid,    #   ...   in fetal thyroid (mmol)
+           EQ_ven,        #   ...   in fetal venous blood (mmol)
+           EQ_met_liver}; #   ...   metabolized in fetal liver (mmol)
+
+
+Outputs = {MC_exh,        # Concentration of chemical in exhaled air (mM)
+           MC_adip,       #   ...   in maternal adipose (mM)
+           MC_adrenal,    #   ...   in maternal adrenal (mM)
+           MC_art,        #   ...   in maternal arterial blood (mM)
+           MC_brain,      #   ...   in maternal brain (mM)
+           MC_breast,     #   ...   in maternal breast(mM)
+           MC_gut,        #   ...   in maternal gut (mM)
+           MC_gut_lumen,  #   ...   in maternal gut lumen (mM)
+           MC_heart,      #   ...   in maternal heart (mM)
+           MC_kidney,     #   ...   in maternal kidney (mM)
+           MC_liver,      #   ...   in maternal liver (mM)
+           MC_lung,       #   ...   in maternal lung (mM)
+           MC_marrow,     #   ...   in maternal bone marrow (mM)
+           MC_muscle,     #   ...   in maternal muscle (mM)
+           MC_other,      #   ...   in maternal other (mM)
+           MC_pancreas,   #   ...   in maternal pancreas (mM)
+           MC_skin,       #   ...   in maternal skin (mM)
+           MC_spleen,     #   ...   in maternal spleen (mM)
+           MC_stomach,    #   ...   in maternal stomach (mM)
+           MC_stom_lumen, #   ...   in maternal stomach lumen (mM)
+           MC_thyroid,    #   ...   in maternal venous thyroid (mM)
+           MC_uterus,     #   ...   in maternal uterus (mM)
+           MC_ven,        #   ...   in maternal venous blood (mM)
+
+           C_amniot,      #   ...   in amniotic (mM)
+           C_placenta,    #   ...   in placenta (mM)
+
+           EC_adip,       #   ...   in fetal adipose (mM)
+           EC_adrenal,    #   ...   in fetal adrenal (mM)
+           EC_art,        #   ...   in fetal arterial plasma (mM)
+           EC_brain,      #   ...   in fetal brain (mM)
+           EC_gut,        #   ...   in fetal gut (mM)
+           EC_heart,      #   ...   in fetal heart (mM)
+           EC_kidney,     #   ...   in fetal kidney (mM)
+           EC_liver,      #   ...   in fetal liver (mM)
+           EC_lung,       #   ...   in fetal lung (mM)
+           EC_marrow,     #   ...   in fetal bone marrow (mM)
+           EC_muscle,     #   ...   in fetal muscle (mM)
+           EC_other,      #   ...   in fetal other (mM)
+           EC_pancreas,   #   ...   in fetal pancreas (mM)
+           EC_skin,       #   ...   in fetal skin (mM)
+           EC_spleen,     #   ...   in fetal spleen (mM)
+           EC_thymus,     #   ...   in fetal thymus (mM)
+           EC_thyroid,    #   ...   in fetal thyroid (mM)
+           EC_ven,        #   ...   in fetal venous plasma (mM)
+
+           MQ_total,      #  Total quantity in mother body and excreted (mmol)
+           EQ_total,      #  Total quantity in child body and excreted (mmol)
+           Gest_Tzero};   #  Keeps track of the start time of a pregnancy
+
+Inputs  = {Gestation,     # Set to 1 if the woman is pregnant, 0 if not
+           Lactation,     # Set to 1 during breast-feeding, to 0 otherwise
+           MC_inh,        # Concentration inhaled (mM)
+           MQ_ing_rate};  # Ingestion rate (mmol/min)
+
+
+# Constants to compute fetal weight 
+# =================================
+EWo   = 0.00137;          # Value from Luecke et al. Weight in grams at time 0
+alpha = 0.01306;          # Value from Luecke et al.
+Ao    = 0.1974;           # Value from Luecke et al.
+min_in_day = 1440;        # Number of min in a day (the allometric equation
+                          # given by Luecke calculates the fetal weight
+                          # as a function of gestational age in day)
+
+
+# Nominal parameter values
+# ========================
+
+# Physiological and pharmacokinetic parameters
+# --------------------------------------------
+
+# Fraction of dead space in lung
+F_dead_space = 0.67;
+
+
+# Fraction of arterial blood
+# Calculated from Filser 2000 p.43
+Fr_art_blood = 0.0178 / (0.0178 + 0.0533);
+
+# Tissue volumic weight are assumed to be equal to 1
+# excepted for adipose tissue (cf Brown et al. 97 p.433)
+density_adip = 0.9;
+density_bone = 2.0;
+
+# Scaling factors for the volume of the organs
+# Unit = L/meter of height
+# sc_V_ have been calculated for a standard woman : 1.63m 63kg
+# and using the organ weights given by the ICRP. 2001
+# density for the organs is supposed equal to 1 excepted for
+# adipose tissues (0.9) and bones (2)
+
+sc_V_adrenal   = 8.0E-3;
+sc_V_bone      = 1.564;
+sc_V_brain     = 0.798;
+sc_V_gut       = 0.589;
+sc_V_gut_lumen = 0.331;   
+sc_V_heart     = 0.153;
+sc_V_kidney    = 0.169;
+sc_V_liver     = 0.859;
+sc_V_lung      = 0.215;
+sc_V_marrow    = 1.656;  # yellow + red
+sc_V_muscle    = 11.043;   
+sc_V_other     = 4.012;
+sc_V_pancreas  = 0.052;
+sc_V_skin      = 1.530;
+sc_V_spleen    = 0.092;
+sc_V_stomach   = 0.086;
+sc_V_stom_lumen= 0.098;    
+sc_V_thyroid   = 0.010;
+sc_V_uterus    = 0.049;
+
+
+# Perfusion per unit mass of organ.
+# These have been calculated as follows:
+# sc_F_organ = %blood_flow_rate * Card_output / organ_weight
+# the values have been taken from ICRP 2001
+# Organ weight : Table R8 p2-5,
+# Cardiac output : Table R26 p2-23
+# Blood_flow : Table R15 & R17 p7-11 or William & Leggett
+#              Table R31 p2-26 for perfusion of breast and uterus assuming
+#              a factor 10 growth of uterus mass during pregnancy
+# Unit: L/min/kg of tissue
+
+Msc_F_adip    = 0.03;
+Msc_F_adrenal = 1.68;
+Msc_F_brain   = 0.49;
+Msc_F_breast  = 0.27;
+Msc_F_eport   = 0.25;
+Msc_F_gut     = 0.95;
+Msc_F_heart   = 1.08;
+Msc_F_kidney  = 4.41;
+Msc_F_marrow  = 0.10;
+Msc_F_muscle  = 0.04;
+Msc_F_pancreas= 0.60;
+Msc_F_skin    = 0.29;
+Msc_F_spleen  = 1.07;
+Msc_F_stomach = 0.52;
+Msc_F_thyroid = 4.72;
+Msc_F_uterus  = 1.095;
+Msc_F_other   = 0.027;
+
+Esc_F_adip    = 0.03;  # = Msc_F_adip
+Esc_F_adrenal = 3.40;  # ICRP 2001 Table 3.4 p3-26
+Esc_F_brain   = 0.25;  # ICRP 2001 Table 3.4 p3-26
+Esc_F_eport   = 0.25;  # = Msc_F_eport
+Esc_F_gut     = 1.01;  # ICRP 2001 Table 3.4 p3-26
+Esc_F_heart   = 1.65;  # ICRP 2001 Table 3.4 p3-26
+Esc_F_kidney  = 1.55;  # ICRP 2001 Table 3.4 p3-26
+Esc_F_marrow  = 0.10;  # = Msc_F_marrow
+Esc_F_muscle  = 0.04;  # = Msc_F_muscle
+Esc_F_pancreas= 0.60;  # = Msc_F_pancreas
+Esc_F_placenta= 0.11;
+Esc_F_skin    = 0.29;  # = Msc_F_skin
+Esc_F_spleen  = 1.07;  # = Msc_F_spleen
+Esc_F_stomach = 0.52;  # = Msc_F_stomach
+Esc_F_thymus  = 5.48;  # based on adult value
+Esc_F_thyroid = 4.72;  # = Msc_F_thyroid
+Esc_F_lung    = 4.21;  # computed from values for female adult
+                       # bronchial circulation
+Esc_F_other   = 0.027; # = Msc_F_other
+
+
+# Parameters used to calculate the mother's changing organ weights
+# (given by Luecke 94)
+Ma_adip    = 0.0009911;
+Mb_adip    = 2.142;
+Mc_adip    = -0.1405;
+Ma_blood   = 0.000004712;
+Mb_blood   = 3.295;
+Mc_blood   = -0.2164;
+Ma_breast  = 0.01274;
+Mb_breast  = 0.608;
+Mc_breast  = -0.02209;
+Ma_uterus  = 0.0002057;
+
+a_amniot   = 1.0E-3;    # in 1st approximation, same as Ma_uterus
+a_placenta = 0.00020;   # same as Ma_uterus
+
+# Parameters used to compute the fetal organ weights (given by Luecke 94)
+
+Ea_adip     = 0.1803 * 0.001;    # adipose
+
+Ea_adrenal  = 0.007467 * 0.001;  # adrenals
+Eb_adrenal  = 0.01425;
+
+Ea_blood    = 0.06796 * 0.001;   # blood
+Eb_blood    = 0.9729;
+
+Ea_bone     = 0.1834 * 0.001;    # bone computed from values collected at the
+                                 # end of gestation, ICRP table R8 & R1 p 3-6
+Ea_brain    = 0.1871 * 0.001;    # brain
+Eb_brain    = 0.9585;
+
+Ea_gut      = 0.0163 * 0.001;    # gut
+
+Ea_heart    = 0.01012 * 0.001;   # heart
+Eb_heart    = 0.9489;
+
+Ea_kidney   = 0.004203 * 0.001;  # kidney
+Eb_kidney   = 1.255;
+Ec_kidney   = -0.02127;
+
+Ea_liver    = 0.06050 * 0.001;   # liver
+Eb_liver    = 0.9737;            # F. Bois increased by a factor 10
+
+Ea_lung     = 0.09351 * 0.001;   # lung
+
+Ea_marrow   = 0.01425 * 0.001;   # bone maorrow
+Eb_marrow   = 0.9943;
+
+Ea_muscle   = 0.02668 * 0.001;   # muscle
+Eb_muscle   = 1.234;
+
+Ea_other    = 0.1575 * 0.001;    # other
+
+Ea_pancreas = 0.1883 * 0.001;    # pancreas
+Eb_pancreas = 0.3854;
+
+Ea_skin     = 0.0514 * 0.001;    # skin
+
+Ea_spleen   = 0.0001302 * 0.001; # spleen
+Eb_spleen   = 1.204;
+Ec_spleen   = 0.02909;
+
+Ea_thymus   = 0.001218 * 0.001;  # thymus
+Eb_thymus   = 1.093;
+
+Ea_thyroid  = 0.0006470 * 0.001; # thyroid
+Eb_thyroid  = 1.023;
+
+
+# Transits; Unit: L/min
+MFl_stom_lumen = 0.208 / 60.0; # Intestinal transit for stomach -> gut
+                               # ICRP R8 and R23 p. 6-15
+MFl_gut_lumen  = 0.005 / 60.0; # Intestinal transit for gut (feces)
+                               # ICRP R8 and R23 p. 6-15
+Fl_milk = 0.00049;             # ICRP 89, p213
+
+
+# Parameters indicating the fraction of fat in each organ
+# comming from Fiserova-Bergerova  1983
+# or references found in Van der Mollen 1996
+frac_fat_blood      = 0.0052;     # Papke et al 89.
+
+frac_fat_adip       = 0.859;      # Beck 90, Duarte-Davidson 93, Patterson 86
+                                  # Ryan 86 Ryan 85b Schecter 85
+                                  # refs in Van der Molen 96
+frac_fat_adrenal    = 0.049;      # Default value corresponding to
+                                  # "Remaining organs de Van der Molen"
+frac_fat_amniot     = 0.0052;     # Same value as blood
+frac_fat_brain      = 0.11;       # Fiserova-Bergerova  1983
+frac_fat_breast     = 0.049;      # Default value
+frac_fat_gut        = 0.065;      # Fiserova-Bergerova  1983
+frac_fat_gut_lumen  = 0.049;      # Default value
+frac_fat_heart      = 0.083;      # Fiserova-Bergerova  1983
+frac_fat_kidney     = 0.052;      # Fiserova-Bergerova  1983
+frac_fat_liver      = 0.049;      # Lenter 81, ref in Van der Molen 96
+frac_fat_lung       = 0.017;      # Fiserova-Bergerova  1983
+frac_fat_marrow     = 0.186;      # Clarys & Martin 85, ref in Van der Molen 96
+frac_fat_milk       = 0.040;      # ICRP Pub 89, p 212
+frac_fat_muscle     = 0.064;      # Lenter 81 & Ryan 85,
+                                  # ref in Van der Molen 96
+frac_fat_other      = 0.049;      # Default value
+frac_fat_pancreas   = 0.105;      # Fiserova-Bergerova  1983
+frac_fat_placenta   = 0.049;      # Default value
+frac_fat_skin       = 0.150;      # Fiserova-Bergerova  1983
+frac_fat_spleen     = 0.030;      # Fiserova-Bergerova  1983
+frac_fat_stomach    = 0.049;      # Default value
+frac_fat_stom_lumen = 0.049;      # Default value
+frac_fat_thymus     = 0.049;      # Default value
+frac_fat_thyroid    = 0.049;      # Default value
+frac_fat_uterus     = 0.049;      # Default value
+
+
+# Parameters specific of the chemical studied
+# -------------------------------------------
+
+# Transferts depending on the agent; Unit: L/min
+MKa_stomach    = 0.1;   # Absorption rate constant for stomach
+MKa_gut        = 0.1;   # Absorption rate constant for gut
+MKe_bile       = 0.0;   # Biliary excretion rate constant for the mother
+
+Kd_pla_amniot  = 0.1;   # Transfer rate constant (diffusion)
+                        # between placenta and amniotic fluid
+Kd_uter_pla    = 0.1;   # Diffusion rate constant from uterus to placenta
+
+EKe_bile       = 0.0;   # Biliary excretion rate constant for the fetus
+EKe_gut        = 0.0;   # Excretion rate constant from fetal gut to amniotic
+EKa_amniot     = 0.0;   # Absorption rate constant from amniotic to fetal gut
+
+# Blood/air PC
+PC_lung_over_air = 1;
+
+# Adipose tissue over blood partition coefficent
+PC_adip     = 1;
+
+# Maternal renal elimination flow rate (L/min)
+MKe_renal   = 1E-3;
+
+# Maternal hepatic metabolic rate constant scaling factor ((kg^0.25)/min)
+# Scaling to the 0.25 is supported by Hattis et al. and used by Gentry et al.
+MscKm_liver   = 0;
+
+# Maternal gut metabolic rate constant scaling factor ((kg^0.25)/min)
+MscKm_gut     = 0;
+
+# Maternal lung metabolic rate constant scaling factor ((kg^0.25)/min)
+MscKm_lung    = 0;
+
+# Placental metabolic rate constant scaling factor ((kg^0.25)/min) 
+scKm_placenta = 0;
+
+# Fetal hepatic metabolic rate constant scaling factor ((kg^0.25)/min)
+EscKm_liver   = 0;
+
+# Other parameters that will be computed in Initialize
+
+PC_fat;
+PC_adrenal;
+PC_amniot;
+PC_brain;
+PC_breast;
+PC_gut;
+PC_heart;
+PC_kidney;
+PC_liver;
+PC_lung;
+PC_marrow;
+PC_milk;
+PC_muscle;
+PC_other;
+PC_pancreas;
+PC_placenta;
+PC_skin;
+PC_spleen;
+PC_stomach;
+PC_thymus;
+PC_thyroid;
+PC_uterus;
+
+
+Initialize {
+
+  # Pure fat / blood partition coef
+  PC_fat      = PC_adip / frac_fat_adip;
+
+  # Tissue over blood partition coefficents
+  PC_adrenal  = (PC_adrenal  ? PC_adrenal  : frac_fat_adrenal  * PC_fat);
+  PC_amniot   = (PC_amniot   ? PC_amniot   : frac_fat_amniot   * PC_fat);
+  PC_brain    = (PC_brain    ? PC_brain    : frac_fat_brain    * PC_fat);
+  PC_breast   = (PC_breast   ? PC_breast   : frac_fat_breast   * PC_fat);
+  PC_gut      = (PC_gut      ? PC_gut      : frac_fat_gut      * PC_fat);
+  PC_heart    = (PC_heart    ? PC_heart    : frac_fat_heart    * PC_fat);
+  PC_kidney   = (PC_kidney   ? PC_kidney   : frac_fat_kidney   * PC_fat);
+  PC_liver    = (PC_liver    ? PC_liver    : frac_fat_liver    * PC_fat);
+  PC_lung     = (PC_lung     ? PC_lung     : frac_fat_lung     * PC_fat);
+  PC_marrow   = (PC_marrow   ? PC_marrow   : frac_fat_marrow   * PC_fat);
+  PC_milk     = (PC_milk     ? PC_milk     : frac_fat_milk     * PC_fat);
+  PC_muscle   = (PC_muscle   ? PC_muscle   : frac_fat_muscle   * PC_fat);
+  PC_other    = (PC_other    ? PC_other    : frac_fat_other    * PC_fat);
+  PC_pancreas = (PC_pancreas ? PC_pancreas : frac_fat_pancreas * PC_fat);
+  PC_placenta = (PC_placenta ? PC_placenta : frac_fat_placenta * PC_fat);
+  PC_skin     = (PC_skin     ? PC_skin     : frac_fat_skin     * PC_fat);
+  PC_spleen   = (PC_spleen   ? PC_spleen   : frac_fat_spleen   * PC_fat);
+  PC_stomach  = (PC_stomach  ? PC_stomach  : frac_fat_stomach  * PC_fat);
+  PC_thymus   = (PC_thymus   ? PC_thymus   : frac_fat_thymus   * PC_fat);
+  PC_thyroid  = (PC_thyroid  ? PC_thyroid  : frac_fat_thyroid  * PC_fat);
+  PC_uterus   = (PC_uterus   ? PC_uterus   : frac_fat_uterus   * PC_fat);
+
+} # End of initialize
+
+
+Dynamics {
+
+  # Calculation of the "gestational age"
+  Gest_Tzero = (Gestation ? (Gest_Tzero == 0 ? t : Gest_Tzero) : 0);
+
+  Gest_Age = (Gest_Tzero == 0 ? 0 : t - Gest_Tzero);
+
+
+  # Maternal tissue volumes (L) are supposed to be proportionnal to the
+  # Mother height, excepted for the adipose tissue
+
+  t1 = t / 525600.0; # time in years
+
+  Mheight = (t1 < 1 ? 51 + t1 * (76-51) :
+              (t1 < 5 ? 76 + (t1-1) * (109-76) / 4.0 :
+                (t1 < 10 ? 109 + (t1-5) * (138-109) / 5.0 :
+                  (t1 < 15 ? 138 + (t1-10) * (161-138) / 5.0 :
+                    (t1 < 20 ? 161 + (t1-15) * (163-161) / 5.0 :
+                     163))))) * 0.01;
+
+  MV_adrenal    = sc_V_adrenal   * Mheight;
+  MV_bone       = sc_V_bone      * Mheight;
+  MV_brain      = sc_V_brain     * Mheight;
+  MV_gut        = sc_V_gut       * Mheight;
+  MV_gut_lumen  = sc_V_gut_lumen * Mheight; 
+  MV_heart      = sc_V_heart     * Mheight;
+  MV_kidney     = sc_V_kidney    * Mheight;
+  MV_liver      = sc_V_liver     * Mheight;
+  MV_lung       = sc_V_lung      * Mheight;
+  MV_marrow     = sc_V_marrow    * Mheight;
+  MV_muscle     = sc_V_muscle    * Mheight;
+  MV_other      = sc_V_other     * Mheight;
+  MV_pancreas   = sc_V_pancreas  * Mheight;
+  MV_skin       = sc_V_skin      * Mheight;
+  MV_spleen     = sc_V_spleen    * Mheight;
+  MV_stomach    = sc_V_stomach   * Mheight;
+  MV_stom_lumen = sc_V_stom_lumen* Mheight;   
+  MV_thyroid    = sc_V_thyroid   * Mheight;
+
+  # EW_indicator is some sort of measure of the fetal weight (in g) but is not
+  # completely consistent because fetal weight has to be recomputed later.
+  # This could be improved.
+  EW_indicator = EWo * (Gestation ?
+    exp(Ao / alpha * (1 - exp(-alpha * Gest_Age/min_in_day))) : # if gestation
+    1);  # otherwise
+
+  ln_EW_i = log(EW_indicator);
+
+  # Volumes of fetal organs computed using parameters given by Luecke 94
+  # and assuming a density of 1, excepted for the adipose tissue for which
+  # the density is equal to 0.9 (Brown et al.97 p.433) and for which Luecke's
+  # equation has been simplified and corrected.
+  # Unit: kg and L
+
+  EW_adip     = Ea_adip     * EW_indicator; # Luecke's eq. did not work
+  EV_adip     = EW_adip / density_adip;
+
+  EV_blood    = Ea_blood    * exp(Eb_blood * ln_EW_i);
+  EV_art      = EV_blood    * Fr_art_blood;   
+  EV_ven      = EV_blood - EV_art;
+
+  EV_adrenal  = Ea_adrenal  * exp(Eb_adrenal * ln_EW_i);
+
+  EV_bone     = Ea_bone     * EW_indicator;
+  EW_bone     = EV_bone * density_bone;
+
+  EV_brain    = Ea_brain    * exp(Eb_brain * ln_EW_i);
+  EV_gut      = Ea_gut      * EW_indicator;
+  EV_heart    = Ea_heart    * exp(Eb_heart * ln_EW_i);
+  EV_kidney   = Ea_kidney   * exp((Eb_kidney + Ec_kidney * ln_EW_i) * ln_EW_i);
+  EV_liver    = Ea_liver    * exp(Eb_liver * ln_EW_i);
+  EV_lung     = Ea_lung     * EW_indicator;
+  EV_marrow   = Ea_marrow   * exp(Eb_marrow * ln_EW_i);
+  EV_muscle   = Ea_muscle   * exp(Eb_muscle * ln_EW_i);
+  EV_other    = Ea_other    * EW_indicator;
+  EV_pancreas = Ea_pancreas * exp(Eb_pancreas * ln_EW_i);
+  EV_skin     = Ea_skin     * EW_indicator;
+  EV_spleen   = Ea_spleen   * exp((Eb_spleen + Ec_spleen * ln_EW_i) * ln_EW_i);
+  EV_thymus   = Ea_thymus   * exp(Eb_thymus * ln_EW_i);
+  EV_thyroid  = Ea_thyroid  * exp(Eb_thyroid * ln_EW_i);
+
+  EW_total    = EV_blood + EW_adip + EV_adrenal  + EV_brain +
+                EW_bone +
+                EV_gut    + EV_heart  + EV_kidney + EV_liver    + EV_lung +
+                EV_marrow + EV_muscle + EV_other  + EV_pancreas + EV_skin +
+                EV_spleen + EV_thymus + EV_thyroid;
+
+
+  # Volumes of the maternal organs changing during pregnancy,
+  # computed with the equations from Luecke 94 and from ICRP data and Van 
+  # Molen model after age 14
+
+  MV_adip = (t1 < 1 ? 0.37 + t1 * (2.3-0.37) :
+              (t1 < 5 ? 2.3 + (t1-1) * (3.6-2.3) / 4.0 :
+                (t1 < 10 ? 3.6 + (t1-5) * (6-3.6) / 5.0 :
+                  (t1 < 15 ? 6.0 + (t1-10) * (14-6) / 5.0 :
+                     14 + (t1-15) * 17 / 55.0)))) / density_adip +
+              (Gestation ? 
+               Ma_adip * exp((Mb_adip + Mc_adip * ln_EW_i) * ln_EW_i) 
+               / density_adip :
+               0);
+
+  MV_blood = (t1 < 1 ? 0.27 + t1 * (0.5-0.27) :
+               (t1 < 5 ? 0.5 + (t1-1) * (1.4-0.5) / 4.0 :
+                 (t1 < 10 ? 1.4 + (t1-5) * (2.4-1.4) / 5.0 :
+                   (t1 < 15 ? 2.4 + (t1-10) * (3.3-2.4) / 5.0 :
+                     (t1 < 20 ? 3.3 + (t1-15) * (3.9-3.3) / 5.0 :
+                      3.9))))) +
+              (Gestation ? 
+               Ma_blood * exp((Mb_blood + Mc_blood * ln_EW_i) * ln_EW_i) : 
+               0);
+
+  MV_art    = MV_blood * Fr_art_blood;   
+  MV_ven    = MV_blood - MV_art;
+
+  MV_breast = (t1 < 10 ? 0.01 :
+                (t1 < 15 ? 0.01 + (t1-10) * (0.25-0.01) / 5.0 :
+                  (t1 < 20 ? 0.25 + (t1-15) * (0.5-0.25) / 5.0 : 0.5))) +
+              (Gestation ? 
+               Ma_breast * exp((Mb_breast + Mc_breast * ln_EW_i) * ln_EW_i) :
+               0);
+
+  MV_uterus = sc_V_uterus * Mheight +
+              (Gestation ? Ma_uterus * EW_indicator : 
+               0);
+
+  # Placenta mass is assumed to be proportional to fetal weight
+  V_placenta = (Gestation ? 
+                a_placenta * EW_indicator :
+                0);
+
+  # Amniotic fluid mass is assumed to be proportional to fetal weight
+  V_amniot   = (Gestation ? 
+                a_amniot * EW_indicator :
+                0);
+
+  MW_lean  = MV_adrenal + MV_blood  +
+             MV_bone * density_bone     + MV_brain   + MV_breast +
+             MV_gut     + MV_gut_lumen  + MV_heart   + MV_kidney +
+             MV_liver   + MV_lung       + MV_marrow  + MV_muscle +
+             MV_other   + MV_pancreas   + MV_skin    + MV_spleen +
+             MV_stomach + MV_stom_lumen + MV_thyroid + MV_uterus;
+
+  MW_total = MW_lean + MV_adip * density_adip +
+             V_placenta + V_amniot + EW_total;
+
+  # Scale metabolism to body masses
+
+  dtmp = pow(MW_lean, 0.25);
+  MKm_liver   = MscKm_liver / dtmp;
+  MKm_gut     = MscKm_gut / dtmp;
+  MKm_lung    = MscKm_lung / dtmp;
+  Km_placenta = scKm_placenta / dtmp;
+
+  EKm_liver   = EscKm_liver / pow(EW_total, 0.25);
+
+
+  # Compute actual blood flows
+  # Unit: L/min
+
+  MF_adip     = Msc_F_adip     * MV_adip;
+  MF_adrenal  = Msc_F_adrenal  * MV_adrenal;
+  MF_brain    = Msc_F_brain    * MV_brain;
+  MF_breast   = Msc_F_breast   * MV_breast;
+  MF_eport    = Msc_F_eport    * MV_liver;
+  MF_gut      = Msc_F_gut      * MV_gut;
+  MF_heart    = Msc_F_heart    * MV_heart;
+  MF_kidney   = Msc_F_kidney   * MV_kidney;
+  MF_marrow   = Msc_F_marrow   * MV_marrow;
+  MF_muscle   = Msc_F_muscle   * MV_muscle;
+  MF_other    = Msc_F_other    * MV_other ;
+  MF_pancreas = Msc_F_pancreas * MV_pancreas;
+  MF_skin     = Msc_F_skin     * MV_skin;
+  MF_spleen   = Msc_F_spleen   * MV_spleen;
+  MF_stomach  = Msc_F_stomach  * MV_stomach;
+  MF_thyroid  = Msc_F_thyroid  * MV_thyroid;
+  MF_uterus   = Msc_F_uterus   * MV_uterus;
+
+  MF_liver    = MF_eport + MF_spleen + MF_pancreas + MF_gut + MF_stomach;
+
+  MF_blood    = MF_adip  + MF_adrenal + MF_brain   + MF_breast +
+                MF_heart + MF_kidney  + MF_liver   + MF_marrow + MF_muscle +
+                MF_other + MF_skin    + MF_thyroid + MF_uterus;
+
+  EF_adip     = Esc_F_adip     * EV_adip; 
+  EF_adrenal  = Esc_F_adrenal  * EV_adrenal;
+  EF_brain    = Esc_F_brain    * EV_brain;
+  EF_eport    = Esc_F_eport    * EV_liver;
+  EF_gut      = Esc_F_gut      * EV_gut;
+  EF_heart    = Esc_F_heart    * EV_heart;
+  EF_kidney   = Esc_F_kidney   * EV_kidney;
+  EF_lung     = Esc_F_lung     * EV_lung;
+  EF_marrow   = Esc_F_marrow   * EV_marrow;
+  EF_muscle   = Esc_F_muscle   * EV_muscle;
+  EF_pancreas = Esc_F_pancreas * EV_pancreas;
+  EF_placenta = Esc_F_placenta * V_placenta;
+  EF_skin     = Esc_F_skin     * EV_skin;
+  EF_spleen   = Esc_F_spleen   * EV_spleen;
+  EF_thymus   = Esc_F_thymus   * EV_thymus;
+  EF_thyroid  = Esc_F_thyroid  * EV_thyroid;
+  EF_other    = Esc_F_other    * EV_other;       
+
+  EF_liver    = EF_eport + EF_spleen + EF_pancreas;
+  # Note: according to Luecke blood flow to the GI tract does not feed in 
+  # the liver...
+
+  EF_blood    = EF_adip  + EF_adrenal  + EF_brain + EF_gut +
+                EF_heart + EF_kidney   + EF_liver + EF_marrow + EF_muscle +
+                EF_other + EF_placenta + EF_skin  + EF_thymus + EF_thyroid;
+  # Note: lung is irrigated by a bifurcation and does not enter in the
+  # formula above
+
+  # Pulmonary Flow rate (L/min) (ref ICRP Pub 89, p 99)
+  MF_pul = (t1 < 1 ? 1.5 + t1 * (3.7-1.5) :
+               (t1 < 5 ? 3.7 + (t1-1) * (5.3-3.7) / 4.0 :
+                 (t1 < 10 ? 5.3 + (t1-5) * (6.3-5.3) / 5.0 :
+                   (t1 < 15 ? 6.3 + (t1-10) * (6.7-6.3) / 5.0 :
+                     (t1 < 20 ? 6.7 + (t1-15) * (6.5-6.7) / 5.0 :
+                      6.7)))));
+
+  # Alveolar flow rate
+  MF_alv = MF_pul * F_dead_space;
+
+
+  # Concentrations in venous blood at the organ exit and in tissues
+
+  MC_adip       = MQ_adip     / MV_adip;
+  MC_adip_v     = MC_adip     / PC_adip;
+
+  MC_adrenal    = MQ_adrenal  / MV_adrenal;
+  MC_adrenal_v  = MC_adrenal  / PC_adrenal;
+
+  MC_brain      = MQ_brain    / MV_brain;
+  MC_brain_v    = MC_brain    / PC_brain;
+
+  MC_breast     = MQ_breast   / MV_breast;
+  MC_breast_v   = MC_breast   / PC_breast;
+
+  MC_gut        = MQ_gut      / MV_gut;
+  MC_gut_v      = MC_gut      / PC_gut;
+
+  MC_heart      = MQ_heart    / MV_heart;
+  MC_heart_v    = MC_heart    / PC_heart;
+
+  MC_kidney     = MQ_kidney   / MV_kidney;
+  MC_kidney_v   = MC_kidney   / PC_kidney;
+
+  MC_liver      = MQ_liver    / MV_liver;
+  MC_liver_v    = MC_liver    / PC_liver;
+
+  MC_lung       = MQ_lung     / MV_lung;
+  MC_lung_v     = MC_lung     / PC_lung;
+
+  MC_marrow     = MQ_marrow   / MV_marrow;
+  MC_marrow_v   = MC_marrow   / PC_marrow;
+
+  MC_muscle     = MQ_muscle   / MV_muscle;
+  MC_muscle_v   = MC_muscle   / PC_muscle;
+
+  MC_other      = MQ_other    / MV_other;
+  MC_other_v    = MC_other    / PC_other;
+
+  MC_pancreas   = MQ_pancreas / MV_pancreas;
+  MC_pancreas_v = MC_pancreas / PC_pancreas;
+
+  MC_skin       = MQ_skin     / MV_skin;
+  MC_skin_v     = MC_skin     / PC_skin;
+
+  MC_spleen     = MQ_spleen   / MV_spleen;
+  MC_spleen_v   = MC_spleen   / PC_spleen;
+
+  MC_stomach    = MQ_stomach  / MV_stomach;
+  MC_stomach_v  = MC_stomach  / PC_stomach;
+
+  MC_thyroid    = MQ_thyroid  / MV_thyroid;
+  MC_thyroid_v  = MC_thyroid  / PC_thyroid;
+
+  MC_uterus     = MQ_uterus   / MV_uterus;
+  MC_uterus_v   = MC_uterus   / PC_uterus;
+
+  EC_adip       = EQ_adip     / EV_adip;
+  EC_adip_v     = EC_adip     / PC_adip;
+
+  EC_adrenal    = EQ_adrenal  / EV_adrenal;
+  EC_adrenal_v  = EC_adrenal  / PC_adrenal;
+
+  EC_brain      = EQ_brain    / EV_brain;
+  EC_brain_v    = EC_brain    / PC_brain;
+
+  EC_gut        = EQ_gut      / EV_gut;
+  EC_gut_v      = EC_gut      / PC_gut;
+
+  EC_heart      = EQ_heart    / EV_heart;
+  EC_heart_v    = EC_heart    / PC_heart;
+
+  EC_kidney     = EQ_kidney   / EV_kidney;
+  EC_kidney_v   = EC_kidney   / PC_kidney;
+
+  EC_liver      = EQ_liver    / EV_liver;
+  EC_liver_v    = EC_liver    / PC_liver;
+
+  EC_lung       = EQ_lung     / EV_lung;
+  EC_lung_v     = EC_lung     / PC_lung;
+
+  EC_marrow     = EQ_marrow   / EV_marrow;
+  EC_marrow_v   = EC_marrow   / PC_marrow;
+
+  EC_muscle     = EQ_muscle   / EV_muscle;
+  EC_muscle_v   = EC_muscle   / PC_muscle;
+
+  EC_other      = EQ_other    / EV_other;
+  EC_other_v    = EC_other    / PC_other;
+
+  EC_pancreas   = EQ_pancreas / EV_pancreas;
+  EC_pancreas_v = EC_pancreas / PC_pancreas;
+
+  EC_skin       = EQ_skin     / EV_skin;
+  EC_skin_v     = EC_skin     / PC_skin;
+
+  EC_spleen     = EQ_spleen   / EV_spleen;
+  EC_spleen_v   = EC_spleen   / PC_spleen;
+
+  EC_thymus     = EQ_thymus   / EV_thymus;
+  EC_thymus_v   = EC_thymus   / PC_thymus;
+
+  EC_thyroid    = EQ_thyroid  / EV_thyroid;
+  EC_thyroid_v  = EC_thyroid  / PC_thyroid;
+
+  # other compartment concentrations for which PC_ is not needed
+  # because equal to 1 (PC_ven and PC_art) or because
+  # they are not directly irrigated by blood (diffusion)
+
+  MC_gut_lumen  = MQ_gut_lumen  / MV_gut_lumen;
+  MC_stom_lumen = MQ_stom_lumen / MV_stom_lumen;
+  MC_art        = MQ_art        / MV_art;
+  MC_ven        = MQ_ven        / MV_ven;
+
+  C_amniot      = (Gestation ? Q_amniot   / V_amniot : 0);
+  C_placenta    = (Gestation ? Q_placenta / V_placenta : 0);
+
+  EC_ven        = EQ_ven / EV_ven;
+  EC_art        = ((EF_blood - EF_lung) * EC_ven + EF_lung * EC_lung_v) /
+                  EF_blood;
+
+
+  # Differentials for the mother
+
+  dt(MQ_ing) = MQ_ing_rate;
+
+  dt(MQ_stom_lumen) = MQ_ing_rate - 
+                      (MFl_stom_lumen + MKa_stomach) * MC_stom_lumen;
+
+  dt(MQ_stomach )   = MKa_stomach * MC_stom_lumen +
+                      MF_stomach * (MC_art - MC_stomach_v);
+
+  dt(MQ_feces)      = MFl_gut_lumen * MC_gut_lumen;
+
+  dt(MQ_gut_lumen)  = MFl_stom_lumen * MC_stom_lumen + MKe_bile * MC_liver -
+                      MKa_gut * MC_gut_lumen - dt(MQ_feces);
+
+  dt(MQ_met_gut)    = MKm_gut * MQ_gut;
+
+  dt(MQ_gut)        = MKa_gut * MC_gut_lumen +
+                      MF_gut * (MC_art - MC_gut_v) - dt(MQ_met_gut);
+
+  dt(MQ_met_liver)  = MKm_liver * MQ_liver;
+
+  dt(MQ_liver)   = MF_eport    * MC_art        + MF_spleen * MC_spleen_v +
+                   MF_pancreas * MC_pancreas_v + MF_gut    * MC_gut_v +
+                   MF_stomach  * MC_stomach_v  - MF_liver  * MC_liver_v -
+                   MKe_bile    * MC_liver      - dt(MQ_met_liver);
+
+  dt(MQ_adip)     = MF_adip     * (MC_art - MC_adip_v);
+  dt(MQ_adrenal)  = MF_adrenal  * (MC_art - MC_adrenal_v);
+  dt(MQ_brain)    = MF_brain    * (MC_art - MC_brain_v);
+  dt(MQ_breast)   = MF_breast   * (MC_art - MC_breast_v) - 
+                    (Lactation ? Fl_milk * MC_breast_v * PC_milk : 0);
+
+  dt(MQ_heart)    = MF_heart    * (MC_art - MC_heart_v);
+
+  dt(MQ_inh)      = MF_alv * MC_inh;
+
+  dt(MQ_exhaled)  = MF_alv * (MC_lung / PC_lung_over_air);
+
+  dt(MQ_met_lung) = MKm_lung * MQ_lung;
+
+  dt(MQ_lung)     = MF_blood * (MC_ven - MC_lung_v) + dt(MQ_inh) - 
+                    dt(MQ_exhaled) - dt(MQ_met_lung);
+
+  dt(MQ_urine)    = MKe_renal * MC_kidney;
+
+  dt(MQ_kidney)   = MF_kidney * (MC_art - MC_kidney_v) - dt(MQ_urine);
+
+  dt(MQ_marrow)   = MF_marrow   * (MC_art - MC_marrow_v);
+  dt(MQ_muscle)   = MF_muscle   * (MC_art - MC_muscle_v);
+  dt(MQ_other)    = MF_other    * (MC_art - MC_other_v);
+  dt(MQ_pancreas) = MF_pancreas * (MC_art - MC_pancreas_v);
+  dt(MQ_skin)     = MF_skin     * (MC_art - MC_skin_v);
+  dt(MQ_spleen)   = MF_spleen   * (MC_art - MC_spleen_v);
+  dt(MQ_thyroid)  = MF_thyroid  * (MC_art - MC_thyroid_v);
+
+  dt(MQ_art)      = MF_blood * (MC_lung_v - MC_art);
+
+  dt(MQ_ven)      = MC_skin_v    * MF_skin    + MC_heart_v   * MF_heart +
+                    MC_other_v   * MF_other   + MC_liver_v   * MF_liver +
+                    MC_adip_v    * MF_adip    + MC_adrenal_v * MF_adrenal +
+                    MC_marrow_v  * MF_marrow  + MC_breast_v  * MF_breast +
+                    MC_muscle_v  * MF_muscle  + MC_brain_v   * MF_brain +
+                    MC_thyroid_v * MF_thyroid + MC_uterus_v  * MF_uterus +
+                    MC_kidney_v  * MF_kidney  - MF_blood * MC_ven;
+
+  # Assumption of equal diffusion rate constant between uterus and placenta
+  # and vice-versa. Mother-fetus exchanges at zero after birth 
+  dt(MQ_uterus)  = MF_uterus   * (MC_art - MC_uterus_v) +
+                   (Gestation ? Kd_uter_pla * (C_placenta - MC_uterus) : 0);
+
+  # Transfer rate from amniotic fluid to placenta
+  dtmp = Kd_pla_amniot * (C_placenta - C_amniot * PC_placenta / PC_amniot);
+
+  dt(Q_met_placenta) = (Gestation ? 
+                        Km_placenta * Q_placenta :
+                        -2E-5 * Q_met_placenta); # purging at birth
+
+  dt(Q_placenta) = (Gestation ?
+                    Kd_uter_pla * (MC_uterus - C_placenta) +
+                    EF_placenta * (EC_art    - C_placenta / PC_placenta) -
+                    dtmp - dt(Q_met_placenta) :
+                    -2E-5 * Q_placenta); # purging at birth
+
+  dt(Q_amniot)   = (Gestation ?
+                    dtmp - EKa_amniot * C_amniot + EKe_gut * EC_gut +
+                    EKe_bile * EC_liver :
+                    -2E-5 * Q_amniot); # purging at birth
+
+
+  # Differentials for the fetus
+
+  dt(EQ_adip)     = (Gestation ? EF_adip     * (EC_art - EC_adip_v) :
+                     -2E-5 * EQ_adip);
+  dt(EQ_adrenal)  = (Gestation ? EF_adrenal  * (EC_art - EC_adrenal_v) :
+                     -2E-5 * EQ_adrenal);
+  dt(EQ_brain)    = (Gestation ? EF_brain    * (EC_art - EC_brain_v) :
+                     -2E-5 * EQ_brain);
+  dt(EQ_heart)    = (Gestation ? EF_heart    * (EC_art - EC_heart_v) :
+                     -2E-5 * EQ_heart);
+
+  dt(EQ_kidney)   = (Gestation ? EF_kidney   * (EC_art - EC_kidney_v) :
+                     -2E-5 * EQ_kidney); 
+  # Note: Luecke et al. assume no fetal renal elimination
+
+  dt(EQ_lung)     = (Gestation ? EF_lung     * (EC_ven - EC_lung_v) :
+                     -2E-5 * EQ_lung);
+  dt(EQ_marrow)   = (Gestation ? EF_marrow   * (EC_art - EC_marrow_v) :
+                     -2E-5 * EQ_marrow);
+  dt(EQ_muscle)   = (Gestation ? EF_muscle   * (EC_art - EC_muscle_v) :
+                     -2E-5 * EQ_muscle);
+  dt(EQ_other)    = (Gestation ? EF_other    * (EC_art - EC_other_v) :
+                     -2E-5 * EQ_other);
+  dt(EQ_pancreas) = (Gestation ? EF_pancreas * (EC_art - EC_pancreas_v) :
+                     -2E-5 * EQ_pancreas);
+  dt(EQ_skin)     = (Gestation ? EF_skin     * (EC_art - EC_skin_v) :
+                     -2E-5 * EQ_skin);
+  dt(EQ_spleen)   = (Gestation ? EF_spleen   * (EC_art - EC_spleen_v) :
+                     -2E-5 * EQ_spleen);
+  dt(EQ_thymus)   = (Gestation ? EF_thymus   * (EC_art - EC_thymus_v) :
+                     -2E-5 * EQ_thymus);
+  dt(EQ_thyroid)  = (Gestation ? EF_thyroid  * (EC_art - EC_thyroid_v) :
+                     -2E-5 * EQ_thyroid);
+
+  dt(EQ_ven) = (Gestation ? 
+                EF_skin     * EC_skin_v    + EF_heart    * EC_heart_v +
+                EF_adip     * EC_adip_v    + EF_adrenal  * EC_adrenal_v +
+                EF_marrow   * EC_marrow_v  + EF_muscle   * EC_muscle_v +
+                EF_brain    * EC_brain_v   + EF_other    * EC_other_v +
+                EF_thyroid  * EC_thyroid_v + EF_thymus   * EC_thymus_v +
+                EF_kidney   * EC_kidney_v  + EF_gut      * EC_gut_v +
+                EF_liver    * EC_liver_v   + 
+                EF_placenta * C_placenta / PC_placenta -
+                EC_ven      * EF_blood :
+                -2E-5 * EQ_ven);
+
+  dt(EQ_gut) = (Gestation ? EF_gut * (EC_art - EC_gut_v) -
+                EKe_gut * EC_gut + EKa_amniot * C_amniot :
+                -2E-5 * EQ_gut);
+
+  dt(EQ_met_liver) = (Gestation ? EKm_liver * EQ_liver :
+                      -2E-5 * EQ_met_liver);
+
+  dt(EQ_liver) = (Gestation ? 
+                  EF_eport    * EC_art        + EF_spleen * EC_spleen_v +
+                  EF_pancreas * EC_pancreas_v - EF_liver  * EC_liver_v  -
+                  EKe_bile    * EC_liver      - dt(EQ_met_liver) :
+                  -2E-5 * EQ_liver);
+                 # Note: Luecke et al. model does not include transfer 
+                 # from GI tract
+
+  # Mass balance check
+  MQ_total = MQ_adip + MQ_adrenal + MQ_art + MQ_brain + MQ_breast + MQ_gut + 
+             MQ_gut_lumen + MQ_heart + MQ_kidney + MQ_liver + MQ_lung + 
+             MQ_marrow + MQ_muscle + MQ_other + MQ_pancreas + MQ_skin + 
+             MQ_spleen + MQ_stomach + MQ_stom_lumen + MQ_thyroid + MQ_uterus + 
+             MQ_ven + MQ_met_liver + MQ_met_lung + MQ_met_gut + MQ_exhaled + 
+             MQ_feces + MQ_urine +  
+             Q_amniot + Q_placenta + Q_met_placenta;
+
+  EQ_total = EQ_adip + EQ_adrenal + EQ_brain + EQ_gut + EQ_heart + EQ_kidney + 
+             EQ_liver + EQ_lung + EQ_marrow + EQ_muscle + EQ_other + 
+             EQ_pancreas + EQ_skin + EQ_spleen + EQ_thymus + EQ_thyroid + 
+             EQ_ven + EQ_met_liver; 
+
+} # End of Dynamics
+
+
+CalcOutputs {
+
+  # Exhaled air concentration (mM)
+  MC_exh = 0.7 * MC_ven + 0.3 * MC_inh;
+
+} # End of CalcOutputs
+
+End.

@@ -1,0 +1,63 @@
+#------------------------------------------------------------------------------
+# 1cpt.MCMC5.in
+#
+# 1 compartment model - one subject - uncertainties estimated via a model
+# output - print every 4
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+MCMC ("1cpt.MCMC5.out",        # output file
+       "",                     # name of restart file
+       "",                     # name of data file
+       200, 0,                 # iterations, print predictions flag,
+       4, 200,                 # printing frequency, iters to print
+       434563.1961);           # random seed
+
+Level { # top
+
+  Distrib(ka, TruncLogNormal, 0.1,  10, 0.001,  10);  # exact mean
+  Distrib(ke, TruncLogNormal, 0.05, 10, 0.0005, 5);   # exact mean
+  Distrib(F,  Uniform,        0,    1);
+
+  V = 1;
+
+  Distrib(CV_C_cen, Uniform, 0.05, 0.15);
+  Distrib(CV_AUC,   Uniform, 0.05, 0.15);
+
+  Likelihood (Data(C_central), Normal, Prediction(C_central), 
+              Prediction(SD_C_computed));
+  Likelihood (Data(AUC), Normal, Prediction(AUC), Prediction(SD_A_computed));
+
+  Level { # subject
+
+    Simulation {
+
+      Dose = 1;
+
+      Print (C_central, AUC, 1, 5, 10, 15, 20, 40, 60, 100, 140);
+      Data  (C_central, 0.0740254, 0.226229, 0.338335, 0.396685, 0.347245, 
+                        0.178837, 0.0750449, 0.00885008, 0.00121541);
+      Data  (AUC, 0.034958, 0.7325, 2.14153, 3.84534, 6.23583, 9.8223, 
+                  13.8552, 15.4287, 14.7939);
+
+      Print (SD_C_computed, SD_A_computed, 1, 5, 10, 15, 20, 40, 60, 100, 140);
+    }
+
+    Simulation {
+
+      Dose = 10;
+
+      Print (C_central, AUC, 1, 2, 3, 5, 10, 20, 40, 50, 100, 120, 140);
+      Data  (C_central, 0.721477, 1.23987, 1.62891, 2.68688, 3.06505, 3.98884, 
+                        1.95865, 1.186, 0.0950837, 0.0373645, 0.0165511);
+      Data  (AUC, 0.322446, 1.44713, 3.18839, 8.50287, 26.1638, 57.6988, 
+                  118.17, 104.071, 138.828, 170.868, 158.171);
+
+      Print (SD_C_computed, SD_A_computed, 1, 2, 3, 5, 10, 20, 40, 50, 100, 
+             120, 140);
+    }
+  }
+}
+
+END.

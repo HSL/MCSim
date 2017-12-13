@@ -1,0 +1,58 @@
+#------------------------------------------------------------------------------
+# 1cpt.MCMC2.in
+#
+# 1 compartment model - one subject - uncertainties estimated
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+MCMC ("1cpt.MCMC2.out",        # output file
+       "",                     # name of restart file
+       "",                     # name of data file
+       200, 0,                 # iterations, print predictions flag,
+       1, 200,                 # printing frequency, iters to print
+       434563.1961);           # random seed
+
+Level { # top
+
+  Distrib(ka, TruncLogNormal, 0.1,  10, 0.001,  10);  # exact mean
+  Distrib(ke, TruncLogNormal, 0.05, 10, 0.0005, 5);   # exact mean
+  Distrib(F,  Uniform,        0,    1);
+
+  V = 1;
+
+  Distrib(SD_C_central, Uniform, 0.09, 0.11);
+  Distrib(SD_AUC,       Uniform, 0.09, 0.11);
+
+  Likelihood (Data(ln_C_central), Normal, Prediction(ln_C_central), 
+              SD_C_central);
+  Likelihood (Data(ln_AUC), Normal, Prediction(ln_AUC), SD_AUC);
+
+  Level { # subject
+
+    Simulation {
+
+      Dose = 1;
+
+      Print (ln_C_central, ln_AUC, 1, 5, 10, 15, 20, 40, 60, 100, 140);
+      Data  (ln_C_central, -2.60335, -1.48621, -1.08372, -0.924612, -1.05773, 
+                           -1.72128, -2.58967, -4.72733, -6.71267);
+      Data  (ln_AUC, -3.35361, -0.311292, 0.761522, 1.34686, 1.83031, 2.28466,
+                      2.62866,  2.73623, 2.69422);
+    }
+
+    Simulation {
+
+      Dose = 10;
+
+      Print (ln_C_central, ln_AUC, 1, 2, 3, 5, 10, 20, 40, 50, 100, 120, 140);
+      Data  (ln_C_central, -0.326454, 0.215006, 0.487913, 0.988381, 1.12007, 
+                            1.3835, 0.672256, 0.170588, -2.353, -3.28703,
+                           -4.1013);
+      Data  (ln_AUC, -1.13182, 0.369584, 1.15951, 2.1404, 3.26438, 4.05524, 
+                      4.77212, 4.64508, 4.93323, 5.14089, 5.06367);
+    }
+  }
+}
+
+END.

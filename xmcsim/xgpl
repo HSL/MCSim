@@ -1,0 +1,94 @@
+#!/usr/bin/wish -f
+
+  set src $env(MCSIM_HOME)/xmcsim
+  set path gnuplot
+
+# global auto_path Xgpl Desktop
+  lappend auto_path $src
+
+# site-specific configuration for X
+  set Xgpl(bitmap) $src/graph.xbm
+  set Xgpl(gnuplot) $path
+
+# default options and values
+  set Xgpl(src) $src
+  set Xgpl(userOptions) ~/.xgplrc
+  set Xgpl(sysOptions) xgplrc
+  set Xgpl(show:opts) 1
+  set Xgpl(show:lines) 1
+  set Xgpl(nlines) 1
+  set Xgpl(debug) 0
+  set Xgpl(grid) 0
+  set Xgpl(border) 1
+  set Xgpl(key:on) 1
+  set Xgpl(key:x) {}
+  set Xgpl(key:y) {}
+  set Xgpl(key:z) {}
+  set Xgpl(dimension) 2
+  set Xgpl(tics) 1
+  set Xgpl(sampling) 100
+  set Xgpl(clip:points) 0 ; set Xgpl(clip:one) 1 ; set Xgpl(clip:two) 0
+  set Xgpl(funcs) {}
+  set Xgpl(polar) 0 ; set Xgpl(angle) degrees
+  set Xgpl(polar:r1) {} ; set Xgpl(polar:r2) {}
+  set Xgpl(size:x) 1.0 ; set Xgpl(size:y) 1.0
+  set Xgpl(space:x1) {0} ; set Xgpl(space:y1) {0}
+  set Xgpl(space:x2) {0} ; set Xgpl(space:y2) {0}
+
+  foreach coord {x y z} {
+
+    set Xgpl($coord:auto) 1
+    set Xgpl($coord:rngfrom) {} ; set Xgpl($coord:rngto) {}
+    set Xgpl($coord:ofsx) {} ; set Xgpl($coord:ofsy) {}
+    set Xgpl($coord:title) {}
+    set Xgpl($coord:tickt) tics
+    set Xgpl($coord:ticks) 1
+    set Xgpl($coord:axis) 1
+    set Xgpl($coord:logon) 0
+    set Xgpl($coord:logbase) 10
+    set Xgpl($coord:tickron) 0
+    set Xgpl($coord:tickrs) {}
+    set Xgpl($coord:tickri) {}
+    set Xgpl($coord:tickre) {}
+    set Xgpl($coord:ticklon) 0
+    set Xgpl($coord:tickll) {}
+  }
+
+  set Xgpl(main:ofsx) {} ; set Xgpl(main:ofsy) {}
+  set Xgpl(main:title) {}
+  set Xgpl(smap) cartesian
+  set Xgpl(isamp) 10
+  set Xgpl(cont) 0
+  set Xgpl(surf) 1
+  set Xgpl(clabel) 1
+  set Xgpl(ctype) base
+  set Xgpl(cmode) linear
+  set Xgpl(cont:points) 10
+  set Xgpl(cont:order) 5
+  set Xgpl(cont:n) 10
+  set Xgpl(cont:levm) auto
+  set Xgpl(cont:lev1) 0.0
+  set Xgpl(cont:lev2) 1.0
+  set Xgpl(cont:lev3) {}
+  set Xgpl(cont:levs) {} 
+  set Xgpl(view:xrot) {45.0} ; set Xgpl(view:zrot) {30.}
+  set Xgpl(view:xsc) {1.0} ; set Xgpl(view:zsc) {1.0}
+
+
+#
+# Xwindows interface to Gnuplot
+#
+# Copyright P. Alexander, MRAO, Cambridge
+# All rights reserved.
+#
+# Version 1.0 11/05/93
+#
+
+
+wm title . "Plot"
+wm iconbitmap . @$Xgpl(bitmap)
+wm geometry . +100+100
+
+xgpl_WindowMain .xgpl
+
+pack .xgpl -expand 1 -fill both

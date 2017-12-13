@@ -1,0 +1,45 @@
+#------------------------------------------------------------------------------
+# err_in_var_ODE_MCMC.in
+#
+# Example of use of the error in variable ODE model for Bayesian inference on
+# data collection times via MCMC. The symbolic times t1, t2, t3 are set. 
+# The outputs variables pred_v1 and pred_v2 store the values taken by v1 and 
+# v2, respectively at those times. They are printed at later time for 
+# likelihood evaluation.
+#
+# Copyright (c) 2015 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+MCMC ("err_in_var_ODE_MCMC.out", # output file
+       "",                       # name of restart file
+       "",                       # name of data file
+       10000, 0,                 # iterations, print predictions flag,
+       5, 5000,                  # printing frequency, iters to print
+       434563.1961);             # random seed
+
+Level {
+
+  # priors centered at the true values
+  Distrib(t1, TruncNormal, 2,   0.5, 1, 4);
+  Distrib(t2, TruncNormal, 5,   0.5, 4, 6);
+  Distrib(t3, TruncNormal, 6.5, 0.5, 6, 8);
+
+  Likelihood (Data(pred_v1), LogNormal, Prediction(pred_v1), 1.01);
+  Likelihood (Data(pred_v2), LogNormal, Prediction(pred_v2), 1.01);
+
+  Simulation {
+ 
+    v1 = 1;
+    v2 = 2;
+
+    measurement_times = Spikes(3, 1, 1, 1, t1, t2, t3);
+
+    Print (pred_v1, 3,        6,        8);
+    Data  (pred_v1, 0.818721, 0.606516, 0.496566); # these are v1 data in fact
+
+    Print (pred_v2, 3,        6,        8);
+    Data  (pred_v2, 1.63744,  1.21303,  0.993132); # these are v2 data in fact
+  }
+}
+
+End.

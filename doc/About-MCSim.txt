@@ -1,0 +1,36 @@
+MCSim is a simulation package which allows you to design your own
+model (eventually dynamic, via ODEs) and to perform sensitivity and
+uncertainty analyses through Monte Carlo stochastic simulations, or 
+Bayesian inference or optimal design through Markov Chain Monte 
+Carlo simulations. MCSim can read models written in SBML.
+
+MCSim is GNU software. You can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+The latest version (5.6.6) of the package, written in C, is available
+in original source code. You should be able to compile it on any
+machine of your choice. You will need a C compiler. For Unix machines
+we recommend GNU's gcc, although other compilers (e.g. c89) might
+work. MCSim uses some routines from the GNU Scientific Library (GSL),
+and libSBML. We recommend that you install those (free) libraries on
+your system. Otherwise, the program should run but some of its
+functionalities will be disabled.
+
+Contact us by e-mail: fbois@member.fsf.org for more information,
+or check the Web page http://www.gnu.org/software/mcsim/
+
+The package is distributed as a compressed tar archive which
+contains:
+
+  A User's Manual (under texinfo)
+  The source code Mod program to preprocess your models
+  The source code for the MCSim routines to link to your models
+  The source code for xmcsim, a simple MCSim GUI
+  Examples of model and simulation files
+
+You should read the User's Manual before attempting to use the
+software. Check also the Manual-Update.txt file for last minute
+updates and tips. Finally, the README and INSTALL files describe
+instalation procedures.

@@ -1,0 +1,46 @@
+#------------------------------------------------------------------------------
+# err_in_var_ODE.model
+#
+# A two state variables model with constant decay, tweaked to allow
+# sampling for inference on measurement time. Symbolic times are not 
+# allowed in Print or PrintStep statements, so we use Spikes to trigger
+# the storage of output values of interest at the randomized times. Those
+# values can be used later (in time) to compute likelihoods etc.  
+#
+# Copyright (c) 2015 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+States = {v1, v2};
+
+Inputs = {measurement_times};
+
+Outputs = {pred_v1, pred_v2);
+
+# Parameters: unknown measurement times to estimate
+t1;
+t2;
+t3;
+
+Dynamics {
+
+  pred_v1 = 0; # dummy, required for the model to pass checking
+  pred_v2 = 0; # dummy, required for the model to pass checking
+
+  # We have to use inlining...
+  Inline( static double tmp1 = 0; );
+  Inline( tmp1 = (*pdTime == 0 ? 0 : tmp1); );
+  Inline( tmp1 = (vrgInputs[ID_measurement_times].dVal ? 
+                  rgModelVars[ID_v1] : tmp1); );
+  Inline( rgModelVars[ID_pred_v1] = tmp1; );
+
+  Inline( static double tmp2 = 0; );
+  Inline( tmp2 = (*pdTime == 0 ? 0 : tmp2); );
+  Inline( tmp2 = (vrgInputs[ID_measurement_times].dVal ? 
+                  rgModelVars[ID_v2] : tmp2); );
+  Inline( rgModelVars[ID_pred_v2] = tmp2; );
+
+  dt(v1) = -0.1 * v1; 
+  dt(v2) = -0.1 * v2; 
+}
+
+End.

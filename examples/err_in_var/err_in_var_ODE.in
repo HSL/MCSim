@@ -1,0 +1,51 @@
+#------------------------------------------------------------------------------
+# err_in_var_ODE.in
+#
+# Simple example of use of the error in variable ODE model. The symbolic
+# times t1, t2, t3 are set. The outputs variables pred_v1 and pred_v2 store 
+# the values taken by v1 and v2, respectively at those times. They can be 
+# used at later times. Here, they are just printed.
+#
+# Copyright (c) 2015 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+OutputFile ("err_in_var_ODE.out");
+
+Integrate (lsodes, 1e-7, 1e-7, 1);
+
+Simulation {
+
+  v1 = 1;
+  v2 = 2;
+
+  t1 = 2;
+  t2 = 5;
+  t3 = 7;
+
+  measurement_times = Spikes(3, 1, 1, 1, t1, t2, t3);
+
+  Print (measurement_times, v1, pred_v1, v2, pred_v2, 
+         0,  
+         1.99, 2, 2.01, 3, 4.99, 5, 5.01, 6, 6.99, 7, 7.01,
+         8);
+
+}
+
+Simulation { # same as above, but without asking for printing at t1 etc.
+
+  v1 = 1;
+  v2 = 2;
+
+  t1 = 2;
+  t2 = 5;
+  t3 = 7;
+
+  measurement_times = Spikes(3, 1, 1, 1, t1, t2, t3);
+
+  # printing must be requested at times t1, t2, t3!
+  Print (measurement_times, v1, pred_v1, v2, pred_v2, 
+         0, 3, 6, 8);
+
+}
+
+END.

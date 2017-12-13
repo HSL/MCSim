@@ -1,0 +1,43 @@
+#------------------------------------------------------------------------------
+# discrete.model
+#
+# Discrete Time Model. 
+# A dummy state variable is defined to permit the use of Euler as a scheduler.
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+States = {dummy};
+
+Outputs = {x1, x2, x3, time}
+
+# Model Parameters
+z = 1;
+x1_init = 0;
+
+Initialize {
+  x1 = x1_init; # this will allow changing or sampling the initial value of x1
+  x2 = 1;
+  x3 = 1;
+  time = 0; # the initial time
+}
+
+Dynamics { 
+
+  dt(dummy) = 0;
+
+  # temporary variable
+  x1_attm1 = x1; 
+
+  # if time has changed, update
+  x1 = (time == t ? x1 : x1 + z); 
+  x2 = (time == t ? x2 : x2 + sin(x2 * z));
+  x3 = (time == t ? x3 : x1_attm1 + x3 + exp(sin(x3 + z))); # x1_attm1 is used 
+                                                            # because x1 is 
+                                                            # already updated
+
+  # to insure only one call at each time value
+  time = t;
+} 
+
+End.

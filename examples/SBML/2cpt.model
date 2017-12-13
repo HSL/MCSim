@@ -1,0 +1,76 @@
+#------------------------------------------------------------------------------
+# 2cpt.model
+#
+# Template for pharmacokinetic modeling
+# Differential are writen either for concentrations or quantities.
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+States = {_central,    # concentration, units: g / L
+          _periph,     # concentration, units: g / L
+          _Q_urine};   # quantity, units: g
+
+Inputs = {_Dose_rate}; # units: g/min
+
+Outputs = {_Q_total};  # quantity, units: g
+
+Compartments = {central, periph, Q_urine};
+
+# Species-dependent parameters
+#=============================
+_PC_p_c = 2; # periph / central partition coef for parent
+_sc_K_uri = 5.8E-5; # gives 1 mL/min, standard urine rate, in a 70 kg human
+_K_urine;
+
+
+# Species-independent parameters
+#===============================
+BDM = 0.020; # body mass, kg
+sc_V_cen = 0.2;
+sc_V_per = 0.7;
+sc_F_c_p = 0.29; # gives 5 L/min, cardiac output, in a human of 70 kg
+
+V_central; 
+V_periph;  
+F_c_p;
+
+
+Initialize {
+
+  V_central = sc_V_cen * BDM;
+  V_periph  = sc_V_per * BDM;
+
+  dTmp = pow(BDM, 0.67);
+
+  F_c_p   = sc_F_c_p * dTmp;
+  _K_urine = _sc_K_uri * dTmp;
+}
+
+
+Dynamics {
+
+  _Q_rate_c_p = F_c_p * (_central - _periph / _PC_p_c);
+
+  # Urine Quantity for parent compound
+  dt(_Q_urine) = _K_urine * _central;
+
+  # Central compartment concentration
+  _pk_central  = (_Dose_rate - _Q_rate_c_p - _K_urine * _central) / V_central;
+  dt(_central) = _pk_central;
+
+  # Peripheral compartment concentration
+  _pk_periph  = _Q_rate_c_p / V_periph;
+  dt(_periph) = _pk_periph;
+}
+
+
+CalcOutputs {
+
+  # Mass balance check
+  _Q_total = _central * V_central + _periph * V_periph + _Q_urine;
+}
+
+End.
+
+

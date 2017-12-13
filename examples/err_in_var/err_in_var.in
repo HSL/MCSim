@@ -1,0 +1,1331 @@
+#-----------------------------------------------------------------------------
+# err_in_var.in
+#
+# MCMC simulation file for drug interaction data.
+# Data are on norfloxacine, pefloxacine and theophylline brain 
+# concentrations causing seizures in rats.
+# Brain concentrations measurement error are set. 
+# Inter-subject variance is set to 0.06 (= 25% CV)
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+MCMC ("err_in_var.out", "", "",
+      500,  0,
+      20,   500,
+      109256.16555492);
+
+Level { # Top level
+
+  # Prior for the mean of the individual thresholds y_S
+  Distrib (M_yS, Uniform, 0, 500); 
+
+  # Prior for individual y_S variance
+  # Distrib (S2_yS, InvGamma, 2, 0.06);
+
+  # Prior for the fixed effect theta2 (theta2 = t2 / t1)
+  Distrib (theta2, Uniform, 0, 10);
+
+  # Prior for the fixed effect theta3 (theta3 = t3 / t1)
+  Distrib (theta3, Uniform, 0, 10);
+
+  # Prior for the fixed effect theta12 (theta12 = t12 / t1)
+  Distrib (theta12, Uniform, -10, 10);
+
+  # Prior for the fixed effect theta13 (theta13 = t13 / t1)
+  Distrib (theta13, Uniform, -10, 10);
+
+  # Prior for the fixed effect theta23 (theta23 = t23 / t1)
+  Distrib (theta23, Uniform, -10, 10);
+
+  # Prior for the fixed effect theta123 (theta123 = t123 / t1)
+  Distrib (theta123, Uniform, -10, 10);
+
+ Level { # All the data
+
+  Level { # Type 1 points; 
+          # only NORFLOXACINE 
+          # only a U to estimate per data point
+    
+    # U for each animal (U = y_S si V = 0 et W = 0)
+    Distrib (y_S, LogNormal_v, M_yS, 0.06);
+        
+    # Likelihood of the U for type 1 points
+    Likelihood(Data(U_out1), LogNormal_v, Prediction(U_out1), 0.0064);
+  
+    Level {
+      Simulation { 
+        Data  (U_out1, 75);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 43.3);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 93.5);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 38.9);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 50.5);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 44.9);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 58.4);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation {
+        Data  (U_out1, 67.5);
+        Print (U_out1, 1);
+      } 
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 61.8);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 58.1);
+        Print (U_out1, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out1, 54);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 53);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 47);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 37);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 55);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 42);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 41);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation {
+        Data  (U_out1, 42);
+        Print (U_out1, 1);
+      } 
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 52);
+        Print (U_out1, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (U_out1, 59);
+        Print (U_out1, 1);
+      }
+    }
+  } # End level "points 1"
+ 
+  Level { # Type 2 points;
+          # only PEFLOXACINE administered
+          # only a V to estimate per data point 
+  
+    # One threshold y_S per animal
+    Distrib (y_S, LogNormal_v, M_yS, 0.06);
+        
+    # Likelihood of V for type 2 points
+    Likelihood(Data(V_out2), LogNormal_v, Prediction(V_out2), 0.0064);
+  
+    Level {
+      Simulation { 
+        Data  (V_out2, 290);
+        Print (V_out2, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (V_out2, 303);
+        Print (V_out2, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (V_out2, 306);
+        Print (V_out2, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (V_out2, 291);
+        Print (V_out2, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (V_out2, 375);
+        Print (V_out2, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (V_out2, 330);
+        Print (V_out2, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (V_out2, 363);
+        Print (V_out2, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (V_out2, 262);
+        Print (V_out2, 1);
+      } 
+    }
+        
+    Level {
+      Simulation { 
+        Data  (V_out2, 346);
+        Print (V_out2, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (V_out2, 287);
+        Print (V_out2, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out2, 309);
+        Print (V_out2, 1);
+      }
+    }
+ 
+    Level {
+      Simulation { 
+        Data  (V_out2, 360);
+        Print (V_out2, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (V_out2, 312);
+        Print (V_out2, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (V_out2, 300);
+        Print (V_out2, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (V_out2, 303);
+        Print (V_out2, 1);
+      }
+    }
+  } # End level "points type 2"
+
+  Level { # Type 3 points;
+          # only THEOPHYLLINE
+          # only a W to estimate per data point 
+  
+    # One threshold y_S par animal
+    Distrib (y_S, LogNormal_v, M_yS, 0.06);
+        
+    # Likelihood for W for type 3 points
+    Likelihood(Data(W_out3), LogNormal_v, Prediction(W_out3), 0.0064);
+
+    Level {
+      Simulation { 
+        Data  (W_out3, 1465);
+        Print (W_out3, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (W_out3, 1610);
+        Print (W_out3, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (W_out3, 1432);
+        Print (W_out3, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (W_out3, 1184);
+        Print (W_out3, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (W_out3, 1524);
+        Print (W_out3, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (W_out3, 1255);
+        Print (W_out3, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (W_out3, 1404);
+        Print (W_out3, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (W_out3, 1274);
+        Print (W_out3, 1);
+      } 
+    }
+        
+    Level {
+      Simulation { 
+        Data  (W_out3, 1245);
+        Print (W_out3, 1);
+      }
+    }
+    Level {
+      Simulation { 
+        Data  (W_out3, 1221);
+        Print (W_out3, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (W_out3, 987);
+        Print (W_out3, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (W_out3, 1118);
+        Print (W_out3, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (W_out3, 1316);
+        Print (W_out3, 1);
+      }
+    }
+        
+    Level {
+      Simulation { 
+        Data  (W_out3, 1059);
+        Print (W_out3, 1);
+      }
+    }
+  } # End level "points type 3"
+
+
+  Level { # Type 12 points
+          # NORFLOXACINE and PEFLOXACINE
+          # One V and one U to estimate per data point 
+
+    # One threshold y_S per animal
+    Distrib (y_S, LogNormal_v, M_yS, 0.06);
+
+    # U for each animal
+    Distrib (U, Uniform, 0, y_S);
+        
+    # Likelihood of U for type 12 points
+    Likelihood(Data(U_out12), LogNormal_v, Prediction(U_out12), 0.0064);
+
+    # Likelihood of V for type 12 points
+    Likelihood(Data(V_out12), LogNormal_v, Prediction(V_out12), 0.0064);
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 3.5);
+        Data  (V_out12, 262);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 17.4);
+        Data  (V_out12, 290);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 24);
+        Data  (V_out12, 219);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 31.2);
+        Data  (V_out12, 251);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 20.1);
+        Data  (V_out12, 257);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 32.9);
+        Data  (V_out12, 216);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 32.5);
+        Data  (V_out12, 178);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 37.4);
+        Data  (V_out12, 214);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 32.6);
+        Data  (V_out12, 182);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 24.4);
+        Data  (V_out12, 334);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 11.3);
+        Data  (V_out12, 119);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 62.1);
+        Data  (V_out12, 176);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 39.5);
+        Data  (V_out12, 189);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 49.4);
+        Data  (V_out12, 146);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 62.1);
+        Data  (V_out12, 190);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 52.9);
+        Data  (V_out12, 122);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 51.9);
+        Data  (V_out12, 246);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 47);
+        Data  (V_out12, 209);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 45.2);
+        Data  (V_out12, 173);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 33.2);
+        Data  (V_out12, 187);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 46.7);
+        Data  (V_out12, 158);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 55.2);
+        Data  (V_out12, 195);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 62.4);
+        Data  (V_out12, 179);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 45.9);
+        Data  (V_out12, 164);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out12, 60.6); 
+        Data  (V_out12, 106);
+        Print (U_out12, V_out12, 1);
+      }
+    }
+  } # End level "points de type 12"
+
+  Level { # Type 13 points
+          # NORFLOXACINE and THEOPHYLLINE
+          # One U and one W to estimate per data point 
+
+    # One threshold y_S per animal
+    Distrib (y_S, LogNormal_v, M_yS, 0.06);
+
+    # U for each animal
+    Distrib (U, Uniform, 0, y_S);
+        
+    # Likelihood of U for type 13 points
+    Likelihood(Data(U_out13), LogNormal_v, Prediction(U_out13), 0.0064);
+
+    # Likelihood of W for type 13 points
+    Likelihood(Data(W_out13), LogNormal_v, Prediction(W_out13), 0.0064);
+
+    Level {
+      Simulation { 
+        Data  (U_out13, 15);
+        Data  (W_out13, 1126);
+        Print (U_out13, W_out13, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out13, 19);
+        Data  (W_out13, 1134);
+        Print (U_out13, W_out13, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out13, 19);
+        Data  (W_out13, 1277);
+        Print (U_out13, W_out13, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out13, 22);
+        Data  (W_out13, 1065);
+        Print (U_out13, W_out13, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out13, 30);
+        Data  (W_out13, 959);
+        Print (U_out13, W_out13, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out13, 28);
+        Data  (W_out13, 918);
+        Print (U_out13, W_out13, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out13, 27);
+        Data  (W_out13, 866);
+        Print (U_out13, W_out13, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out13, 36);
+        Data  (W_out13, 904);
+        Print (U_out13, W_out13, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out13, 36);
+        Data  (W_out13, 697);
+        Print (U_out13, W_out13, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out13, 65);
+        Data  (W_out13, 739);
+        Print (U_out13, W_out13, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out13, 40);
+        Data  (W_out13, 734);
+        Print (U_out13, W_out13, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out13, 38);
+        Data  (W_out13, 755);
+        Print (U_out13, W_out13, 1);
+
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (U_out13, 39);
+        Data  (W_out13, 763);
+        Print (U_out13, W_out13, 1);
+      }
+    }
+  } # End level "points de type 13"
+
+  Level { # Type 23 points
+          # PEFLOXACINE and THEOPHYLLINE
+          # One V and one W to estimate per data point 
+
+    # One threshold y_S per animal
+    Distrib (y_S, LogNormal_v, M_yS, 0.06);
+
+    # V for each animal
+    Distrib (V, Uniform, 0, 500); # large borne sup
+        
+    # Likelihood of V for type 23 points
+    Likelihood(Data(V_out23), LogNormal_v, Prediction(V_out23), 0.0064);
+
+    # Likelihood of W for type 23 points
+    Likelihood(Data(W_out23), LogNormal_v, Prediction(W_out23), 0.0064);
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 60.0);
+        Data  (W_out23, 1221);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+    Level {
+      Simulation { 
+        Data  (V_out23, 69.0);
+        Data  (W_out23, 1554);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 58.2);
+        Data  (W_out23, 1210);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 38.1);
+        Data  (W_out23, 1086);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 120);
+        Data  (W_out23, 999);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 84.0);
+        Data  (W_out23, 993);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 79.5);
+        Data  (W_out23, 1165);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 180);
+        Data  (W_out23, 721);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 123);
+        Data  (W_out23, 760);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 141);
+        Data  (W_out23, 733);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 228);
+        Data  (W_out23, 783);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 168);
+        Data  (W_out23, 605);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 168);
+        Data  (W_out23, 605);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 237);
+        Data  (W_out23, 444);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 216);
+        Data  (W_out23, 616);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 169);
+        Data  (W_out23, 763);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 233);
+        Data  (W_out23, 559);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 336);
+        Data  (W_out23, 233);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 220);
+        Data  (W_out23, 444);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 216);
+        Data  (W_out23, 355);
+        Print (V_out23, W_out23, 1);
+     }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 180);
+        Data  (W_out23, 359);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 258);
+        Data  (W_out23, 526);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 253);
+        Data  (W_out23, 512);
+        Print (V_out23, W_out23, 1);
+     }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 285);
+        Data  (W_out23, 302);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 201); 
+        Data  (W_out23, 494);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 408); 
+        Data  (W_out23, 350);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 236); 
+        Data  (W_out23, 361);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 346); 
+        Data  (W_out23, 295);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 270); 
+        Data  (W_out23, 167);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 231); 
+        Data  (W_out23, 148);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 294); 
+        Data  (W_out23, 167);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 318); 
+        Data  (W_out23, 117);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 198); 
+        Data  (W_out23, 519);
+        Print (V_out23, W_out23, 1);
+     }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 405); 
+        Data  (W_out23, 155);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 303); 
+        Data  (W_out23, 194);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 290); 
+        Data  (W_out23, 62.7);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 240); 
+        Data  (W_out23, 94.3);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 270); 
+        Data  (W_out23, 94.3);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 288); 
+        Data  (W_out23, 111);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 270); 
+        Data  (W_out23, 59.4);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+
+    Level {
+      Simulation { 
+        Data  (V_out23, 419); 
+        Data  (W_out23, 130);
+        Print (V_out23, W_out23, 1);
+      }
+    }
+  } # End level "points de type 23"
+
+  Level { # Type 123 points
+          # NORFLOXACINE, PEFLOXACINE and THEOPHYLLINE administered
+          # one U, one V and one W to estimate per data point 
+
+    # One threshold y_S per animal
+    Distrib (y_S, LogNormal_v, M_yS, 0.04);
+
+    # U for each animal
+    Distrib (U, Uniform, 0, y_S);
+
+    # V for each animal
+    Distrib (V, Uniform, 0, 500); # large borne sup
+        
+    # Likelihood of U for type 123 points
+    Likelihood(Data(U_out123), LogNormal_v, Prediction(U_out123), 0.0064);
+
+    # Likelihood of V for type 123 points
+    Likelihood(Data(V_out123), LogNormal_v, Prediction(V_out123), 0.0064);
+
+    # Likelihood of W for type 123 points
+    Likelihood(Data(W_out123), LogNormal_v, Prediction(W_out123), 0.0064);
+
+    Level {
+      Simulation {
+        Data  (U_out123, 17.9); 
+        Data  (V_out123, 131);
+        Data  (W_out123, 602);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 20.5); 
+        Data  (V_out123, 139);
+        Data  (W_out123, 488);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 23.9); 
+        Data  (V_out123, 165);
+        Data  (W_out123, 493);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 25.1); 
+        Data  (V_out123, 165);
+        Data  (W_out123, 648);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 21.7); 
+        Data  (V_out123, 143);
+        Data  (W_out123, 596);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 55.4); 
+        Data  (V_out123, 148);
+        Data  (W_out123, 760);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 23.1); 
+        Data  (V_out123, 150);
+        Data  (W_out123, 445);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 22.8); 
+        Data  (V_out123, 158);
+        Data  (W_out123, 607);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 30.1); 
+        Data  (V_out123, 188);
+        Data  (W_out123, 668);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 22.3); 
+        Data  (V_out123, 149);
+        Data  (W_out123, 151);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 21.9); 
+        Data  (V_out123, 144);
+        Data  (W_out123, 94.4);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 17.9); 
+        Data  (V_out123, 103);
+        Data  (W_out123, 898);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 78.7); 
+        Data  (V_out123, 12.2);
+        Data  (W_out123, 904);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 8.47); 
+        Data  (V_out123, 140);
+        Data  (W_out123, 849);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 21.2); 
+        Data  (V_out123, 240);
+        Data  (W_out123, 354);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 18.3); 
+        Data  (V_out123, 186);
+        Data  (W_out123, 398);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 16.8); 
+        Data  (V_out123, 211);
+        Data  (W_out123, 503);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 21.6); 
+        Data  (V_out123, 223);
+        Data  (W_out123, 395);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 9.47); 
+        Data  (V_out123, 241);
+        Data  (W_out123, 409);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 9.18); 
+        Data  (V_out123, 259);
+        Data  (W_out123, 336);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 8.50); 
+        Data  (V_out123, 216);
+        Data  (W_out123, 297);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+
+    Level {
+      Simulation {
+        Data  (U_out123, 8.71); 
+        Data  (V_out123, 242);
+        Data  (W_out123, 381);
+        Print (U_out123, V_out123, W_out123, 1);
+      }
+    }
+  } # End level "type 123 points"
+
+ } # End level "all the data"
+
+} # End top level
+
+END
+

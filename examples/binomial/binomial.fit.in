@@ -1,0 +1,35 @@
+#------------------------------------------------------------------------------
+# binomial.fit.in
+#
+# Input file for MCMC simulations of a binomial model. P is computed by
+# a link function defined in the binomial.model file.
+# The output of this file is a Monte Carlo sample from the joint posterior
+# distribution of the parameters A, B, and C.
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+MCMC ("binomial.fit.out",     # output file
+      "binomial.MCMC.out",    # name of restart file
+      "",                     # name of data file
+      1, 1,                   # iterations, print predictions flag,
+      1, 1,                   # printing frequency, iters to print
+      434563.1961);           # random seed
+
+Level {
+
+  Density (A, Uniform, 0, 0.5);
+  Density (B, TruncNormal, 0.01, 0.01, 0.000001, 0.999999);
+  Density (C, Uniform, 0, 0.1);
+
+  Likelihood (Data(R), Binomial, Prediction(P), Data(N));
+
+  Simulation {
+    PrintStep (P, 0, 10, 1);
+    Data (R, 1,  2,  2,  3,  4,   5,   6,   8,   9,  10, 11);
+    Data (N, 10, 10, 20, 10, 100, 100, 100, 100, 90, 10, 20);
+  }
+
+}
+
+END.

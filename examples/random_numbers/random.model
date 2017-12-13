@@ -1,0 +1,43 @@
+#------------------------------------------------------------------------------
+# random.model
+#
+# This is just a pretext for testing random number generators and associated
+# functions.
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+Outputs = {dummy};
+
+# Model Parameters
+
+x_beta;
+x_binomial;
+x_binomialbeta;
+x_chi2;
+x_cauchy;
+x_exp;
+x_gamma;
+x_genlognormal;
+x_halfcauchy;
+x_halfnorm;
+x_invgamma;
+x_lognorm;
+x_lognormv;
+x_logunif;
+x_norm;
+x_normv;
+x_piecewise;
+x_poisson;
+x_studentt;
+x_truncinvgamma;
+x_trunclognorm;
+x_trunclognormv;
+x_truncnorm;
+x_truncnormv;
+x_unif;
+
+
+CalcOutputs { dummy = 0; } 
+
+End.

@@ -1,0 +1,28 @@
+#------------------------------------------------------------------------------
+# pde2.model
+#
+# Flux-conservative equation; partial differential equations model
+# solved using the grid method. Time is the first (implicit) dimension. 
+# The second dimension is in X.
+# This file uses the bracket [] notation for arrays.
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+States = {y_x[0-19]};
+
+# Model Parameters
+k = 0.1;
+delta_x = 0.5;
+
+Dynamics { 
+
+  dt(y_x[0]) = -k * ((y_x[1] - y_x[0]) / delta_x);
+
+  dt(y_x[1-18]) = -k * ((y_x[i+1] - y_x[i-1]) / (2 * delta_x));
+
+  dt(y_x[19]) = -k * ((y_x[19] - y_x[18]) / delta_x);
+
+} 
+
+End.

@@ -1,0 +1,97 @@
+#------------------------------------------------------------------------------
+# probit.in 
+#
+# Input file for MCMC simulations to get the posterior 
+# distribution of the parameters. Probit analysis usually needs to use the 
+# vector sampling option to reach convergence.
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+MCMC ("probit.out",   # output file 
+      "",             # name of restart file
+      "",             # not to be changed
+      5000, 0,        # nRuns, not to be changed,
+      50,   5000,     # printing frequency, iters to print
+      464115.523);    # random seed
+
+
+Level { # top level
+
+  # Uniform priors
+
+  Distrib (a, Uniform,  0,   10.0);
+  Distrib (b, Uniform,  0,   10);
+  Distrib (c, Uniform, -100, 100);
+  
+  Likelihood (Data(R), Binomial, Prediction(P), Data(N));
+  					  
+  Level { # group all simulations
+
+    # Each simulation corresponds to an exposure time
+    # Several doses can be assayed for a same exposure time
+
+    Simulation { # 10 minutes, Appelman data
+
+      # exposure time (minutes)
+      time = 10;
+
+      # exposure concentrations (mg/m^3)
+
+      C = NDoses(5, 20950, 23380, 26410, 27220, 37820, 
+                    0,     1.5,   2.5,   3.5,   4.5);
+
+      # P, probability of death, for each group
+      Print (P, 1, 2, 3, 4, 5);
+
+      # R, observed number of death per group
+      Data  (R, 0, 1, 6, 5, 9);
+
+      # N, number of animals per group
+      Data  (N, 10, 10, 10, 10, 10);
+    }
+
+
+    Simulation { # 20 minutes, Appelman data
+
+      time = 20;
+
+      C = NDoses(5, 18290, 19030, 19450, 21420, 23200,
+                    0,     1.5,   2.5,   3.5,   4.5);
+
+      Print (P, 1, 2, 3, 4, 5);
+      Data  (R, 3, 1, 7, 6, 9);
+      Data  (N, 10, 10, 10, 10, 10);
+    }
+
+
+    Simulation { # 40 minutes, Appelman data
+
+      time = 40;
+
+      C = NDoses(5, 12620, 13410, 15870, 16290, 16840,
+                    0,     1.5,   2.5,   3.5,   4.5);
+
+      Print (P, 1, 2, 3, 4, 5);
+      Data  (R, 2, 5, 5, 8, 7);
+      Data  (N, 10, 10, 10, 10, 10);
+    }
+
+
+    Simulation { # 60 minutes, Appelman data
+
+      time = 60;
+
+      C = NDoses(5, 9870, 10230, 11300, 12500, 13240,
+                    0,    1.5,   2.5,   3.5,   4.5);
+
+      Print (P, 1, 2, 3, 4, 5);
+      Data  (R, 3, 4, 5, 6, 7);
+      Data  (N, 10, 10, 10, 10, 10);
+    }
+
+  } # end all experiments
+
+} # end top level
+
+END.

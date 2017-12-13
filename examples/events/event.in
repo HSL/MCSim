@@ -1,0 +1,30 @@
+#------------------------------------------------------------------------------
+# event.in
+#
+# Example of events use
+#
+# Copyright (c) 2015 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+OutputFile ("event.out");
+
+Simulation {
+
+  v1 = 1;
+  v2 = 2;
+
+  # Events: specify state, number of events, times of events, operations
+  # and value
+  events_v1 = Events (v1, 2, 1,   9, 
+                             Add, Add, 
+                             1,   4); 
+
+  events_v2 = Events (v2, 2, 1,        5, 
+                             Multiply, Replace, 
+                             2,        6); 
+
+  PrintStep (v1, v2, 0, 10, 0.01);
+
+}
+
+END.

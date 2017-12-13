@@ -1,0 +1,67 @@
+#-----------------------------------------------------------------------------
+# err_in_var.model
+#
+# Structural model file for MCMC simulations of drug interaction experiments.
+# See the DEA report of Celine Brochot and corresponding papers.
+# Contact celine.brochot@ineris.fr or frederic.bois@ineris.fr for
+# more information.
+# A polynomial model is used as underlying dose-response surface
+# D = t0 + t1.X + t2.Y + t3.Z
+#     + t12.X.Y + t13.X.Z + t23.Y.Z
+#     + t123.X.Y.Z
+# Measurement error variance is set.
+#
+# Copyright (c) 1993-2008 Free Software Foundation, Inc.
+#------------------------------------------------------------------------------
+
+Outputs = {U_out1, U_out12, U_out13, U_out123,     # drug 1 concentration
+           V_out2, V_out12, V_out23, V_out123,     # ...  2
+           W_out3, W_out13, W_out23, W_out123};    # ...  3
+
+# Parameters
+
+U         = 1;        # true value of drug 1 concentration
+V         = 1;        # ...                2 ...
+
+y_S       = 1;        # auxiliary parameter: (D - t0) / t1
+
+M_yS      = 1;        # mean of y_S
+S2_yS     = 1;        # variance of y_S
+
+theta2    = 1;        # auxiliary parameter: t2   / t1
+theta3    = 1;        # auxiliary parameter: t3   / t1
+theta12   = 1;        # auxiliary parameter: t12  / t1
+theta13   = 1;        # auxiliary parameter: t13  / t1
+theta23   = 1;        # auxiliary parameter: t23  / t1
+theta123  = 1;        # auxiliary parameter: t123 / t1
+
+
+CalcOutputs{
+
+  U_out1    = y_S;
+
+  V_out2    = y_S / theta2;
+
+  W_out3    = y_S / theta3;
+
+  U_out12   = U;
+  tmp1      = (y_S - U) / (theta2 + theta12*U);
+  V_out12   = (tmp1 > 0 ? tmp1 : 1E-30);
+
+  U_out13   = U;
+  tmp2      = (y_S - U) / (theta3 + theta13*U);
+  W_out13   = (tmp2 > 0 ? tmp2 : 1E-30);
+
+  V_out23   = V;
+  tmp3      = (y_S - theta2*V) / (theta3 + theta23*V);
+  W_out23   = (tmp3 > 0 ? tmp3 : 1E-30);
+
+  U_out123  = U;
+  V_out123  = V;
+  tmp4      = (y_S - U - theta2*V - theta12*U*V) / 
+              (theta3 + theta13*U+ theta23*V + theta123*U*V);
+  W_out123  = (tmp4 > 0 ? tmp4 : 1E-30);
+
+}
+
+End.
