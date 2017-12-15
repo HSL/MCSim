@@ -262,6 +262,20 @@ void GetCmdLineArgs (int nArg, char *const *rgszArg, PSTR *pszFileIn,
   /* store input file name for use by modo.c */
   pinfo->szInputFilename = *pszFileIn;
 
+#ifdef WIN32
+
+  // avoid compiler errors (invalid escapes)
+  // when the path is presented in source
+
+  PSTR pStr = strchr (pinfo->szInputFilename, '\\');
+  while (pStr)
+  {
+    *pStr = '/';
+    pStr = strchr (pStr + 1, '\\');
+  }
+
+#endif // WIN32
+
   /* use default output file name if it is missing */
   if (!*pszFileOut)
     *pszFileOut = vszFilenameDefault;

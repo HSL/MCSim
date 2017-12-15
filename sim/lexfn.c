@@ -187,8 +187,9 @@ BOOL DefDepParm (PSTR szLex, PDOUBLE pdValue, HANDLE *phvar)
 
 BOOL GetInputArgs (PINPUTBUF pibIn, PIFN pifn, int nArgs)
 {
-  PSTRLEX rgszLex[nArgs];
-  int rgiTypes[nArgs], i;
+  PSTRLEX *rgszLex = malloc (nArgs * sizeof(PSTRLEX));
+  int *rgiTypes = malloc (nArgs * sizeof(int));
+  int i;
   BOOL bReturn = FALSE;
 
   for (i = 0; i < nArgs; i++)
@@ -214,6 +215,9 @@ BOOL GetInputArgs (PINPUTBUF pibIn, PIFN pifn, int nArgs)
     if (!bReturn)
       ReportError (pibIn, RE_EXPECTED, "input-spec", NULL);
   } /* if */
+
+  free(rgiTypes);
+  free(rgszLex);
 
   return (bReturn);
 

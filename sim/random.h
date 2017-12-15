@@ -35,6 +35,7 @@
 #ifndef RANDOM_H_DEFINED
 
 #include <math.h>
+#include "config.h"
 
 /* ----------------------------------------------------------------------------
    Constants  */
@@ -96,7 +97,9 @@ void   WishartRandom (long n, long p, double *t, double *w, double *work);
 BOOL   and (BOOL A, BOOL B);
 double CDFNormal (double z);
 double InterpolateX (double rgX[], double rgY[], long lLower, double dY);
+#ifndef HAVE_ERFC
 double erfc (double x);
+#endif // !HAVE_ERFC
 double GetSeed (void);
 double lnDFNormal (double x, double mu, double sd);
 double lnGamma (double x);

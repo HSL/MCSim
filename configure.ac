@@ -35,7 +35,7 @@ AC_STRUCT_TM
 # Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
-AC_CHECK_FUNCS([floor modf pow sqrt strchr])
+AC_CHECK_FUNCS([floor modf pow sqrt strchr erfc])
 
 # Output files
 AC_CONFIG_HEADERS([config.h])

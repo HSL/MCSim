@@ -1161,6 +1161,8 @@ double CDFNormal (double z)
    Press et al.
 */
 
+#ifndef HAVE_ERFC
+
 double erfc (double x)
 {
   double dAbsX, t, dVal;
@@ -1178,6 +1180,7 @@ double erfc (double x)
   }
 } /* erfc */
 
+#endif // !HAVE_ERFC
 
 /* ----------------------------------------------------------------------------
    InterpolateX
