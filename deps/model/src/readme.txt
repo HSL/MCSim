@@ -1,0 +1,1 @@
+Target directory for mod.exe; pick-up directory for sim.
