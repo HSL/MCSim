@@ -26,7 +26,7 @@
 #define HAVE_LIBM 1
 
 /* Define to 1 if you have the `sbml' library (-lsbml). */
-/* #undef HAVE_LIBSBML */
+#define HAVE_LIBSBML 1
 
 /* Define to 1 if you have the <limits.h> header file. */
 #define HAVE_LIMITS_H 1
