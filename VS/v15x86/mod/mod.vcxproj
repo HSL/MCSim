@@ -56,25 +56,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\source\project\MCSim\VS\v15x86\mod\Debug\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">mod.dir\Debug\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">mod</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\source\project\MCSim\VS\v15x86\mod\Release\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">mod.dir\Release\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">mod</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\source\project\MCSim\VS\v15x86\mod\MinSizeRel\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.\MinSizeRel\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">mod.dir\MinSizeRel\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">mod</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\source\project\MCSim\VS\v15x86\mod\RelWithDebInfo\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.\RelWithDebInfo\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">mod.dir\RelWithDebInfo\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">mod</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
@@ -83,7 +83,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\mod\..;C:\source\project\MCSim\mod\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\MCSim;..\..\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Debug/</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsC</CompileAs>
@@ -101,10 +101,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;LIBSBML_STATIC;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\mod\..;C:\source\project\MCSim\mod\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\MCSim;..\..\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\mod\..;C:\source\project\MCSim\mod\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\MCSim;..\..\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -113,12 +113,12 @@
     </Midl>
     <Link>
       <AdditionalDependencies>expat.lib;libbz2.lib;libcheck.lib;libiconv.lib;libsbml-static.lib;libxml2.lib;xerces-c_3.lib;zdll.lib;Ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/source/project/MCSim/mod/../deps/libSBML/x86/lib;C:/source/project/MCSim/mod/../deps/libSBML/x86/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\deps\libSBML\x86\lib;..\..\..\deps\libSBML\x86\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/source/project/MCSim/VS/v15x86/mod/Debug/mod.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/source/project/MCSim/VS/v15x86/mod/Debug/mod.pdb</ProgramDataBaseFile>
+      <ImportLibrary>.\Debug\mod.lib</ImportLibrary>
+      <ProgramDataBaseFile>.\Debug\mod.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -127,7 +127,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\mod\..;C:\source\project\MCSim\mod\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\MCSim;..\..\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4018;4267;4311;4312;4700</DisableSpecificWarnings>
@@ -145,10 +145,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;LIBSBML_STATIC;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\mod\..;C:\source\project\MCSim\mod\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\MCSim;..\..\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\mod\..;C:\source\project\MCSim\mod\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\MCSim;..\..\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -157,12 +157,12 @@
     </Midl>
     <Link>
       <AdditionalDependencies>expat.lib;libbz2.lib;libcheck.lib;libiconv.lib;libsbml-static.lib;libxml2.lib;xerces-c_3.lib;zdll.lib;Ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/source/project/MCSim/mod/../deps/libSBML/x86/lib;C:/source/project/MCSim/mod/../deps/libSBML/x86/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\deps\libSBML\x86\lib;..\..\..\deps\libSBML\x86\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/source/project/MCSim/VS/v15x86/mod/Release/mod.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/source/project/MCSim/VS/v15x86/mod/Release/mod.pdb</ProgramDataBaseFile>
+      <ImportLibrary>.\Release\mod.lib</ImportLibrary>
+      <ProgramDataBaseFile>.\Release\mod.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -171,7 +171,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\mod\..;C:\source\project\MCSim\mod\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\MCSim;..\..\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4018;4267;4311;4312;4700</DisableSpecificWarnings>
@@ -189,10 +189,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;LIBSBML_STATIC;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\mod\..;C:\source\project\MCSim\mod\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\MCSim;..\..\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\mod\..;C:\source\project\MCSim\mod\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\MCSim;..\..\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -201,12 +201,12 @@
     </Midl>
     <Link>
       <AdditionalDependencies>expat.lib;libbz2.lib;libcheck.lib;libiconv.lib;libsbml-static.lib;libxml2.lib;xerces-c_3.lib;zdll.lib;Ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/source/project/MCSim/mod/../deps/libSBML/x86/lib;C:/source/project/MCSim/mod/../deps/libSBML/x86/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\deps\libSBML\x86\lib;..\..\..\deps\libSBML\x86\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/source/project/MCSim/VS/v15x86/mod/MinSizeRel/mod.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/source/project/MCSim/VS/v15x86/mod/MinSizeRel/mod.pdb</ProgramDataBaseFile>
+      <ImportLibrary>.\MinSizeRel\mod.lib</ImportLibrary>
+      <ProgramDataBaseFile>.\MinSizeRel\mod.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -215,7 +215,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\mod\..;C:\source\project\MCSim\mod\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\MCSim;..\..\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
       <CompileAs>CompileAsC</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -232,10 +232,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;LIBSBML_STATIC;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\mod\..;C:\source\project\MCSim\mod\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\MCSim;..\..\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\mod\..;C:\source\project\MCSim\mod\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\MCSim;..\..\..\deps\libSBML\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -244,12 +244,12 @@
     </Midl>
     <Link>
       <AdditionalDependencies>expat.lib;libbz2.lib;libcheck.lib;libiconv.lib;libsbml-static.lib;libxml2.lib;xerces-c_3.lib;zdll.lib;Ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/source/project/MCSim/mod/../deps/libSBML/x86/lib;C:/source/project/MCSim/mod/../deps/libSBML/x86/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\deps\libSBML\x86\lib;..\..\..\deps\libSBML\x86\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/source/project/MCSim/VS/v15x86/mod/RelWithDebInfo/mod.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/source/project/MCSim/VS/v15x86/mod/RelWithDebInfo/mod.pdb</ProgramDataBaseFile>
+      <ImportLibrary>.\RelWithDebInfo\mod.lib</ImportLibrary>
+      <ProgramDataBaseFile>.\RelWithDebInfo\mod.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -257,28 +257,28 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="C:\source\project\MCSim\mod\getopt.c" />
-    <ClCompile Include="C:\source\project\MCSim\mod\lex.c" />
-    <ClCompile Include="C:\source\project\MCSim\mod\lexerr.c" />
-    <ClCompile Include="C:\source\project\MCSim\mod\lexfn.c" />
-    <ClCompile Include="C:\source\project\MCSim\mod\mod.c" />
-    <ClCompile Include="C:\source\project\MCSim\mod\modd.c" />
-    <ClCompile Include="C:\source\project\MCSim\mod\modi.c" />
-    <ClCompile Include="C:\source\project\MCSim\mod\modiSBML.c" />
-    <ClCompile Include="C:\source\project\MCSim\mod\modiSBML2.c" />
-    <ClCompile Include="C:\source\project\MCSim\mod\modo.c" />
-    <ClCompile Include="C:\source\project\MCSim\mod\strutil.c" />
-    <ClInclude Include="C:\source\project\MCSim\mod\getopt.h" />
-    <ClInclude Include="C:\source\project\MCSim\mod\hungtype.h" />
-    <ClInclude Include="C:\source\project\MCSim\mod\lex.h" />
-    <ClInclude Include="C:\source\project\MCSim\mod\lexerr.h" />
-    <ClInclude Include="C:\source\project\MCSim\mod\lexfn.h" />
-    <ClInclude Include="C:\source\project\MCSim\mod\mod.h" />
-    <ClInclude Include="C:\source\project\MCSim\mod\modd.h" />
-    <ClInclude Include="C:\source\project\MCSim\mod\modi.h" />
-    <ClInclude Include="C:\source\project\MCSim\mod\modiSBML.h" />
-    <ClInclude Include="C:\source\project\MCSim\mod\modo.h" />
-    <ClInclude Include="C:\source\project\MCSim\mod\strutil.h" />
+    <ClCompile Include="..\..\..\mod\getopt.c" />
+    <ClCompile Include="..\..\..\mod\lex.c" />
+    <ClCompile Include="..\..\..\mod\lexerr.c" />
+    <ClCompile Include="..\..\..\mod\lexfn.c" />
+    <ClCompile Include="..\..\..\mod\mod.c" />
+    <ClCompile Include="..\..\..\mod\modd.c" />
+    <ClCompile Include="..\..\..\mod\modi.c" />
+    <ClCompile Include="..\..\..\mod\modiSBML.c" />
+    <ClCompile Include="..\..\..\mod\modiSBML2.c" />
+    <ClCompile Include="..\..\..\mod\modo.c" />
+    <ClCompile Include="..\..\..\mod\strutil.c" />
+    <ClInclude Include="..\..\..\mod\getopt.h" />
+    <ClInclude Include="..\..\..\mod\hungtype.h" />
+    <ClInclude Include="..\..\..\mod\lex.h" />
+    <ClInclude Include="..\..\..\mod\lexerr.h" />
+    <ClInclude Include="..\..\..\mod\lexfn.h" />
+    <ClInclude Include="..\..\..\mod\mod.h" />
+    <ClInclude Include="..\..\..\mod\modd.h" />
+    <ClInclude Include="..\..\..\mod\modi.h" />
+    <ClInclude Include="..\..\..\mod\modiSBML.h" />
+    <ClInclude Include="..\..\..\mod\modo.h" />
+    <ClInclude Include="..\..\..\mod\strutil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

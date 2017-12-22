@@ -56,25 +56,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\source\project\MCSim\VS\v15x86\sim\Debug\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">sim.dir\Debug\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">sim</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\source\project\MCSim\VS\v15x86\sim\Release\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">sim.dir\Release\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">sim</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\source\project\MCSim\VS\v15x86\sim\MinSizeRel\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.\MinSizeRel\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">sim.dir\MinSizeRel\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">sim</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\source\project\MCSim\VS\v15x86\sim\RelWithDebInfo\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.\RelWithDebInfo\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">sim.dir\RelWithDebInfo\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">sim</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
@@ -83,7 +83,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\sim\.;C:\source\project\MCSim\sim\..;C:\source\project\MCSim\sim\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\sim;..\..\..\..\MCSim;..\..\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Debug/</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsC</CompileAs>
@@ -101,10 +101,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\sim\.;C:\source\project\MCSim\sim\..;C:\source\project\MCSim\sim\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\sim;..\..\..\..\MCSim;..\..\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\sim\.;C:\source\project\MCSim\sim\..;C:\source\project\MCSim\sim\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\sim;..\..\..\..\MCSim;..\..\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -113,12 +113,12 @@
     </Midl>
     <Link>
       <AdditionalDependencies>gslcblas.lib;gsl.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/source/project/MCSim/sim/../deps/gsl/x86/lib;C:/source/project/MCSim/sim/../deps/gsl/x86/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\deps\gsl\x86\lib;..\..\..\deps\gsl\x86\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/source/project/MCSim/VS/v15x86/sim/Debug/sim.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/source/project/MCSim/VS/v15x86/sim/Debug/sim.pdb</ProgramDataBaseFile>
+      <ImportLibrary>.\Debug\sim.lib</ImportLibrary>
+      <ProgramDataBaseFile>.\Debug\sim.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -127,7 +127,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\sim\.;C:\source\project\MCSim\sim\..;C:\source\project\MCSim\sim\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\sim;..\..\..\..\MCSim;..\..\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
@@ -145,10 +145,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\sim\.;C:\source\project\MCSim\sim\..;C:\source\project\MCSim\sim\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\sim;..\..\..\..\MCSim;..\..\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\sim\.;C:\source\project\MCSim\sim\..;C:\source\project\MCSim\sim\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\sim;..\..\..\..\MCSim;..\..\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -157,12 +157,12 @@
     </Midl>
     <Link>
       <AdditionalDependencies>gslcblas.lib;gsl.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/source/project/MCSim/sim/../deps/gsl/x86/lib;C:/source/project/MCSim/sim/../deps/gsl/x86/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\deps\gsl\x86\lib;..\..\..\deps\gsl\x86\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/source/project/MCSim/VS/v15x86/sim/Release/sim.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/source/project/MCSim/VS/v15x86/sim/Release/sim.pdb</ProgramDataBaseFile>
+      <ImportLibrary>.\Release\sim.lib</ImportLibrary>
+      <ProgramDataBaseFile>.\Release\sim.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -171,7 +171,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\sim\.;C:\source\project\MCSim\sim\..;C:\source\project\MCSim\sim\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\sim;..\..\..\..\MCSim;..\..\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
@@ -189,10 +189,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\sim\.;C:\source\project\MCSim\sim\..;C:\source\project\MCSim\sim\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\sim;..\..\..\..\MCSim;..\..\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\sim\.;C:\source\project\MCSim\sim\..;C:\source\project\MCSim\sim\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\sim;..\..\..\..\MCSim;..\..\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -201,12 +201,12 @@
     </Midl>
     <Link>
       <AdditionalDependencies>gslcblas.lib;gsl.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/source/project/MCSim/sim/../deps/gsl/x86/lib;C:/source/project/MCSim/sim/../deps/gsl/x86/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\deps\gsl\x86\lib;..\..\..\deps\gsl\x86\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/source/project/MCSim/VS/v15x86/sim/MinSizeRel/sim.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/source/project/MCSim/VS/v15x86/sim/MinSizeRel/sim.pdb</ProgramDataBaseFile>
+      <ImportLibrary>.\MinSizeRel\sim.lib</ImportLibrary>
+      <ProgramDataBaseFile>.\MinSizeRel\sim.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -215,7 +215,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\sim\.;C:\source\project\MCSim\sim\..;C:\source\project\MCSim\sim\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\sim;..\..\..\..\MCSim;..\..\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
       <CompileAs>CompileAsC</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -232,10 +232,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\sim\.;C:\source\project\MCSim\sim\..;C:\source\project\MCSim\sim\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\sim;..\..\..\..\MCSim;..\..\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\source\project\MCSim\sim\.;C:\source\project\MCSim\sim\..;C:\source\project\MCSim\sim\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\sim;..\..\..\..\MCSim;..\..\..\deps\gsl\x86\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -244,12 +244,12 @@
     </Midl>
     <Link>
       <AdditionalDependencies>gslcblas.lib;gsl.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/source/project/MCSim/sim/../deps/gsl/x86/lib;C:/source/project/MCSim/sim/../deps/gsl/x86/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\deps\gsl\x86\lib;..\..\..\deps\gsl\x86\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/source/project/MCSim/VS/v15x86/sim/RelWithDebInfo/sim.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/source/project/MCSim/VS/v15x86/sim/RelWithDebInfo/sim.pdb</ProgramDataBaseFile>
+      <ImportLibrary>.\RelWithDebInfo\sim.lib</ImportLibrary>
+      <ProgramDataBaseFile>.\RelWithDebInfo\sim.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -257,50 +257,50 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="C:\source\project\MCSim\sim\delays.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\getopt.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\lex.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\lexerr.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\lexfn.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\list.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\lsodes1.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\lsodes2.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\matutil.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\matutilo.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\mh.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\modelu.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\optdsign.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\random.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\sim.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\simi.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\siminit.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\simmonte.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\simo.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\strutil.c" />
-    <ClCompile Include="C:\source\project\MCSim\sim\yourcode.c" />
-    <ClInclude Include="C:\source\project\MCSim\sim\delays.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\getopt.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\hungtype.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\lex.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\lexerr.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\lexfn.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\list.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\lsodes.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\matutil.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\matutilo.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\mh.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\modelu.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\modiface.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\optdsign.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\random.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\sim.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\simi.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\siminit.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\simmonte.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\simo.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\strutil.h" />
-    <ClInclude Include="C:\source\project\MCSim\sim\yourcode.h" />
-    <ClCompile Include="C:\source\project\MCSim\deps\model\src\model.c" />
+    <ClCompile Include="..\..\..\sim\delays.c" />
+    <ClCompile Include="..\..\..\sim\getopt.c" />
+    <ClCompile Include="..\..\..\sim\lex.c" />
+    <ClCompile Include="..\..\..\sim\lexerr.c" />
+    <ClCompile Include="..\..\..\sim\lexfn.c" />
+    <ClCompile Include="..\..\..\sim\list.c" />
+    <ClCompile Include="..\..\..\sim\lsodes1.c" />
+    <ClCompile Include="..\..\..\sim\lsodes2.c" />
+    <ClCompile Include="..\..\..\sim\matutil.c" />
+    <ClCompile Include="..\..\..\sim\matutilo.c" />
+    <ClCompile Include="..\..\..\sim\mh.c" />
+    <ClCompile Include="..\..\..\sim\modelu.c" />
+    <ClCompile Include="..\..\..\sim\optdsign.c" />
+    <ClCompile Include="..\..\..\sim\random.c" />
+    <ClCompile Include="..\..\..\sim\sim.c" />
+    <ClCompile Include="..\..\..\sim\simi.c" />
+    <ClCompile Include="..\..\..\sim\siminit.c" />
+    <ClCompile Include="..\..\..\sim\simmonte.c" />
+    <ClCompile Include="..\..\..\sim\simo.c" />
+    <ClCompile Include="..\..\..\sim\strutil.c" />
+    <ClCompile Include="..\..\..\sim\yourcode.c" />
+    <ClInclude Include="..\..\..\sim\delays.h" />
+    <ClInclude Include="..\..\..\sim\getopt.h" />
+    <ClInclude Include="..\..\..\sim\hungtype.h" />
+    <ClInclude Include="..\..\..\sim\lex.h" />
+    <ClInclude Include="..\..\..\sim\lexerr.h" />
+    <ClInclude Include="..\..\..\sim\lexfn.h" />
+    <ClInclude Include="..\..\..\sim\list.h" />
+    <ClInclude Include="..\..\..\sim\lsodes.h" />
+    <ClInclude Include="..\..\..\sim\matutil.h" />
+    <ClInclude Include="..\..\..\sim\matutilo.h" />
+    <ClInclude Include="..\..\..\sim\mh.h" />
+    <ClInclude Include="..\..\..\sim\modelu.h" />
+    <ClInclude Include="..\..\..\sim\modiface.h" />
+    <ClInclude Include="..\..\..\sim\optdsign.h" />
+    <ClInclude Include="..\..\..\sim\random.h" />
+    <ClInclude Include="..\..\..\sim\sim.h" />
+    <ClInclude Include="..\..\..\sim\simi.h" />
+    <ClInclude Include="..\..\..\sim\siminit.h" />
+    <ClInclude Include="..\..\..\sim\simmonte.h" />
+    <ClInclude Include="..\..\..\sim\simo.h" />
+    <ClInclude Include="..\..\..\sim\strutil.h" />
+    <ClInclude Include="..\..\..\sim\yourcode.h" />
+    <ClCompile Include="..\..\..\deps\model\src\model.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

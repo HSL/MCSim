@@ -1,72 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\source\project\MCSim\mod\getopt.c">
+    <ClCompile Include="..\..\..\mod\getopt.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\mod\lex.c">
+    <ClCompile Include="..\..\..\mod\lex.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\mod\lexerr.c">
+    <ClCompile Include="..\..\..\mod\lexerr.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\mod\lexfn.c">
+    <ClCompile Include="..\..\..\mod\lexfn.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\mod\mod.c">
+    <ClCompile Include="..\..\..\mod\mod.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\mod\modd.c">
+    <ClCompile Include="..\..\..\mod\modd.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\mod\modi.c">
+    <ClCompile Include="..\..\..\mod\modi.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\mod\modiSBML.c">
+    <ClCompile Include="..\..\..\mod\modiSBML.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\mod\modiSBML2.c">
+    <ClCompile Include="..\..\..\mod\modiSBML2.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\mod\modo.c">
+    <ClCompile Include="..\..\..\mod\modo.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\mod\strutil.c">
+    <ClCompile Include="..\..\..\mod\strutil.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\source\project\MCSim\mod\getopt.h">
+    <ClInclude Include="..\..\..\mod\getopt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\mod\hungtype.h">
+    <ClInclude Include="..\..\..\mod\hungtype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\mod\lex.h">
+    <ClInclude Include="..\..\..\mod\lex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\mod\lexerr.h">
+    <ClInclude Include="..\..\..\mod\lexerr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\mod\lexfn.h">
+    <ClInclude Include="..\..\..\mod\lexfn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\mod\mod.h">
+    <ClInclude Include="..\..\..\mod\mod.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\mod\modd.h">
+    <ClInclude Include="..\..\..\mod\modd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\mod\modi.h">
+    <ClInclude Include="..\..\..\mod\modi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\mod\modiSBML.h">
+    <ClInclude Include="..\..\..\mod\modiSBML.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\mod\modo.h">
+    <ClInclude Include="..\..\..\mod\modo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\mod\strutil.h">
+    <ClInclude Include="..\..\..\mod\strutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

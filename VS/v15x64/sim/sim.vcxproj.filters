@@ -1,138 +1,138 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\source\project\MCSim\sim\delays.c">
+    <ClCompile Include="..\..\..\sim\delays.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\getopt.c">
+    <ClCompile Include="..\..\..\sim\getopt.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\lex.c">
+    <ClCompile Include="..\..\..\sim\lex.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\lexerr.c">
+    <ClCompile Include="..\..\..\sim\lexerr.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\lexfn.c">
+    <ClCompile Include="..\..\..\sim\lexfn.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\list.c">
+    <ClCompile Include="..\..\..\sim\list.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\lsodes1.c">
+    <ClCompile Include="..\..\..\sim\lsodes1.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\lsodes2.c">
+    <ClCompile Include="..\..\..\sim\lsodes2.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\matutil.c">
+    <ClCompile Include="..\..\..\sim\matutil.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\matutilo.c">
+    <ClCompile Include="..\..\..\sim\matutilo.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\mh.c">
+    <ClCompile Include="..\..\..\sim\mh.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\modelu.c">
+    <ClCompile Include="..\..\..\sim\modelu.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\optdsign.c">
+    <ClCompile Include="..\..\..\sim\optdsign.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\random.c">
+    <ClCompile Include="..\..\..\sim\random.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\sim.c">
+    <ClCompile Include="..\..\..\sim\sim.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\simi.c">
+    <ClCompile Include="..\..\..\sim\simi.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\siminit.c">
+    <ClCompile Include="..\..\..\sim\siminit.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\simmonte.c">
+    <ClCompile Include="..\..\..\sim\simmonte.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\simo.c">
+    <ClCompile Include="..\..\..\sim\simo.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\strutil.c">
+    <ClCompile Include="..\..\..\sim\strutil.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\sim\yourcode.c">
+    <ClCompile Include="..\..\..\sim\yourcode.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\source\project\MCSim\deps\model\src\model.c">
+    <ClCompile Include="..\..\..\deps\model\src\model.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\source\project\MCSim\sim\delays.h">
+    <ClInclude Include="..\..\..\sim\delays.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\getopt.h">
+    <ClInclude Include="..\..\..\sim\getopt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\hungtype.h">
+    <ClInclude Include="..\..\..\sim\hungtype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\lex.h">
+    <ClInclude Include="..\..\..\sim\lex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\lexerr.h">
+    <ClInclude Include="..\..\..\sim\lexerr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\lexfn.h">
+    <ClInclude Include="..\..\..\sim\lexfn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\list.h">
+    <ClInclude Include="..\..\..\sim\list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\lsodes.h">
+    <ClInclude Include="..\..\..\sim\lsodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\matutil.h">
+    <ClInclude Include="..\..\..\sim\matutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\matutilo.h">
+    <ClInclude Include="..\..\..\sim\matutilo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\mh.h">
+    <ClInclude Include="..\..\..\sim\mh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\modelu.h">
+    <ClInclude Include="..\..\..\sim\modelu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\modiface.h">
+    <ClInclude Include="..\..\..\sim\modiface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\optdsign.h">
+    <ClInclude Include="..\..\..\sim\optdsign.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\random.h">
+    <ClInclude Include="..\..\..\sim\random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\sim.h">
+    <ClInclude Include="..\..\..\sim\sim.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\simi.h">
+    <ClInclude Include="..\..\..\sim\simi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\siminit.h">
+    <ClInclude Include="..\..\..\sim\siminit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\simmonte.h">
+    <ClInclude Include="..\..\..\sim\simmonte.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\simo.h">
+    <ClInclude Include="..\..\..\sim\simo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\strutil.h">
+    <ClInclude Include="..\..\..\sim\strutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\source\project\MCSim\sim\yourcode.h">
+    <ClInclude Include="..\..\..\sim\yourcode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
